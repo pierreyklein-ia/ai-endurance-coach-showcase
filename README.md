@@ -111,13 +111,19 @@ These offline runs measure routing, safety layers and non-regression, not the qu
 
 ## Decisions and lessons learned
 
-<!-- TO WRITE (Pierre-Yves, in your own words): 4–6 short paragraphs. Suggested prompts:
-     - Why deterministic guardrails have the final word, and one case where that mattered.
-     - What the field audits taught you about agent behaviour in long conversations (v0.50.x, v0.52).
-     - Single agent vs multi-agent: what you gained, what it cost, and whether you would do it again.
-     - How you directed Claude as a coding agent: specs, tests first, audits, and when you had to step in.
-     - Discovering the Strava AI clause late, and what you would check first next time.
-     - What you would do differently if a customer's team had to run this. -->
+*Draft written with Claude from our working sessions — to be reread and owned by me before publishing.*
+
+**The code has the last word, not the model.** From day one I wanted a coach that talks like a human but can't hurt anyone. So Claude proposes, and a registry of plain rules decides: load spikes, pain, no catch-up, my own weekly maximum. Early on I also made one rule the other way around: the athlete always has the last word on his own days. When I move a session myself, nothing is blocked; the coach comments and suggests. Safety and respect for the user are not the same thing, and you need both.
+
+**Most failures were not the model being "dumb", but the plumbing around it.** Using the app every day showed me bugs no test had caught. A threshold session had been quietly turned into an easy run, while its title still said "Threshold". A fallback rewrote my whole week into recovery after I simply said I had done my session. And when I audited the chat history, I found the coach inventing a "double threshold" that was only a preference in my profile, and answering "your 'no' is a bit short" to its own question. The root causes were the context and the flow, not the model: no conversation history, preferences mixed with the plan, a yes/no question bypassed by another feature. Each fix shipped with a regression test.
+
+**A second user finds what the first one can't.** My partner tested it on her phone for a 21 km. Within a day she found a wrong race date, too much jargon, an Android back button closing the app, and constraints she had said that the plan ignored. Same lesson as on a customer project: the first real user outside the team is worth more than a week of internal testing.
+
+**One agent or a team?** I pushed for a multi-agent setup: a supervisor, specialists with tools, a critic, then the guardrails. On my 35 scenarios, coverage of the expected topics went from 56 % to 83 %, and sourced answers from 0 % to 91 %, for about twice the cost per message. Worth it for coaching, where a missed injury signal costs more than a few cents. But I kept a single-agent mode to compare, and the guardrails never depend on the agents.
+
+**Directing Claude as a developer.** I wrote the needs, Claude wrote most of the code, and I tested everything on my own runs. What made it work: very short loops (feedback in the morning, new version deployed the same day), a CI that refuses to deploy without green tests and 93 % coverage, and audits where I read what the system really did, not what it said it did. The hardest part was not the code. It was deciding what "good" looks like and checking it without trusting the summary.
+
+**Check the data rights on day one.** I only discovered the Strava AI clause when I asked for real-time webhooks. At Akeneo I filled security questionnaires before any deal; data licensing deserves the same reflex at the very start of an AI project. Next step for this app: move to the watch makers' APIs and FIT files, and multi-tenant accounts, before anyone else uses it.
 
 ## Run it locally (demo, no API key)
 
