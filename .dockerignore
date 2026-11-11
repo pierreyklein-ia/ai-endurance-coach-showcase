@@ -1,0 +1,16 @@
+.venv
+**/__pycache__
+.pytest_cache
+*.db
+*.zip
+deploy/app.env
+frontend/node_modules
+coach/web/static/app
+node_modules
+e2e/node_modules
+e2e/test-results
+e2e/playwright-report
+frontend/coverage
+htmlcov
+.coverage
+coverage.xml

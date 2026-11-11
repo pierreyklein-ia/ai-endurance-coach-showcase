@@ -1,0 +1,22 @@
+flowchart TB
+  PWA["📱 Application web installable (React + TypeScript)<br/>Aujourd'hui · Semaine · Coach · Progrès · État · Course"]
+  WEB["Serveur FastAPI (Docker, Oracle Cloud)<br/>déploiement automatique par GitHub Actions"]
+  subgraph IA["Équipe IA : LangGraph"]
+    direction LR
+    SUP{{"Superviseur<br/>Haiku"}} --> SP["Spécialistes outillés (Haiku)<br/>🩺 Prévention · 📈 Charge<br/>🍌 Nutrition · 🏁 Course"] --> CO["Coach<br/>Sonnet, persona"] --> CR{{"Critique<br/>LLM-as-judge"}}
+  end
+  GF["🛡 Garde-fous déterministes<br/>registre versionné et sourcé"]
+  OK["✋ Accord de l'athlète<br/>pour un changement important"]
+  subgraph CODE["Moteurs déterministes (outils en lecture seule des agents)"]
+    direction LR
+    CH["Charge<br/>CTL ATL TSB ACWR"] ~~~ PL["Plan<br/>phase spécifique"] ~~~ SIM["Simulateur<br/>de course (GPX)"] ~~~ NU["Nutrition<br/>bilans, palette"] ~~~ KB[("50 fiches<br/>scientifiques")]
+  end
+  subgraph EXT["Services externes"]
+    direction LR
+    CL["Claude<br/>Haiku, Sonnet"] ~~~ STR["Strava"] ~~~ GCAL["Google Agenda"] ~~~ GEM["Gemini<br/>avatar"] ~~~ WH["Whisper local<br/>dictée"]
+  end
+  PWA <--> WEB
+  WEB --> IA
+  IA --> GF --> OK --> WEB
+  IA -.-> CODE
+  WEB -.-> EXT

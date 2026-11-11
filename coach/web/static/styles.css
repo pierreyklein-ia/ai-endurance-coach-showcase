@@ -1,0 +1,1393 @@
+:root {
+  --bg: #f6f5f1; --surface: #ffffff; --surface-2: #efede7; --ink: #1b1f1c; --muted: #66706a;
+  --line: #e2dfd7; --accent: #1f6f43; --accent-ink: #ffffff; --accent-soft: #e3f0e7;
+  --warn: #a45a00; --warn-soft: #fbefdc; --bad: #b3261e; --bad-soft: #fbe6e4;
+  --key: #1f6f43; --radius: 14px; --shadow: 0 1px 2px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05);
+  --safe-b: env(safe-area-inset-bottom, 0px); --safe-t: env(safe-area-inset-top, 0px);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1210; --surface: #151c18; --surface-2: #1c2520; --ink: #e8ece9; --muted: #9aa69f;
+    --line: #26302a; --accent: #5cc58a; --accent-ink: #062012; --accent-soft: #183326;
+    --warn: #f0b35a; --warn-soft: #33270f; --bad: #f08a80; --bad-soft: #3a1a17;
+    --key: #5cc58a; --shadow: none; color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); }
+body { font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+       -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+[hidden] { display: none !important; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.muted { color: var(--muted); }
+.error { color: var(--bad); min-height: 1.2em; margin: 8px 0 0; }
+h1, h2, h3 { margin: 0; line-height: 1.2; }
+h2 { font-size: 1.05rem; }
+h3 { font-size: .95rem; }
+
+/* ---------- connexion */
+.login { min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+         padding: 24px; text-align: center; gap: 8px; }
+.login-logo { width: 72px; height: 72px; border-radius: 18px; }
+.login-form { width: 100%; max-width: 320px; display: grid; gap: 10px; margin-top: 12px; }
+input, textarea { font: inherit; color: inherit; background: var(--surface); border: 1px solid var(--line);
+                  border-radius: 12px; padding: 12px 14px; width: 100%; }
+input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+/* ---------- boutons */
+.btn { font: inherit; font-weight: 600; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+       border-radius: 12px; padding: 11px 16px; cursor: pointer; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.small { padding: 7px 12px; font-size: .9rem; }
+.btn:disabled { opacity: .55; }
+.chip { font: inherit; font-size: .92rem; border: 1px solid var(--line); background: var(--surface);
+        color: var(--ink); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+
+/* ---------- squelette */
+.app { min-height: 100dvh; display: flex; flex-direction: column; }
+.topbar { position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center;
+          gap: 12px; padding: calc(10px + var(--safe-t)) 16px 10px; background: var(--bg);
+          border-bottom: 1px solid var(--line); }
+.race-name { font-weight: 700; }
+.race-sub { color: var(--muted); font-size: .85rem; }
+.countdown { font-weight: 800; font-size: 1.25rem; color: var(--accent); white-space: nowrap; }
+main { flex: 1; width: 100%; max-width: 680px; margin: 0 auto; padding: 14px 16px calc(84px + var(--safe-b)); }
+.tabs { position: fixed; bottom: 0; left: 0; right: 0; z-index: 6; display: grid; grid-template-columns: repeat(5, 1fr);
+        background: var(--surface); border-top: 1px solid var(--line); padding-bottom: var(--safe-b); }
+.tabs a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0 9px;
+          color: var(--muted); text-decoration: none; font-size: .72rem; font-weight: 600; }
+.tabs a .ti { font-size: 1.15rem; line-height: 1; }
+.tabs a.on { color: var(--accent); }
+
+/* ---------- cartes */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+        padding: 14px; box-shadow: var(--shadow); margin-bottom: 12px; }
+.card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+.eyebrow { font-size: .75rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.session-title { font-size: 1.12rem; font-weight: 700; margin: 2px 0 4px; }
+.session-meta { color: var(--muted); font-size: .88rem; margin-bottom: 8px; }
+.session-detail { white-space: pre-wrap; font-size: .95rem; }
+/* v0.48 : « C'est quoi ? » (vocabulaire simple) */
+.glossary { margin: 8px 0 2px; font-size: .9rem; }
+.glossary summary { cursor: pointer; color: var(--accent, inherit); font-weight: 600; min-height: 32px; display: flex; align-items: center; }
+.glossary dl { margin: 4px 0 0; display: grid; gap: 6px; }
+.glossary dt { font-weight: 700; display: inline; }
+.glossary dt::after { content: " : "; }
+.glossary dd { display: inline; margin: 0; }
+.badge { display: inline-block; font-size: .72rem; font-weight: 700; border-radius: 999px; padding: 2px 8px;
+         background: var(--surface-2); color: var(--muted); }
+.badge.key { background: var(--accent-soft); color: var(--key); }
+.badge.done { background: var(--accent-soft); color: var(--accent); }
+.badge.modified { background: var(--warn-soft); color: var(--warn); }
+.badge.skipped { background: var(--bad-soft); color: var(--bad); }
+.row-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.note { background: var(--surface-2); border-radius: 10px; padding: 10px 12px; font-size: .93rem; white-space: pre-wrap; }
+.empty { text-align: center; color: var(--muted); padding: 24px 8px; }
+
+/* ---------- état */
+.metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
+.metric { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; }
+.metric .v { font-size: 1.6rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.metric .k { font-size: .8rem; color: var(--muted); font-weight: 600; }
+.metric .h { font-size: .78rem; color: var(--muted); margin-top: 2px; }
+.metric.warn .v { color: var(--warn); }
+.metric.bad .v { color: var(--bad); }
+.act { display: flex; flex-direction: column; padding: 10px 0; border-top: 1px solid var(--line); }
+/* v0.48 : la ligne se déplie (détail de l'activité) */
+.act-btn { display: flex; justify-content: space-between; gap: 10px; width: 100%; background: none; border: 0; padding: 0;
+  font: inherit; color: inherit; text-align: left; cursor: pointer; }
+.act-detail { display: grid; gap: 4px; margin-top: 8px; padding: 8px 10px; border-radius: 10px; background: var(--surface-2); }
+.act-detail .btn { justify-self: start; margin-top: 4px; }
+.warn-text { color: var(--warn, #b45309); }
+.check-list { list-style: none; padding: 0; margin: 6px 0; display: grid; gap: 4px; }
+.check-list .good { color: var(--accent); }
+.act:first-of-type { border-top: 0; }
+.act .t { font-weight: 600; }
+.act .s { color: var(--muted); font-size: .85rem; }
+.act .l { font-variant-numeric: tabular-nums; color: var(--muted); font-size: .85rem; white-space: nowrap; }
+
+/* ---------- semaine */
+.week-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.week-nav .title { font-weight: 700; text-align: center; }
+.progress { height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; margin: 8px 0 4px; }
+.progress > i { display: block; height: 100%; background: var(--accent); width: 0; }
+.day { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 8px; }
+.day.today { border-color: var(--accent); }
+.day-head { display: flex; justify-content: space-between; padding: 10px 14px 0; font-weight: 700; font-size: .9rem; }
+.day-body { padding: 4px 14px 10px; }
+.day .item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 0;
+             border-top: 1px solid var(--line); cursor: pointer; }
+.day .item:first-child { border-top: 0; }
+.day .item .it { font-weight: 600; font-size: .95rem; }
+.day .item .im { color: var(--muted); font-size: .82rem; }
+.day .off { color: var(--muted); font-size: .85rem; padding: 6px 0; }
+
+/* ---------- chat */
+.view-chat { display: flex; flex-direction: column; min-height: calc(100dvh - 160px); }
+.chat-list { flex: 1; display: flex; flex-direction: column; gap: 8px; padding-bottom: 8px; }
+.msg { max-width: 86%; padding: 10px 13px; border-radius: 16px; white-space: pre-wrap; word-wrap: break-word; font-size: .97rem; }
+.msg.user { align-self: flex-end; background: var(--accent); color: var(--accent-ink); border-bottom-right-radius: 5px; }
+.msg.coach { align-self: flex-start; background: var(--surface); border: 1px solid var(--line); border-bottom-left-radius: 5px; }
+.msg.ask { border-color: var(--warn); }
+.msg.system { align-self: center; background: var(--surface-2); color: var(--muted); font-size: .85rem; }
+.msg .time { display: block; font-size: .7rem; opacity: .7; margin-top: 4px; }
+.msg details { margin-top: 6px; font-size: .75rem; color: var(--muted); }
+.typing { align-self: flex-start; color: var(--muted); font-size: .9rem; padding: 4px 8px; }
+.chat-quick { display: flex; gap: 8px; justify-content: center; padding: 6px 0; }
+.chat-form { position: sticky; bottom: calc(64px + var(--safe-b)); display: flex; align-items: flex-end; gap: 8px;
+             background: var(--bg); padding: 8px 0; }
+.chat-form textarea { resize: none; max-height: 140px; border-radius: 20px; padding: 10px 14px; overflow-y: hidden; }
+.send, .icon-btn { flex: 0 0 auto; width: 42px; height: 42px; border-radius: 50%; border: 0; display: grid;
+                   place-items: center; font-size: 1.1rem; cursor: pointer; }
+.send { background: var(--accent); color: var(--accent-ink); }
+.send:disabled { opacity: .4; cursor: default; }
+.icon-btn { background: var(--surface); border: 1px solid var(--line); color: var(--ink); }
+.chat-form { flex-wrap: wrap; }
+.chat-form textarea { flex: 1 1 0; min-width: 0; }
+/* dictée (v0.21) */
+.mic svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.mic .i-mic rect { fill: currentColor; stroke: none; }
+.mic .i-stop { display: none; }
+.mic .i-stop rect { fill: currentColor; stroke: none; }
+.mic.rec { background: var(--bad); border-color: var(--bad); color: var(--bg); animation: mic-pulse 1.4s ease-in-out infinite; }
+.mic.rec .i-mic { display: none; }
+.mic.rec .i-stop { display: block; }
+.mic.busy { opacity: .55; pointer-events: none; }
+@keyframes mic-pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--bad) 45%, transparent); }
+                       50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--bad) 0%, transparent); } }
+.dict-bar { flex: 1 0 100%; order: -1; display: flex; align-items: center; gap: 10px; padding: 6px 12px;
+            border-radius: 14px; background: var(--surface); border: 1px solid var(--line); font-size: .9rem; }
+.dict-bar[hidden] { display: none; }
+.dict-bar #dict-label { flex: 1 1 auto; color: var(--muted); }
+.rec-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--bad); animation: rec-blink 1s step-end infinite; }
+.dict-bar.busy .rec-dot { background: var(--muted); animation: none; }
+@keyframes rec-blink { 50% { opacity: .25; } }
+.dict-level { display: inline-flex; align-items: center; gap: 3px; height: 20px; }
+.dict-level[hidden] { display: none; }
+.dict-level i { display: block; width: 3px; height: 20px; border-radius: 2px; background: var(--accent);
+                transform: scaleY(.15); transition: transform .08s linear; }
+.dict-time { font-variant-numeric: tabular-nums; color: var(--muted); }
+.link-btn { background: none; border: 0; color: var(--accent); font: inherit; font-weight: 600; cursor: pointer; padding: 4px; }
+@media (prefers-reduced-motion: reduce) { .mic.rec, .rec-dot { animation: none; } }
+
+/* ---------- feuille de validation */
+.sheet { border: 0; padding: 0; margin: auto auto 0; width: 100%; max-width: 560px; background: var(--surface);
+         color: var(--ink); border-radius: 20px 20px 0 0; }
+.sheet::backdrop { background: rgba(0,0,0,.4); }
+.sheet form { padding: 18px 16px calc(16px + var(--safe-b)); display: grid; gap: 14px; }
+.field { display: grid; gap: 8px; }
+.label { font-weight: 700; font-size: .9rem; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.seg button, .rpe button { font: inherit; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink);
+                           border-radius: 10px; padding: 9px 0; cursor: pointer; font-weight: 600; }
+.seg button.on, .rpe button.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.rpe { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; }
+.rpe button { padding: 8px 0; font-size: .9rem; }
+.check { display: flex; gap: 10px; align-items: center; font-size: .93rem; }
+.check input { width: 20px; height: 20px; }
+.sheet-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(80px + var(--safe-b)); z-index: 20;
+         background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 12px; font-size: .9rem;
+         max-width: calc(100% - 32px); }
+
+@media (min-width: 720px) {
+  .tabs { max-width: 680px; margin: 0 auto; border: 1px solid var(--line); border-bottom: 0; border-radius: 16px 16px 0 0; }
+}
+.sheet form > p { margin: -10px 0 0; }
+input[type="checkbox"] { accent-color: var(--accent); }
+
+/* ---- premier lancement (v0.10) ---- */
+select { font: inherit; color: inherit; background: var(--surface); border: 1px solid var(--line);
+         border-radius: 10px; padding: 10px 12px; width: 100%; }
+select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.form { display: grid; gap: 14px; }
+.form input { width: 100%; box-sizing: border-box; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.stepper { list-style: none; display: flex; gap: 6px; padding: 0; margin: 0 0 12px; counter-reset: st; }
+.stepper li { flex: 1; font-size: .78rem; font-weight: 600; color: var(--muted); padding-top: 8px;
+              border-top: 3px solid var(--line); counter-increment: st; }
+.stepper li::before { content: counter(st) ". "; }
+.stepper li.on { color: var(--accent); border-color: var(--accent); }
+.stepper li.done { color: var(--ink); border-color: var(--accent-soft); }
+.ok-line { margin: 8px 0; font-weight: 600; color: var(--accent); }
+.msg { white-space: pre-line; }
+
+/* ---- accueil (v0.11) ---- */
+.welcome { display: grid; gap: 14px; justify-items: center; text-align: center; padding: 24px 4px; }
+.welcome h1 { margin: 0; font-size: 1.5rem; }
+.welcome p { margin: 0; max-width: 34ch; }
+.welcome .btn.strava { background: #fc4c02; border-color: #fc4c02; color: #fff; padding: 14px 22px; font-size: 1.05rem; }
+.welcome .alt { width: 100%; text-align: left; }
+.small { font-size: .85rem; }
+.alt summary { cursor: pointer; color: var(--muted); font-weight: 600; padding: 8px 0; }
+.btn.danger { color: var(--bad); border-color: var(--bad); }
+.spinner { width: 36px; height: 36px; border-radius: 50%; border: 4px solid var(--line); border-top-color: var(--accent);
+           animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+.chat-quick { flex-wrap: wrap; }
+.progress-line { font-weight: 600; color: var(--accent); min-height: 1.4em; }
+
+/* v0.17 : mémoire de l'athlète */
+ul.memory { margin: 6px 0 8px; padding-left: 18px; display: grid; gap: 3px; }
+ul.memory li { line-height: 1.4; }
+pre.plan-text { white-space: pre-wrap; font: inherit; font-size: 13px; line-height: 1.45; margin: 8px 0 0; max-height: 50vh; overflow: auto; }
+
+/* v0.19 : onglet Progrès */
+.seg { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+.chip.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.chart { margin-top: 8px; position: relative; }
+.chart-svg { display: block; width: 100%; height: auto; touch-action: pan-y; }
+.chart-svg .grid { stroke: var(--line); stroke-width: 1; }
+.chart-svg .axis0 { stroke: var(--muted); stroke-width: 1; }
+.chart-svg .tick { fill: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+.chart-svg .tick.mk { fill: var(--accent); font-weight: 700; }
+.chart-svg .ln { stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.chart-svg .ln.dashed { stroke-dasharray: 5 5; opacity: .7; }
+.chart-svg .marker { stroke: var(--accent); stroke-dasharray: 2 4; stroke-width: 1.5; }
+.chart-svg .cursor { stroke: var(--muted); stroke-width: 1; }
+.chart-tip { font-size: .8rem; color: var(--ink); background: var(--surface-2); border-radius: 8px; padding: 4px 8px;
+             margin-top: 4px; font-variant-numeric: tabular-nums; }
+.chart-note { font-size: .78rem; color: var(--muted); margin-top: 6px; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: .78rem; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 3px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+.goal h2 { margin-top: 2px; }
+.goal-est { margin: 8px 0 2px; }
+.goal-est .big { font-size: 1.9rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.good { color: var(--accent); font-weight: 600; font-size: .9rem; }
+.warnt { color: var(--warn); font-weight: 600; }
+.small { font-size: .82rem; }
+.chronos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 8px; }
+.chrono { border: 1px solid var(--line); border-radius: 12px; padding: 10px; min-width: 0; }
+.chrono .k { font-size: .8rem; color: var(--muted); font-weight: 600; }
+.chrono .v { font-size: 1.3rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.chrono .chart { margin-top: 4px; }
+.chrono .chart-svg .tick { font-size: 9px; }
+.table-wrap { overflow-x: auto; }
+table.weeks { width: 100%; border-collapse: collapse; font-size: .85rem; font-variant-numeric: tabular-nums; }
+table.weeks th { text-align: right; font-weight: 600; color: var(--muted); padding: 6px 4px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+table.weeks td { text-align: right; padding: 6px 4px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+table.weeks th:first-child, table.weeks td:first-child { text-align: left; }
+table.weeks tr.partial td { color: var(--muted); }
+#acts-list .more { margin-top: 10px; width: 100%; }
+.chart-svg .ln.c-accent { stroke: var(--accent); } .chart-svg .ln.c-warn { stroke: var(--warn); }
+.chart-svg .ln.c-ink { stroke: var(--ink); } .chart-svg .ln { fill: none; }
+.chart-svg .area { stroke: none; opacity: .12; } .chart-svg .area.c-accent { fill: var(--accent); }
+.legend i.c-accent { background: var(--accent); } .legend i.c-warn { background: var(--warn); }
+.legend i.c-ink { background: var(--ink); } .legend i.dashed { opacity: .45; }
+
+/* v0.20 : radar du profil */
+.radar-svg { display: block; width: 100%; max-width: 380px; margin: 6px auto; height: auto; overflow: visible; }
+.radar-svg .ring { fill: none; stroke: var(--line); stroke-width: 1; }
+.radar-svg .ring.outer { stroke: var(--muted); stroke-opacity: .5; }
+.radar-svg .spoke { stroke: var(--line); stroke-width: 1; }
+.radar-svg .rp.now { fill: var(--accent); fill-opacity: .18; stroke: var(--accent); stroke-width: 2.2; stroke-linejoin: round; }
+.radar-svg .rp.old { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.radar-svg .rdot { fill: var(--accent); }
+.radar-svg .rlabel { fill: var(--ink); font-size: 11.5px; font-weight: 600; }
+.radar-svg .rlabel.off { fill: var(--muted); font-weight: 500; }
+.radar-svg .rscore { fill: var(--accent); font-weight: 800; font-size: 12.5px; }
+.radar-svg .rlabel.off .rscore { fill: var(--muted); }
+.axis { padding: 10px 0; border-top: 1px solid var(--line); display: grid; gap: 2px; }
+.axis-head { display: flex; justify-content: space-between; gap: 8px; }
+.axis-score { font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.conf { color: var(--muted); font-size: .82rem; }
+.tip { color: var(--ink); }
+.tip::before { content: "→ "; color: var(--accent); font-weight: 700; }
+
+/* v0.23 : recherche dans les activités */
+.acts-tools { display: grid; gap: 8px; margin-bottom: 8px; }
+.acts-search { width: 100%; border-radius: 12px; }
+.acts-count { text-align: center; padding: 6px 0; }
+
+/* ---------- carrière (v0.24) */
+.topbar-main { flex: 1 1 auto; min-width: 0; }
+.me-avatar { position: relative; flex: 0 0 auto; width: 40px; height: 40px; border-radius: 50%; overflow: visible;
+             border: 2px solid var(--accent); display: block; }
+.me-avatar[hidden] { display: none; }
+.me-avatar svg { display: block; border-radius: 50%; }
+.me-avatar .lvl { position: absolute; right: -6px; bottom: -4px; min-width: 18px; height: 18px; padding: 0 4px;
+                  border-radius: 9px; background: var(--accent); color: var(--accent-ink); font-size: .7rem;
+                  font-weight: 800; display: grid; place-items: center; border: 2px solid var(--bg); }
+.me-avatar.ping::after { content: ""; position: absolute; top: -3px; right: -3px; width: 10px; height: 10px;
+                         border-radius: 50%; background: var(--bad); border: 2px solid var(--bg); }
+.career-hero { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; }
+.career-hero .hero-av svg { display: block; border-radius: 22px; }
+.hero-txt { display: grid; gap: 6px; min-width: 0; }
+.lvl-big { font-size: 1.6rem; font-weight: 800; line-height: 1.1; }
+.rank { color: var(--accent); font-weight: 700; }
+.xpbar { height: 10px; border-radius: 6px; background: var(--line); overflow: hidden; }
+.xpbar i { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--accent), #eab308); }
+.career-hero.levelup .hero-av { animation: lvl-pop 1.2s ease-out 1; }
+@keyframes lvl-pop { 0% { transform: scale(.8); } 40% { transform: scale(1.08); } 100% { transform: scale(1); } }
+.banner { border-color: #eab308; background: color-mix(in srgb, #eab308 12%, var(--surface)); }
+.banner.pop { animation: lvl-pop .8s ease-out 1; }
+.goal-row { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 8px 0;
+            border-top: 1px solid var(--line); }
+.goal-row:first-of-type { border-top: 0; }
+.goal-row .t, .tro .t { font-weight: 600; }
+.xp { font-weight: 800; color: #b45309; white-space: nowrap; font-size: .85rem; }
+.medal { color: var(--muted); flex: 0 0 auto; }
+.fam summary { cursor: pointer; }
+.tro-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; margin-top: 10px; }
+.tro { border: 1px solid var(--line); border-radius: 12px; padding: 10px; display: grid; gap: 3px; justify-items: start;
+       opacity: .6; }
+.tro.on { opacity: 1; background: color-mix(in srgb, var(--accent) 6%, var(--surface)); }
+.tro.new { border-color: #eab308; box-shadow: 0 0 0 2px color-mix(in srgb, #eab308 35%, transparent); animation: lvl-pop .8s ease-out 1; }
+.frise { list-style: none; margin: 10px 0 0; padding: 0 0 0 14px; border-left: 2px solid var(--line); display: grid; gap: 8px; }
+.frise li { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; position: relative; }
+.frise li::before { content: ""; position: absolute; left: -20px; top: 4px; width: 10px; height: 10px; border-radius: 50%;
+                    background: var(--line); }
+.frise li.lvl::before { background: var(--accent); }
+.frise li.lvl > span:nth-child(2) { font-weight: 800; color: var(--accent); }
+.frise li > span:first-child { grid-column: 1 / -1; }
+.gear-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.strength-form { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+.strength-form select { grid-column: 1 / -1; }
+.avatar-preview { display: grid; place-items: center; }
+.avatar-preview svg { border-radius: 22px; }
+.av-row { display: grid; gap: 6px; }
+.swatches { display: flex; flex-wrap: wrap; gap: 6px; }
+.sw { background: none; border: 2px solid transparent; border-radius: 50%; padding: 1px; cursor: pointer; line-height: 0; }
+.sw.on { border-color: var(--accent); }
+.avatar-sheet form { max-height: 88vh; overflow-y: auto; }
+@media (prefers-reduced-motion: reduce) { .career-hero.levelup .hero-av, .banner.pop, .tro.new { animation: none; } }
+@media (prefers-color-scheme: dark) { .xp { color: #f59e0b; } }
+
+/* v0.25 : image de l'avatar (Gemini) */
+.av-img { display: block; border-radius: 22px; object-fit: cover; background: var(--surface-2); }
+.av-img.head { border-radius: 50%; object-position: 50% 12%; }
+.hero-av { display: grid; gap: 6px; justify-items: center; max-width: 150px; }
+
+/* =====================================================================================
+   v0.28 : refonte visuelle. Une échelle unique de tailles : boutons 44 px (petits 36 px),
+   rayon 12 px pour les contrôles et 20 px pour les cartes, une seule teinte d'accent.
+   ===================================================================================== */
+:root {
+  --bg: #f4f6f5; --surface: #ffffff; --surface-2: #eef1ef; --ink: #14201a; --muted: #5f6b65;
+  --line: #e3e8e5; --accent: #12805c; --accent-ink: #ffffff; --accent-soft: #e2f3ec; --key: #12805c;
+  --radius: 20px; --ctl: 44px; --ctl-s: 36px; --r-ctl: 12px;
+  --shadow: 0 1px 2px rgba(16, 32, 24, .04), 0 6px 20px rgba(16, 32, 24, .05);
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0c1210; --surface: #141c18; --surface-2: #1b2520; --line: #24302a; --muted: #93a099;
+          --accent: #4fcf9a; --accent-ink: #04170f; --accent-soft: #14352a; --key: #4fcf9a; }
+}
+body { font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif; letter-spacing: -.005em; }
+h2 { font-size: 1.1rem; font-weight: 700; }
+
+/* boutons : même hauteur partout */
+.btn, .chip, .seg button, .rpe button, .link-btn { font-family: inherit; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--ctl);
+       padding: 0 18px; border-radius: var(--r-ctl); font-size: .95rem; font-weight: 600; line-height: 1;
+       background: var(--surface); border: 1px solid var(--line); color: var(--ink); transition: background .15s, transform .05s; }
+.btn:hover { background: var(--surface-2); }
+.btn:active, .chip:active { transform: scale(.98); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.06); background: var(--accent); }
+.btn.small { min-height: var(--ctl-s); padding: 0 14px; font-size: .88rem; }
+.btn.danger { background: transparent; }
+.btn:focus-visible, .chip:focus-visible, .tabs a:focus-visible, .icon-btn:focus-visible, .send:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; }
+.chip { display: inline-flex; align-items: center; min-height: var(--ctl-s); padding: 0 14px; font-size: .88rem;
+        font-weight: 600; border-radius: 999px; background: var(--surface); }
+.chip.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.row-actions .btn, .sheet-actions .btn { flex: 1 1 0; }
+.row-actions { gap: 10px; }
+.more, .welcome .btn, .alt .btn { width: auto; }
+#acts-list .more { width: 100%; }
+.welcome .btn.strava { min-height: 52px; padding: 0 26px; font-size: 1rem; border-radius: 14px; }
+
+/* contrôles segmentés (statut de séance, onglets d'un écran) */
+.seg { display: flex; gap: 4px; padding: 4px; background: var(--surface-2); border-radius: 14px; margin: 0 0 12px; flex-wrap: wrap; }
+.seg button { flex: 1 1 0; min-height: 38px; border: 0; background: transparent; border-radius: 10px; font-weight: 600;
+              font-size: .9rem; color: var(--muted); padding: 0 8px; cursor: pointer; }
+.seg button.on { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.seg .chip { flex: 1 1 0; justify-content: center; min-height: 38px; border: 0; background: transparent; border-radius: 10px; color: var(--muted); }
+.seg .chip.on { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.rpe { gap: 4px; }
+.rpe button { min-height: 40px; padding: 0; border-radius: 10px; }
+
+/* champs */
+input, textarea, select { min-height: var(--ctl); border-radius: var(--r-ctl); padding: 0 14px; background: var(--surface); }
+textarea { padding: 11px 14px; min-height: var(--ctl); }
+.chat-form textarea { border-radius: 22px; padding: 11px 16px; }
+
+/* barre du haut et navigation */
+.topbar { background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(12px); border-bottom: 0; }
+.countdown { background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: 6px 12px; font-size: 1rem; }
+.race-name { font-size: 1.02rem; }
+main { padding-top: 8px; padding-bottom: calc(92px + var(--safe-b)); }
+.tabs { grid-template-columns: repeat(6, 1fr); background: color-mix(in srgb, var(--surface) 94%, transparent);
+        backdrop-filter: blur(14px); border-top: 1px solid var(--line); padding: 6px 6px calc(6px + var(--safe-b)); gap: 2px; }
+.tabs a { min-height: 52px; justify-content: center; gap: 3px; border-radius: 14px; font-size: .66rem; font-weight: 600; }
+.tabs a .ti { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tabs a.on { color: var(--accent); background: var(--accent-soft); }
+@media (min-width: 720px) { .tabs { border-radius: 20px 20px 0 0; } }
+
+/* cartes */
+.card { border: 0; border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); margin-bottom: 14px; }
+.eyebrow { font-size: .72rem; letter-spacing: .06em; }
+.session-title { font-size: 1.25rem; font-weight: 750; letter-spacing: -.01em; }
+.badge { padding: 3px 10px; font-size: .72rem; }
+.metrics { gap: 12px; margin-bottom: 14px; }
+.metric { border: 0; border-radius: 18px; padding: 16px; box-shadow: var(--shadow); }
+.metric .v { font-size: 1.8rem; letter-spacing: -.02em; }
+.day { border: 0; border-radius: 16px; box-shadow: var(--shadow); }
+.day.today { box-shadow: 0 0 0 2px var(--accent), var(--shadow); }
+.act { padding: 12px 0; }
+.chrono { border: 0; background: var(--surface-2); border-radius: 14px; }
+.note { border-radius: 12px; }
+.week-nav { margin-bottom: 12px; }
+
+/* chat */
+.msg { border-radius: 18px; padding: 11px 15px; max-width: 88%; }
+.msg.user { border-bottom-right-radius: 6px; }
+.msg.coach { border: 0; box-shadow: var(--shadow); border-bottom-left-radius: 6px; }
+.chat-form { gap: 8px; bottom: calc(68px + var(--safe-b)); }
+.send, .icon-btn { width: var(--ctl); height: var(--ctl); }
+.send svg, .icon-btn svg.i-plus { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.icon-btn { background: var(--surface); }
+
+/* feuille */
+.sheet { border-radius: 24px 24px 0 0; }
+.sheet-actions { gap: 10px; }
+
+/* onglet Détails */
+.about .ver { font-size: 2rem; font-weight: 800; letter-spacing: -.02em; color: var(--accent); margin: 4px 0; }
+.kv { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-top: 1px solid var(--line); font-size: .92rem; }
+.kv:first-of-type { margin-top: 8px; }
+.kv .k { color: var(--muted); }
+.kv .v { font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.login-form .btn { width: 100%; }
+.countdown:empty { display: none; }
+.tabs a span { white-space: nowrap; }
+
+/* =====================================================================================
+   v0.29 : thèmes à l'essai (Détails › Thème). Polices embarquées (licence OFL, dossier fonts/).
+   html[data-theme] l'emporte sur :root et sur le mode sombre du système.
+   ===================================================================================== */
+@font-face { font-family: "Bangers"; src: url("fonts/bangers-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Cinzel"; src: url("fonts/cinzel-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Cinzel"; src: url("fonts/cinzel-latin-900-normal.woff2") format("woff2"); font-weight: 900; font-display: swap; }
+@font-face { font-family: "Fredoka"; src: url("fonts/fredoka-latin-500-normal.woff2") format("woff2"); font-weight: 400 600; font-display: swap; }
+@font-face { font-family: "Fredoka"; src: url("fonts/fredoka-latin-700-normal.woff2") format("woff2"); font-weight: 700 900; font-display: swap; }
+.theme-pick { margin-top: 10px; }
+
+/* ---------------------------------------------------------------- BD / comics */
+html[data-theme="bd"] {
+  --bg: #2ec4f6; --surface: #ffffff; --surface-2: #fff4d6; --ink: #111111; --muted: #3b3b3b; --line: #111111;
+  --accent: #c2410c; --accent-ink: #ffffff; --accent-soft: #ffe3c2; --key: #c2410c; --warn: #9a3412; --warn-soft: #ffedd5;
+  --bad: #b91c1c; --bad-soft: #fee2e2; --radius: 8px; --r-ctl: 10px; --shadow: 4px 4px 0 #111; color-scheme: light;
+}
+html[data-theme="bd"], html[data-theme="bd"] body {
+  background: radial-gradient(circle, rgba(0,0,0,.13) 1.3px, transparent 1.8px) 0 0/10px 10px, #2ec4f6; }
+html[data-theme="bd"] .topbar { background: repeating-conic-gradient(from 0deg at 85% 50%, rgba(255,210,31,.55) 0 4deg, transparent 4deg 13deg), #ff7a1a;
+  border-bottom: 4px solid #111; backdrop-filter: none; }
+html[data-theme="bd"] .race-name { font-family: "Bangers", cursive; font-size: 1.6rem; letter-spacing: 1px; color: #fff; transform: rotate(-2deg);
+  text-shadow: 2px 2px 0 #111, -1.5px -1.5px 0 #111, 1.5px -1.5px 0 #111, -1.5px 1.5px 0 #111; }
+html[data-theme="bd"] .race-sub { color: #111; font-weight: 800; }
+html[data-theme="bd"] .countdown { background: #111; color: #ffd21f; font-family: "Bangers", cursive; font-size: 1.3rem; letter-spacing: 1px; border-radius: 6px; transform: rotate(3deg); }
+html[data-theme="bd"] .card, html[data-theme="bd"] .metric, html[data-theme="bd"] .day, html[data-theme="bd"] .chrono {
+  border: 3px solid #111; box-shadow: var(--shadow); border-radius: 8px; }
+html[data-theme="bd"] .card:nth-of-type(odd) { transform: rotate(-.5deg); }
+html[data-theme="bd"] .card:nth-of-type(even) { transform: rotate(.4deg); }
+html[data-theme="bd"] .day.today { box-shadow: 0 0 0 3px #ff7a1a, var(--shadow); }
+html[data-theme="bd"] h1, html[data-theme="bd"] h2, html[data-theme="bd"] .session-title, html[data-theme="bd"] .lvl-big,
+html[data-theme="bd"] .metric .v, html[data-theme="bd"] .goal-est .big, html[data-theme="bd"] .chrono .v, html[data-theme="bd"] .about .ver {
+  font-family: "Bangers", cursive; letter-spacing: .5px; font-weight: 400; }
+html[data-theme="bd"] .session-title { font-size: 2rem; transform: rotate(-1.5deg); transform-origin: left; }
+html[data-theme="bd"] .metric .v { font-size: 2.2rem; }
+html[data-theme="bd"] .eyebrow { color: #111; background: #ffd21f; display: inline-block; padding: 2px 8px; border: 2px solid #111; letter-spacing: .08em; }
+html[data-theme="bd"] .btn { border: 3px solid #111; box-shadow: 0 4px 0 #111; background: #ffd21f; color: #111;
+  font-family: "Bangers", cursive; font-size: 1.2rem; font-weight: 400; letter-spacing: 1px; }
+html[data-theme="bd"] .btn.small { font-size: 1.05rem; }
+html[data-theme="bd"] .btn.primary { background: #ff7a1a; border-color: #111; color: #111; }
+html[data-theme="bd"] .btn.danger { background: #fff; color: #b91c1c; }
+html[data-theme="bd"] .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #111; }
+html[data-theme="bd"] .chip { border: 2.5px solid #111; background: #fff; color: #111; }
+html[data-theme="bd"] .chip.on, html[data-theme="bd"] .seg button.on, html[data-theme="bd"] .rpe button.on, html[data-theme="bd"] .seg .chip.on {
+  background: #ff7a1a; color: #111; border-color: #111; box-shadow: none; }
+html[data-theme="bd"] .seg { background: #fff; border: 3px solid #111; }
+html[data-theme="bd"] .seg button, html[data-theme="bd"] .seg .chip { color: #111; }
+html[data-theme="bd"] input, html[data-theme="bd"] textarea, html[data-theme="bd"] select { border: 3px solid #111; background: #fff; }
+html[data-theme="bd"] .tabs { background: #fff; border-top: 4px solid #111; backdrop-filter: none; }
+html[data-theme="bd"] .tabs a { color: #111; font-weight: 900; border: 3px solid transparent; }
+html[data-theme="bd"] .tabs a.on { background: #ffd21f; color: #111; border-color: #111; }
+html[data-theme="bd"] .msg.coach { border: 3px solid #111; box-shadow: 3px 3px 0 #111; border-radius: 14px 14px 14px 4px; }
+html[data-theme="bd"] .msg.user { background: #ff7a1a; color: #111; border: 3px solid #111; box-shadow: 3px 3px 0 #111; border-radius: 14px 14px 4px 14px; }
+html[data-theme="bd"] .send { background: #ff7a1a; color: #111; border: 3px solid #111; }
+html[data-theme="bd"] .icon-btn { border: 3px solid #111; }
+html[data-theme="bd"] .chat-form { background: transparent; }
+html[data-theme="bd"] .sheet { border: 4px solid #111; }
+html[data-theme="bd"] .xpbar { border: 3px solid #111; height: 16px; background: #232338; }
+html[data-theme="bd"] .xpbar i { background: linear-gradient(#ffe066, #ff8a1f); }
+html[data-theme="bd"] .badge { border: 2px solid #111; color: #111; }
+html[data-theme="bd"] .countdown:empty { display: none; }
+
+/* ---------------------------------------------------------------- Crépuscule (fantasy, moins sombre) */
+html[data-theme="crepuscule"] {
+  --bg: #2e2648; --surface: rgba(48,38,82,.86); --surface-2: rgba(28,22,48,.7); --ink: #f6eedd; --muted: #dccfeb; --line: #8a7ab0;
+  --accent: #ffb35c; --accent-ink: #2a1206; --accent-soft: rgba(255,179,92,.2); --key: #ffcf8a; --warn: #ffcf8a; --warn-soft: rgba(255,207,138,.18);
+  --bad: #ffa59a; --bad-soft: rgba(255,120,100,.2); --radius: 14px; --shadow: 0 8px 24px rgba(20,10,40,.35); color-scheme: dark;
+}
+html[data-theme="crepuscule"] { background: #2e2648; }
+html[data-theme="crepuscule"] body { background: transparent; }
+html[data-theme="crepuscule"] body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 200' preserveAspectRatio='none'%3E%3Cpath d='M0 90 L50 30 L90 70 L140 0 L200 70 L250 30 L300 80 L350 40 L390 70 L390 200 L0 200Z' fill='%236c5a92'/%3E%3Cpath d='M0 130 L60 80 L110 120 L170 60 L230 125 L290 90 L340 130 L390 105 L390 200 L0 200Z' fill='%234c3f73'/%3E%3C/svg%3E") center 30vh/100% 22vh no-repeat,
+    linear-gradient(180deg, #46437e 0, #6f4f93 12vh, #c06a78 24vh, #f0a35e 34vh, #3a3058 48vh, #2e2648 100%); }
+html[data-theme="crepuscule"] .topbar { background: rgba(46,38,90,.55); backdrop-filter: blur(10px); }
+html[data-theme="crepuscule"] .race-name, html[data-theme="crepuscule"] h1, html[data-theme="crepuscule"] h2,
+html[data-theme="crepuscule"] .session-title, html[data-theme="crepuscule"] .lvl-big, html[data-theme="crepuscule"] .metric .v,
+html[data-theme="crepuscule"] .goal-est .big, html[data-theme="crepuscule"] .chrono .v, html[data-theme="crepuscule"] .about .ver,
+html[data-theme="crepuscule"] .eyebrow { font-family: "Cinzel", Georgia, serif; }
+html[data-theme="crepuscule"] .race-name { font-weight: 900; letter-spacing: .04em; }
+html[data-theme="crepuscule"] .eyebrow { color: #ffcf8a; letter-spacing: .18em; }
+html[data-theme="crepuscule"] .session-title { font-weight: 900; font-size: 1.45rem; color: #fff5e0; }
+html[data-theme="crepuscule"] .countdown { background: transparent; border: 1.5px solid #ffe0a0; color: #ffe2a8; font-family: "Cinzel", serif; font-weight: 900;
+  text-shadow: 0 0 12px rgba(255,170,90,.6); }
+html[data-theme="crepuscule"] .card, html[data-theme="crepuscule"] .metric, html[data-theme="crepuscule"] .day {
+  background: var(--surface); border: 1.5px solid #b9a6e0; box-shadow: inset 0 0 0 3px rgba(20,14,36,.5), var(--shadow); backdrop-filter: blur(6px); }
+html[data-theme="crepuscule"] .day.today { border-color: #ffcf8a; }
+html[data-theme="crepuscule"] .chrono { background: var(--surface-2); border: 1px solid #7d6ea6; }
+html[data-theme="crepuscule"] .btn { background: rgba(48,38,82,.92); border: 1.5px solid #b9a6e0; color: var(--ink); }
+html[data-theme="crepuscule"] .btn.primary { background: linear-gradient(#e0773c, #a3401c); border: 2px solid #ffe0a0; color: #fff;
+  font-family: "Cinzel", serif; font-weight: 900; letter-spacing: .1em; box-shadow: 0 0 18px rgba(255,150,80,.45); text-shadow: 0 1px 0 #5a2008; }
+html[data-theme="crepuscule"] .chip { background: rgba(48,38,82,.9); border-color: #8a7ab0; color: var(--ink); }
+html[data-theme="crepuscule"] .chip.on, html[data-theme="crepuscule"] .seg button.on, html[data-theme="crepuscule"] .rpe button.on,
+html[data-theme="crepuscule"] .seg .chip.on { background: #5a3e9a; color: #fff; border-color: #c7a6ff; }
+html[data-theme="crepuscule"] .seg { background: rgba(28,22,48,.7); }
+html[data-theme="crepuscule"] .seg button, html[data-theme="crepuscule"] .seg .chip { color: var(--muted); }
+html[data-theme="crepuscule"] input, html[data-theme="crepuscule"] textarea, html[data-theme="crepuscule"] select {
+  background: rgba(28,22,48,.8); border-color: #8a7ab0; color: var(--ink); }
+html[data-theme="crepuscule"] .tabs { background: rgba(36,28,62,.92); border-top: 1.5px solid #8a7ab0; }
+html[data-theme="crepuscule"] .tabs a { color: #e2d6f2; }
+html[data-theme="crepuscule"] .tabs a.on { background: #5a3e9a; color: #fff; box-shadow: 0 0 12px rgba(160,120,255,.45); }
+html[data-theme="crepuscule"] .msg.user { background: #5a3e9a; color: #fff; }
+html[data-theme="crepuscule"] .msg.coach { background: var(--surface); border: 1px solid #8a7ab0; }
+html[data-theme="crepuscule"] .send { background: linear-gradient(#e0773c, #a3401c); color: #fff; }
+html[data-theme="crepuscule"] .icon-btn { background: rgba(48,38,82,.92); border-color: #8a7ab0; color: var(--ink); }
+html[data-theme="crepuscule"] .chat-form { background: transparent; }
+html[data-theme="crepuscule"] .sheet { background: #352a5c; border: 1.5px solid #b9a6e0; }
+html[data-theme="crepuscule"] .xpbar { background: #261c3e; border: 1.5px solid #9a8cba; }
+html[data-theme="crepuscule"] .xpbar i { background: linear-gradient(90deg, #7d50e0, #c7a6ff); box-shadow: 0 0 8px #9a70ff; }
+html[data-theme="crepuscule"] .xp { color: #ffcf8a; }
+html[data-theme="crepuscule"] .toast { background: #fff5e0; color: #2e2648; }
+
+/* ---------------------------------------------------------------- Cel-shading */
+html[data-theme="toon"] {
+  --bg: #5ec8f2; --surface: #ffffff; --surface-2: #e6f6ff; --ink: #1d3557; --muted: #3d5a80; --line: #23406b;
+  --accent: #2b8a3e; --accent-ink: #ffffff; --accent-soft: #d3f9d8; --key: #2b8a3e; --warn: #c25e00; --warn-soft: #fff3dc;
+  --bad: #c92a2a; --bad-soft: #ffe3e3; --radius: 22px; --r-ctl: 16px; --shadow: 0 5px 0 #23406b; color-scheme: light;
+}
+html[data-theme="toon"] { background: #5ec8f2; }
+html[data-theme="toon"] body { background: transparent; font-family: "Fredoka", system-ui, sans-serif; letter-spacing: 0; }
+html[data-theme="toon"] body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cg fill='%23fff' stroke='%23bde6f8' stroke-width='3'%3E%3Cpath d='M20 205 C10 185 35 170 55 182 C60 160 95 160 100 180 C120 172 140 190 128 205 Z'/%3E%3Cpath d='M255 115 C245 98 268 86 286 96 C292 78 324 78 330 96 C350 90 366 106 356 120 Z'/%3E%3C/g%3E%3C/svg%3E") top/100% auto no-repeat,
+    linear-gradient(180deg, #4bb9ec 0 16%, #6fd0f5 16% 64%, #46a8ea 64% 66%, #1f86d6 66% 100%); }
+html[data-theme="toon"] .topbar { background: rgba(255,255,255,.94); border-bottom: 3px solid #23406b; backdrop-filter: none; }
+html[data-theme="toon"] .race-name, html[data-theme="toon"] h1, html[data-theme="toon"] h2, html[data-theme="toon"] .session-title,
+html[data-theme="toon"] .lvl-big, html[data-theme="toon"] .metric .v, html[data-theme="toon"] .countdown { font-weight: 700; }
+html[data-theme="toon"] .session-title { font-size: 1.6rem; }
+html[data-theme="toon"] .countdown { background: #ff9f1c; color: #1d3557; border: 3px solid #23406b; box-shadow: 0 3px 0 #23406b; }
+html[data-theme="toon"] .card, html[data-theme="toon"] .metric, html[data-theme="toon"] .day {
+  border: 3px solid #23406b; box-shadow: var(--shadow); }
+html[data-theme="toon"] .day.today { box-shadow: 0 0 0 3px #ffd43b, var(--shadow); }
+html[data-theme="toon"] .chrono { border: 2.5px solid #23406b; background: #e6f6ff; }
+html[data-theme="toon"] .eyebrow { color: #2a6fb0; }
+html[data-theme="toon"] .btn { border: 3px solid #23406b; box-shadow: 0 4px 0 #23406b; background: #fff; color: #1d3557; font-weight: 700; border-radius: 16px; }
+html[data-theme="toon"] .btn.primary { background: #5cc94f; color: #10233f; border-color: #23406b; }
+html[data-theme="toon"] .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #23406b; }
+html[data-theme="toon"] .chip { border: 2.5px solid #23406b; color: #1d3557; }
+html[data-theme="toon"] .chip.on, html[data-theme="toon"] .seg button.on, html[data-theme="toon"] .rpe button.on, html[data-theme="toon"] .seg .chip.on {
+  background: #ffd43b; color: #1d3557; border-color: #23406b; box-shadow: none; }
+html[data-theme="toon"] .seg { background: #fff; border: 3px solid #23406b; border-radius: 18px; }
+html[data-theme="toon"] .seg button, html[data-theme="toon"] .seg .chip { color: #1d3557; }
+html[data-theme="toon"] input, html[data-theme="toon"] textarea, html[data-theme="toon"] select { border: 3px solid #23406b; }
+html[data-theme="toon"] main { padding-bottom: calc(110px + var(--safe-b)); }
+html[data-theme="toon"] .tabs { left: 10px; right: 10px; bottom: calc(10px + var(--safe-b)); padding: 4px; border: 3px solid #23406b;
+  border-radius: 24px; background: #fff; box-shadow: 0 5px 0 #23406b; backdrop-filter: none; }
+html[data-theme="toon"] .tabs a { color: #1d3557; border-radius: 18px; }
+html[data-theme="toon"] .tabs a.on { background: #ffd43b; color: #1d3557; box-shadow: inset 0 0 0 2.5px #23406b; }
+html[data-theme="toon"] .chat-form { bottom: calc(92px + var(--safe-b)); background: transparent; }
+html[data-theme="toon"] .msg.coach { border: 3px solid #23406b; box-shadow: 0 3px 0 #23406b; }
+html[data-theme="toon"] .msg.user { background: #4dabf7; color: #10233f; border: 3px solid #23406b; box-shadow: 0 3px 0 #23406b; }
+html[data-theme="toon"] .send { background: #5cc94f; color: #10233f; border: 3px solid #23406b; }
+html[data-theme="toon"] .icon-btn { border: 3px solid #23406b; }
+html[data-theme="toon"] .sheet { border: 3px solid #23406b; }
+html[data-theme="toon"] .xpbar { border: 2.5px solid #23406b; height: 16px; background: #d9e3ee; }
+html[data-theme="toon"] .xpbar i { background: #5cc94f; }
+html[data-theme="toon"] .toast { background: #1d3557; color: #fff; }
+@media (min-width: 720px) { html[data-theme="toon"] .tabs { left: 0; right: 0; } }
+
+/* v0.30 : cel-shading poussé plus loin (montagne, soleil, nuages en spirale, ombres en aplats) */
+html[data-theme="toon"] body::before { background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 560%22 preserveAspectRatio=%22xMidYMin slice%22%3E%0A%3Crect width=%22400%22 height=%22560%22 fill=%22%236fd0f5%22/%3E%3Crect width=%22400%22 height=%22120%22 fill=%22%234bb9ec%22/%3E%0A%3Cg fill=%22%23fff3a6%22 stroke=%22%2323406b%22 stroke-width=%223%22%3E%3Ccircle cx=%22330%22 cy=%2270%22 r=%2226%22/%3E%3C/g%3E%0A%3Cg stroke=%22%23ffe066%22 stroke-width=%225%22 stroke-linecap=%22round%22%3E%3Cpath d=%22M330 28v-12M330 112v12M288 70h-12M372 70h12M300 40l-9-9M360 100l9 9M360 40l9-9M300 100l-9 9%22/%3E%3C/g%3E%0A%3Cpath d=%22M30 330 L170 120 L235 210 L270 170 L390 330Z%22 fill=%22%238fa9d6%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%0A%3Cpath d=%22M170 120 L235 210 L210 330 L150 330Z%22 fill=%22%236c86b8%22/%3E%0A%3Cpath d=%22M270 170 L390 330 L320 330 L285 220Z%22 fill=%22%236c86b8%22/%3E%0A%3Cpath d=%22M30 330 L170 120 L235 210 L270 170 L390 330Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%0A%3Cpath d=%22M170 120 L140 165 L155 158 L165 172 L180 156 L195 166 L203 162Z%22 fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%223%22 stroke-linejoin=%22round%22/%3E%0A%3Cpath d=%22M170 120 L203 162 L195 166 L188 150Z%22 fill=%22%23dce8f7%22/%3E%0A%3Cpath d=%22M270 170 L252 196 L264 190 L274 200 L284 188 L292 196Z%22 fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%223%22 stroke-linejoin=%22round%22/%3E%0A%3Cg fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%223%22 stroke-linejoin=%22round%22%3E%0A%3Cpath d=%22M10 200 C0 180 25 166 46 178 C52 156 88 156 94 176 C116 168 136 186 124 202Z%22/%3E%0A%3Cpath d=%22M236 250 C226 232 250 220 270 230 C276 210 310 210 316 228 C338 222 356 238 346 254Z%22/%3E%0A%3Cpath d=%22M120 60 C112 46 132 36 148 44 C154 28 182 28 186 42 C204 38 218 50 210 62Z%22/%3E%3C/g%3E%0A%3Cg fill=%22none%22 stroke=%22%237cc8ee%22 stroke-width=%223%22 stroke-linecap=%22round%22%3E%0A%3Cpath d=%22M40 192 c6 -10 20 -6 18 4 c-2 6 -10 6 -10 0%22/%3E%3Cpath d=%22M84 190 c6 -10 20 -6 18 4 c-2 6 -10 6 -10 0%22/%3E%0A%3Cpath d=%22M266 242 c6 -10 20 -6 18 4 c-2 6 -10 6 -10 0%22/%3E%3Cpath d=%22M306 240 c6 -10 20 -6 18 4 c-2 6 -10 6 -10 0%22/%3E%0A%3Cpath d=%22M146 54 c5 -8 16 -5 14 3 c-1 5 -8 5 -8 0%22/%3E%3C/g%3E%0A%3Cpath d=%22M0 320 C80 290 160 330 240 305 C310 285 360 300 400 292 L400 560 L0 560Z%22 fill=%22%237bd04b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%0A%3Cpath d=%22M240 305 C310 285 360 300 400 292 L400 560 L300 560 C330 460 300 370 240 305Z%22 fill=%22%235cb83c%22/%3E%0A%3Cpath d=%22M0 320 C80 290 160 330 240 305 C310 285 360 300 400 292%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%0A%3Cpath d=%22M0 390 C90 370 200 400 400 372 L400 560 L0 560Z%22 fill=%22%239be07a%22/%3E%0A%3Cg stroke=%22%2323406b%22 stroke-width=%223%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M40 330 l14 -38 l14 38z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M54 292 l14 38 h-14z%22 fill=%22%232c7a3a%22/%3E%0A%3Cpath d=%22M356 318 l12 -32 l12 32z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M368 286 l12 32 h-12z%22 fill=%22%232c7a3a%22/%3E%3C/g%3E%0A%3C/svg%3E") top center / cover no-repeat, #9be07a; }
+html[data-theme="toon"] .topbar { border-bottom: 0; }
+html[data-theme="toon"] .topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: -11px; height: 12px;
+  background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 12%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0 0 H40 V4 Q30 12 20 4 T0 4Z%22 fill=%22%23fff%22/%3E%3Cpath d=%22M0 4 Q10 12 20 4 T40 4%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/svg%3E") 0 0 / 40px 12px repeat-x; pointer-events: none; }
+html[data-theme="toon"] main { padding-top: 22px; }
+html[data-theme="toon"] .card, html[data-theme="toon"] .day { background: linear-gradient(180deg, #fff 0 84%, #eef6ff 84%); }
+html[data-theme="toon"] .metric:nth-child(4n+1) { background: linear-gradient(180deg, #e6f6ff 0 78%, #cfeafc 78%); }
+html[data-theme="toon"] .metric:nth-child(4n+2) { background: linear-gradient(180deg, #fff3dc 0 78%, #ffe2b0 78%); }
+html[data-theme="toon"] .metric:nth-child(4n+3) { background: linear-gradient(180deg, #e9f9e4 0 78%, #cdf0c2 78%); }
+html[data-theme="toon"] .metric:nth-child(4n+4) { background: linear-gradient(180deg, #ffe6f2 0 78%, #ffc9e1 78%); }
+html[data-theme="toon"] .eyebrow { display: inline-block; background: #2a6fb0; color: #fff; border: 2.5px solid #23406b; border-radius: 999px;
+  padding: 2px 10px; letter-spacing: .06em; box-shadow: 0 2px 0 #23406b; }
+html[data-theme="toon"] .session-title, html[data-theme="toon"] h2, html[data-theme="toon"] .lvl-big, html[data-theme="toon"] .about .ver {
+  text-shadow: 0 2px 0 #bde6f8; }
+html[data-theme="toon"] .race-name { font-size: 1.1rem; }
+html[data-theme="toon"] .btn, html[data-theme="toon"] .send { box-shadow: inset 0 3px 0 rgba(255,255,255,.6), 0 4px 0 #23406b; }
+html[data-theme="toon"] .btn.primary { background: linear-gradient(180deg, #74d867 0 55%, #5cc94f 55%); }
+html[data-theme="toon"] .countdown { background: linear-gradient(180deg, #ffb347 0 55%, #ff9f1c 55%); }
+html[data-theme="toon"] .xpbar i, html[data-theme="toon"] .progress > i { background: repeating-linear-gradient(45deg, #5cc94f 0 8px, #46b23a 8px 16px); }
+html[data-theme="toon"] .progress { border: 2.5px solid #23406b; height: 14px; background: #fff; }
+html[data-theme="toon"] .tabs a.on { background: linear-gradient(180deg, #ffe066 0 55%, #ffd43b 55%); }
+html[data-theme="toon"] .msg.coach { background: linear-gradient(180deg, #fff 0 80%, #eef6ff 80%); }
+html[data-theme="toon"] .badge { border: 2px solid #23406b; color: #1d3557; }
+html[data-theme="toon"] .badge.key { background: #ffd43b; }
+/* v0.33 : bandeau d'événement cliquable (vers la carrière) */
+a.card { display: block; color: inherit; text-decoration: none; }
+
+/* =====================================================================================
+   v0.35 : cel-shading animé. Un panorama (montagne → collines → plage et mer) glisse d'un onglet à l'autre
+   (--scenery : 0 à gauche, 1 à droite, posé par lib/scenery.ts), nuages qui dérivent, soleil qui tourne,
+   vagues et voilier qui bougent ; les vues entrent en glissant dans le sens de la navigation.
+   Tout s'arrête si le système demande moins d'animations.
+   ===================================================================================== */
+html[data-theme="toon"] body::before { background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 3600 900%22%3E%3Crect width=%223600%22 height=%22900%22 fill=%22%236fd0f5%22/%3E%3Crect width=%223600%22 height=%22250%22 fill=%22%234bb9ec%22/%3E%3Crect y=%22250%22 width=%223600%22 height=%2260%22 fill=%22%235cc6f2%22/%3E%3Crect y=%22440%22 width=%223600%22 height=%22120%22 fill=%22%2386dbf7%22/%3E%3Cg transform=%22translate(2980 190)%22%3E%3Cg stroke=%22%23ffe066%22 stroke-width=%2211%22 stroke-linecap=%22round%22%3E%3Cpath d=%22M0 -78v-30M0 78v30M-78 0h-30M78 0h30M-55 -55l-21 -21M55 55l21 21M55 -55l21 -21M-55 55l-21 21%22/%3E%3CanimateTransform attributeName=%22transform%22 type=%22rotate%22 from=%220%22 to=%22360%22 dur=%2240s%22 repeatCount=%22indefinite%22/%3E%3C/g%3E%3Ccircle r=%2254%22 fill=%22%23fff3a6%22 stroke=%22%2323406b%22 stroke-width=%226%22/%3E%3Cpath d=%22M-30 -36 A54 54 0 0 1 40 -38 A46 46 0 0 0 -30 -36Z%22 fill=%22%23fffbe0%22/%3E%3Cpath d=%22M46 26 A54 54 0 0 1 -20 50 A46 46 0 0 0 46 26Z%22 fill=%22%23ffe27a%22/%3E%3C/g%3E%3Cg transform=%22translate(780 470) scale(1.3)%22%3E%3Cpath d=%22M0 0 C-30 0 -40 -40 -10 -52 C-14 -96 40 -112 66 -84 C84 -130 160 -128 174 -80 C200 -100 250 -86 248 -46 C284 -46 290 0 256 0Z%22 fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-14 -14 C40 -2 200 -2 270 -14 C268 -4 262 0 256 0 L0 0 C-8 0 -12 -6 -14 -14Z%22 fill=%22%23cdeefc%22/%3E%3Cpath d=%22M0 0 C-30 0 -40 -40 -10 -52 C-14 -96 40 -112 66 -84 C84 -130 160 -128 174 -80 C200 -100 250 -86 248 -46 C284 -46 290 0 256 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M40 -40 c10 -16 34 -12 30 4 c-2 10 -16 10 -14 0 M150 -54 c10 -16 34 -12 30 4 c-2 10 -16 10 -14 0 M206 -26 c8 -12 26 -9 23 3 c-2 8 -12 8 -11 0%22 fill=%22none%22 stroke=%22%237cc8ee%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(1880 500) scale(1.0)%22%3E%3Cpath d=%22M0 0 C-30 0 -40 -40 -10 -52 C-14 -96 40 -112 66 -84 C84 -130 160 -128 174 -80 C200 -100 250 -86 248 -46 C284 -46 290 0 256 0Z%22 fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-14 -14 C40 -2 200 -2 270 -14 C268 -4 262 0 256 0 L0 0 C-8 0 -12 -6 -14 -14Z%22 fill=%22%23cdeefc%22/%3E%3Cpath d=%22M0 0 C-30 0 -40 -40 -10 -52 C-14 -96 40 -112 66 -84 C84 -130 160 -128 174 -80 C200 -100 250 -86 248 -46 C284 -46 290 0 256 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M40 -40 c10 -16 34 -12 30 4 c-2 10 -16 10 -14 0 M150 -54 c10 -16 34 -12 30 4 c-2 10 -16 10 -14 0 M206 -26 c8 -12 26 -9 23 3 c-2 8 -12 8 -11 0%22 fill=%22none%22 stroke=%22%237cc8ee%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(3120 520) scale(0.9)%22%3E%3Cpath d=%22M0 0 C-30 0 -40 -40 -10 -52 C-14 -96 40 -112 66 -84 C84 -130 160 -128 174 -80 C200 -100 250 -86 248 -46 C284 -46 290 0 256 0Z%22 fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-14 -14 C40 -2 200 -2 270 -14 C268 -4 262 0 256 0 L0 0 C-8 0 -12 -6 -14 -14Z%22 fill=%22%23cdeefc%22/%3E%3Cpath d=%22M0 0 C-30 0 -40 -40 -10 -52 C-14 -96 40 -112 66 -84 C84 -130 160 -128 174 -80 C200 -100 250 -86 248 -46 C284 -46 290 0 256 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M40 -40 c10 -16 34 -12 30 4 c-2 10 -16 10 -14 0 M150 -54 c10 -16 34 -12 30 4 c-2 10 -16 10 -14 0 M206 -26 c8 -12 26 -9 23 3 c-2 8 -12 8 -11 0%22 fill=%22none%22 stroke=%22%237cc8ee%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cpath d=%22M0 548 H3600 V900 H0Z%22 fill=%22%231f86d6%22/%3E%3Cpath d=%22M0 548 H3600 V584 C3300 594 2900 580 0 590Z%22 fill=%22%2346a8ea%22/%3E%3Cpath d=%22M2200 640 C2700 628 3100 650 3600 636 V700 C3100 716 2700 690 2200 704Z%22 fill=%22%232b95e0%22/%3E%3Cpath d=%22M0 548 H3600%22 stroke=%22%2323406b%22 stroke-width=%226%22/%3E%3Cpath d=%22M3380 550 C3400 520 3450 512 3480 530 C3510 518 3560 524 3580 550Z%22 fill=%22%235fb7a0%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M3452 522 c-2 -18 2 -30 8 -38 M3460 484 c-14 -6 -24 0 -28 6 M3460 484 c12 -8 24 -4 28 2%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linecap=%22round%22/%3E%3Cg%3E%3Cpath transform=%22translate(2320 570) scale(0.55)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(2560 570) scale(0.55)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(2820 570) scale(0.55)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3060 570) scale(0.55)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3300 570) scale(0.55)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2364.0 576 h22.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M2604.0 576 h22.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M2864.0 576 h22.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3104.0 576 h22.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3344.0 576 h22.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3CanimateTransform attributeName=%22transform%22 type=%22translate%22 values=%220 0%3B10 2%3B0 0%22 dur=%226s%22 repeatCount=%22indefinite%22/%3E%3C/g%3E%3Cg%3E%3Cpath transform=%22translate(2420 620) scale(0.75)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(2700 620) scale(0.75)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(2980 620) scale(0.75)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3240 620) scale(0.75)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3500 620) scale(0.75)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2480.0 626 h30.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M2760.0 626 h30.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3040.0 626 h30.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3300.0 626 h30.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3560.0 626 h30.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3CanimateTransform attributeName=%22transform%22 type=%22translate%22 values=%220 0%3B14 2%3B0 0%22 dur=%225s%22 repeatCount=%22indefinite%22/%3E%3C/g%3E%3Cg%3E%3Cpath transform=%22translate(2560 690) scale(0.95)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(2880 690) scale(0.95)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3160 690) scale(0.95)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3460 690) scale(0.95)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2636.0 696 h38.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M2956.0 696 h38.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3236.0 696 h38.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3536.0 696 h38.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3CanimateTransform attributeName=%22transform%22 type=%22translate%22 values=%220 0%3B17 3%3B0 0%22 dur=%224.4s%22 repeatCount=%22indefinite%22/%3E%3C/g%3E%3Cg%3E%3Cpath transform=%22translate(2780 780) scale(1.15)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3100 780) scale(1.15)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3420 780) scale(1.15)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2872.0 786 h46.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3192.0 786 h46.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3512.0 786 h46.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3CanimateTransform attributeName=%22transform%22 type=%22translate%22 values=%220 0%3B21 3%3B0 0%22 dur=%223.8s%22 repeatCount=%22indefinite%22/%3E%3C/g%3E%3Cg%3E%3Cpath transform=%22translate(2960 860) scale(1.35)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3300 860) scale(1.35)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M3068.0 866 h54.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3408.0 866 h54.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3CanimateTransform attributeName=%22transform%22 type=%22translate%22 values=%220 0%3B24 4%3B0 0%22 dur=%223.4s%22 repeatCount=%22indefinite%22/%3E%3C/g%3E%3Cg stroke=%22%23fff3a6%22 stroke-width=%226%22 stroke-linecap=%22round%22%3E%3Cpath d=%22M2960 600 h50 M2990 622 h30 M2940 646 h40%22/%3E%3Canimate attributeName=%22opacity%22 values=%221%3B.2%3B1%22 dur=%223s%22 repeatCount=%22indefinite%22/%3E%3C/g%3E%3Cpath d=%22M-20 640 L140 330 L260 430 L520 170 L700 380 L820 300 L1020 520 L1160 400 L1420 640Z%22 fill=%22%23b3c7ea%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M520 170 L700 380 L640 640 L520 640 L560 380Z M820 300 L1020 520 L940 640 L860 420Z M140 330 L260 430 L220 640 L170 450Z%22 fill=%22%239ab2dd%22/%3E%3Cpath d=%22M520 170 L480 236 L506 226 L524 248 L550 222 L576 240 L596 228Z M820 300 L796 340 L814 332 L828 348 L846 330 L860 340Z%22 fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-20 660 L330 210 L470 380 L600 290 L900 660Z%22 fill=%22%238fa9d6%22/%3E%3Cpath d=%22M330 210 L470 380 L420 660 L300 660 L380 420Z M600 290 L900 660 L740 660 L640 450Z%22 fill=%22%236c86b8%22/%3E%3Cpath d=%22M-20 660 L330 210 L470 380 L600 290 L900 660Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%227%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M330 210 L268 300 L302 288 L326 318 L356 286 L388 306 L412 294Z M600 290 L564 342 L590 330 L606 352 L630 328 L650 340Z%22 fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M330 210 L412 294 L388 306 L372 276Z M600 290 L650 340 L630 328 L622 316Z%22 fill=%22%23dce8f7%22/%3E%3Cpath d=%22M760 660 L1080 330 L1240 520 L1320 460 L1500 660Z%22 fill=%22%237d97c7%22 stroke=%22%2323406b%22 stroke-width=%226%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M1080 330 L1240 520 L1180 660 L1060 660 L1120 470Z M1320 460 L1500 660 L1400 660 L1350 540Z%22 fill=%22%235f79ab%22/%3E%3Cpath d=%22M1080 330 L1044 382 L1068 372 L1084 392 L1106 368 L1130 382Z%22 fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M1150 470 C1146 520 1156 580 1150 660 L1176 660 C1180 580 1170 520 1172 470Z%22 fill=%22%23bfe9ff%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M1158 490 v30 M1166 540 v30 M1158 590 v30%22 stroke=%22%23fff%22 stroke-width=%225%22 stroke-linecap=%22round%22 stroke-dasharray=%2214 18%22%3E%3Canimate attributeName=%22stroke-dashoffset%22 from=%2264%22 to=%220%22 dur=%221.2s%22 repeatCount=%22indefinite%22/%3E%3C/path%3E%3Cpath d=%22M2380 626 C2600 606 2770 618 2880 666 C3000 716 3060 800 3120 900 H3020 C2960 800 2900 720 2800 680 C2700 640 2560 630 2380 640Z%22 fill=%22%23d9a85a%22/%3E%3Cpath d=%22M2380 626 C2600 606 2770 618 2880 666 C3000 716 3060 800 3120 900%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22/%3E%3Cg%3E%3Cpath d=%22M2400 634 c40 -8 60 6 100 -2 c40 -8 70 8 110 0 c40 -6 70 10 110 10 c50 2 70 24 110 40 c40 18 60 50 90 80 c30 30 40 70 70 110 c20 26 30 30 40 30%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%2213%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2400 634 c40 -8 60 6 100 -2 c40 -8 70 8 110 0 c40 -6 70 10 110 10 c50 2 70 24 110 40 c40 18 60 50 90 80 c30 30 40 70 70 110 c20 26 30 30 40 30%22 fill=%22none%22 stroke=%22%23bfe9ff%22 stroke-width=%224%22 stroke-linecap=%22round%22 transform=%22translate(10 6)%22/%3E%3CanimateTransform attributeName=%22transform%22 type=%22translate%22 values=%2234 -14%3B0 0%3B34 -14%22 dur=%225s%22 repeatCount=%22indefinite%22/%3E%3Canimate attributeName=%22opacity%22 values=%22.55%3B1%3B.55%22 dur=%225s%22 repeatCount=%22indefinite%22/%3E%3C/g%3E%3Cpath d=%22M2200 900 V650 C2260 640 2320 642 2380 640 C2560 630 2700 640 2800 680 C2900 720 2960 800 3020 900Z%22 fill=%22%23f7d98b%22/%3E%3Cpath d=%22M2200 900 V780 C2400 760 2600 790 2760 760 C2860 742 2920 800 2960 820 C3000 860 3010 880 3020 900Z%22 fill=%22%23ecc36b%22/%3E%3Cpath d=%22M2560 700 c40 -10 80 -6 110 4 M2300 720 c40 -8 70 -4 90 4 M2420 840 c40 -8 80 -6 110 4%22 fill=%22none%22 stroke=%22%23e2b660%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M2200 650 C2260 640 2320 642 2380 640 C2560 630 2700 640 2800 680 C2900 720 2960 800 3020 900%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%226%22/%3E%3Cpath d=%22M2840 860 C2836 830 2860 812 2890 818 C2920 812 2944 836 2936 866Z%22 fill=%22%239aa7bd%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2890 818 C2920 812 2944 836 2936 866 H2900 C2910 846 2906 830 2890 818Z%22 fill=%22%2376839c%22/%3E%3Cpath d=%22M2640 880 C2640 862 2656 854 2672 860 C2690 856 2702 870 2698 886Z%22 fill=%22%239aa7bd%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2672 860 C2690 856 2702 870 2698 886 H2678 C2684 874 2682 866 2672 860Z%22 fill=%22%2376839c%22/%3E%3Cg transform=%22translate(2700 820)%22%3E%3Cpath d=%22M-20 10 C-22 -14 22 -14 20 10 Z%22 fill=%22%23ffb3c6%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 10 V-6 M-10 10 L-6 -4 M10 10 L6 -4%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Cg transform=%22translate(2640 800) rotate(14)%22%3E%3Cpath d=%22M0 -26 L6.4 -8.8 L24.7 -8 L10.4 3.4 L15.3 21 L0 10.9 L-15.3 21 L-10.4 3.4 L-24.7 -8 L-6.4 -8.8Z%22 fill=%22%23ff8c42%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Ccircle r=%225%22 fill=%22%23ffd43b%22/%3E%3C/g%3E%3Cg transform=%22translate(2560 730) rotate(-20)%22%3E%3Cpath d=%22M0 0 c-10 -14 6 -26 16 -16 c8 10 -4 20 -10 12%22 fill=%22%23fff0d6%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cpath d=%22M0 640 C300 590 520 650 820 610 C1100 570 1400 630 1700 600 C1950 575 2150 600 2300 615 C2400 625 2460 660 2520 720 C2556 760 2576 830 2586 900 L0 900Z%22 fill=%22%237bd04b%22/%3E%3Cpath d=%22M820 610 C1100 570 1400 630 1700 600 L1700 900 L1300 900 C1360 760 1150 660 820 610Z M1950 588 C2150 600 2300 615 2400 640 C2460 670 2500 700 2520 720 C2556 760 2576 830 2586 900 L2260 900 C2280 760 2160 640 1950 588Z%22 fill=%22%235cb83c%22/%3E%3Cpath d=%22M0 640 C300 590 520 650 820 610 C1100 570 1400 630 1700 600 C1950 575 2150 600 2300 615 C2400 625 2460 660 2520 720 C2556 760 2576 830 2586 900%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%227%22/%3E%3Cpath d=%22M0 740 C300 715 600 760 1000 725 C1400 690 1800 740 2200 715 C2320 708 2390 760 2440 900 L0 900Z%22 fill=%22%239be07a%22/%3E%3Cpath d=%22M0 740 C300 715 600 760 1000 725 C1400 690 1800 740 2200 715 C2320 708 2390 760 2440 900%22 fill=%22none%22 stroke=%22%237bd04b%22 stroke-width=%226%22/%3E%3Cpath d=%22M1500 900 C1580 820 1420 770 1560 720 C1680 676 1760 660 1840 612%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%2230%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M1500 900 C1580 820 1420 770 1560 720 C1680 676 1760 660 1840 612%22 fill=%22none%22 stroke=%22%23f6e3b0%22 stroke-width=%2220%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M1512 880 C1570 820 1450 776 1556 734%22 fill=%22none%22 stroke=%22%23e8cf8c%22 stroke-width=%226%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M64 650 L90 570 L116 650Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M90 570 L116 650 H90Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M64 650 L90 570 L116 650Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M86 650 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M134 668 L160 598 L186 668Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M160 598 L186 668 H160Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M134 668 L160 598 L186 668Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M156 668 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M214 650 L240 590 L266 650Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M240 590 L266 650 H240Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M214 650 L240 590 L266 650Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M236 650 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M954 640 L980 560 L1006 640Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M980 560 L1006 640 H980Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M954 640 L980 560 L1006 640Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M976 640 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M1024 660 L1050 590 L1076 660Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M1050 590 L1076 660 H1050Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M1024 660 L1050 590 L1076 660Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M1046 660 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M1104 636 L1130 560 L1156 636Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M1130 560 L1156 636 H1130Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M1104 636 L1130 560 L1156 636Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M1126 636 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M1224 640 L1250 578 L1276 640Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M1250 578 L1276 640 H1250Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M1224 640 L1250 578 L1276 640Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M1246 640 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M1934 618 L1960 548 L1986 618Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M1960 548 L1986 618 H1960Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M1934 618 L1960 548 L1986 618Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M1956 618 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M2014 632 L2040 552 L2066 632Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M2040 552 L2066 632 H2040Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M2014 632 L2040 552 L2066 632Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2036 632 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M2094 622 L2120 558 L2146 622Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M2120 558 L2146 622 H2120Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M2094 622 L2120 558 L2146 622Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2116 622 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cg transform=%22translate(420 760) scale(1.2)%22%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22%235cb83c%22/%3E%3Cpath d=%22M-30 -6 C-10 -2 20 -2 46 -6 C44 -2 50 0 50 0 H-40Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(760 770) scale(1.0)%22%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22%235cb83c%22/%3E%3Cpath d=%22M-30 -6 C-10 -2 20 -2 46 -6 C44 -2 50 0 50 0 H-40Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(1320 760) scale(1.3)%22%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22%235cb83c%22/%3E%3Cpath d=%22M-30 -6 C-10 -2 20 -2 46 -6 C44 -2 50 0 50 0 H-40Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(1900 760) scale(1.1)%22%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22%235cb83c%22/%3E%3Cpath d=%22M-30 -6 C-10 -2 20 -2 46 -6 C44 -2 50 0 50 0 H-40Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(2250 740) scale(0.9)%22%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22%235cb83c%22/%3E%3Cpath d=%22M-30 -6 C-10 -2 20 -2 46 -6 C44 -2 50 0 50 0 H-40Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(1700 700)%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M0 0 V-70%22 stroke-width=%227%22/%3E%3Cpath d=%22M-30 -96 H40 L56 -82 L40 -68 H-30Z%22 fill=%22%23e9b872%22/%3E%3Cpath d=%22M-30 -82 H56 L40 -68 H-30Z%22 fill=%22%23c9924a%22 stroke=%22none%22/%3E%3Cpath d=%22M-30 -96 H40 L56 -82 L40 -68 H-30Z%22 fill=%22none%22/%3E%3C/g%3E%3Ccircle cx=%22560%22 cy=%22800%22 r=%227%22 fill=%22%23ffd43b%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3Ccircle cx=%22600%22 cy=%22812%22 r=%227%22 fill=%22%23ffd43b%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3Ccircle cx=%221100%22 cy=%22790%22 r=%227%22 fill=%22%23ffd43b%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3Ccircle cx=%222000%22 cy=%22800%22 r=%227%22 fill=%22%23ffd43b%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3Ccircle cx=%222060%22 cy=%22790%22 r=%227%22 fill=%22%23ffd43b%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3Cellipse cx=%222640%22 cy=%22708%22 rx=%22120%22 ry=%2216%22 fill=%22%23e2b660%22/%3E%3Cg transform=%22translate(2600 700)%22%3E%3Cpath d=%22M-22 1.2 L22 -1.2 L24.3 -43.3 L-25.9 -43.6Z%22 fill=%22%23d29a58%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 L22 -1.2 L24.3 -43.3 L-0.8 -43.4Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M-22 1.2 L22 -1.2 L24.3 -43.3 L-25.9 -43.6Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-22 -37.9 L20.2 -37.7 L24.9 -79.2 L-23.4 -82.3Z%22 fill=%22%23c08447%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-0.9 -37.8 L20.2 -37.7 L24.9 -79.2 L0.8 -80.8Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M-22 -37.9 L20.2 -37.7 L24.9 -79.2 L-23.4 -82.3Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-19.8 -76.5 L20.6 -73.9 L27.7 -114.8 L-18.5 -120.6Z%22 fill=%22%23d29a58%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0.4 -75.2 L20.6 -73.9 L27.7 -114.8 L4.6 -117.7Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M-19.8 -76.5 L20.6 -73.9 L27.7 -114.8 L-18.5 -120.6Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-15.3 -114.6 L23.1 -109.8 L32.7 -150.1 L-11.4 -158.4Z%22 fill=%22%23c08447%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M3.9 -112.2 L23.1 -109.8 L32.7 -150.1 L10.6 -154.3Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M-15.3 -114.6 L23.1 -109.8 L32.7 -150.1 L-11.4 -158.4Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-8.5 -152.2 L27.7 -145.4 L39.7 -185.2 L-2 -195.6Z%22 fill=%22%23d29a58%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M9.6 -148.8 L27.7 -145.4 L39.7 -185.2 L18.9 -190.4Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M-8.5 -152.2 L27.7 -145.4 L39.7 -185.2 L-2 -195.6Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0.5 -189.2 L34.5 -180.8 L49 -220 L9.7 -232.3Z%22 fill=%22%23c08447%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M17.5 -185 L34.5 -180.8 L49 -220 L29.3 -226.1Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M0.5 -189.2 L34.5 -180.8 L49 -220 L9.7 -232.3Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M11.8 -225.8 L43.4 -215.8 L60.3 -254.5 L23.5 -268.5Z%22 fill=%22%23d29a58%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M27.6 -220.8 L43.4 -215.8 L60.3 -254.5 L41.9 -261.5Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M11.8 -225.8 L43.4 -215.8 L60.3 -254.5 L23.5 -268.5Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M25.2 -261.8 L54.6 -250.6 L73.9 -288.7 L39.6 -304.1Z%22 fill=%22%23c08447%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M39.9 -256.2 L54.6 -250.6 L73.9 -288.7 L56.8 -296.4Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M25.2 -261.8 L54.6 -250.6 L73.9 -288.7 L39.6 -304.1Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M40.9 -297.3 L67.9 -285.1 L89.7 -322.7 L57.9 -339.2Z%22 fill=%22%23d29a58%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M54.4 -291.2 L67.9 -285.1 L89.7 -322.7 L73.8 -331Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M40.9 -297.3 L67.9 -285.1 L89.7 -322.7 L57.9 -339.2Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M58.8 -332.2 L83.4 -319.4 L107.7 -356.5 L78.4 -373.7Z%22 fill=%22%23c08447%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M71.1 -325.8 L83.4 -319.4 L107.7 -356.5 L93 -365.1Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M58.8 -332.2 L83.4 -319.4 L107.7 -356.5 L78.4 -373.7Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cg transform=%22translate(90 -360)%22%3E%3Cg%3E%3Cg transform=%22rotate(-160) scale(1.0 -1.0)%22%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 L196 2 L190 18 L166 0 L156 16 L132 -4 L118 10 C80 -10 40 -8 0 0Z%22 fill=%22%235fd14d%22/%3E%3Cpath d=%22M0 0 C40 -8 80 -10 118 10 L132 -4 L156 16 L166 0 L190 18 L196 2 L220 10 C150 24 60 22 0 0Z%22 fill=%22%232f9a3c%22/%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 C150 24 60 22 0 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 C60 -14 140 -14 220 10%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Cg transform=%22rotate(-120) scale(1.1 -1.1)%22%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 L196 2 L190 18 L166 0 L156 16 L132 -4 L118 10 C80 -10 40 -8 0 0Z%22 fill=%22%235fd14d%22/%3E%3Cpath d=%22M0 0 C40 -8 80 -10 118 10 L132 -4 L156 16 L166 0 L190 18 L196 2 L220 10 C150 24 60 22 0 0Z%22 fill=%22%232f9a3c%22/%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 C150 24 60 22 0 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 C60 -14 140 -14 220 10%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Cg transform=%22rotate(-40) scale(1.15 1.15)%22%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 L196 2 L190 18 L166 0 L156 16 L132 -4 L118 10 C80 -10 40 -8 0 0Z%22 fill=%22%235fd14d%22/%3E%3Cpath d=%22M0 0 C40 -8 80 -10 118 10 L132 -4 L156 16 L166 0 L190 18 L196 2 L220 10 C150 24 60 22 0 0Z%22 fill=%22%232f9a3c%22/%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 C150 24 60 22 0 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 C60 -14 140 -14 220 10%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Cg transform=%22rotate(-5) scale(1.0 1.0)%22%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 L196 2 L190 18 L166 0 L156 16 L132 -4 L118 10 C80 -10 40 -8 0 0Z%22 fill=%22%235fd14d%22/%3E%3Cpath d=%22M0 0 C40 -8 80 -10 118 10 L132 -4 L156 16 L166 0 L190 18 L196 2 L220 10 C150 24 60 22 0 0Z%22 fill=%22%232f9a3c%22/%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 C150 24 60 22 0 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 C60 -14 140 -14 220 10%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Cg transform=%22rotate(30) scale(0.95 0.95)%22%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 L196 2 L190 18 L166 0 L156 16 L132 -4 L118 10 C80 -10 40 -8 0 0Z%22 fill=%22%235fd14d%22/%3E%3Cpath d=%22M0 0 C40 -8 80 -10 118 10 L132 -4 L156 16 L166 0 L190 18 L196 2 L220 10 C150 24 60 22 0 0Z%22 fill=%22%232f9a3c%22/%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 C150 24 60 22 0 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 C60 -14 140 -14 220 10%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Cg transform=%22rotate(-80) scale(0.9 0.9)%22%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 L196 2 L190 18 L166 0 L156 16 L132 -4 L118 10 C80 -10 40 -8 0 0Z%22 fill=%22%235fd14d%22/%3E%3Cpath d=%22M0 0 C40 -8 80 -10 118 10 L132 -4 L156 16 L166 0 L190 18 L196 2 L220 10 C150 24 60 22 0 0Z%22 fill=%22%232f9a3c%22/%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 C150 24 60 22 0 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 C60 -14 140 -14 220 10%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Cg transform=%22rotate(-205) scale(0.85 -0.85)%22%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 L196 2 L190 18 L166 0 L156 16 L132 -4 L118 10 C80 -10 40 -8 0 0Z%22 fill=%22%235fd14d%22/%3E%3Cpath d=%22M0 0 C40 -8 80 -10 118 10 L132 -4 L156 16 L166 0 L190 18 L196 2 L220 10 C150 24 60 22 0 0Z%22 fill=%22%232f9a3c%22/%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 C150 24 60 22 0 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 C60 -14 140 -14 220 10%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Ccircle cx=%22-14%22 cy=%2214%22 r=%2215%22 fill=%22%237a4a24%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M-21 8 a8 8 0 0 1 8 -5%22 stroke=%22%23b57a45%22 stroke-width=%224%22 fill=%22none%22 stroke-linecap=%22round%22/%3E%3Ccircle cx=%2212%22 cy=%2218%22 r=%2215%22 fill=%22%237a4a24%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M5 12 a8 8 0 0 1 8 -5%22 stroke=%22%23b57a45%22 stroke-width=%224%22 fill=%22none%22 stroke-linecap=%22round%22/%3E%3Ccircle cx=%22-1%22 cy=%2230%22 r=%2215%22 fill=%22%237a4a24%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M-8 24 a8 8 0 0 1 8 -5%22 stroke=%22%23b57a45%22 stroke-width=%224%22 fill=%22none%22 stroke-linecap=%22round%22/%3E%3CanimateTransform attributeName=%22transform%22 type=%22rotate%22 values=%22-3%3B3%3B-3%22 dur=%226s%22 repeatCount=%22indefinite%22/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg transform=%22translate(3370 690)%22%3E%3Cg%3E%3Cg%3E%3Cpath d=%22M-190 60 c20 -14 40 -14 60 0 c20 -14 40 -14 60 0 M120 58 c20 -14 40 -14 60 0 c14 -10 30 -10 44 0%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%228%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M-4 -20 V-308%22 stroke=%22%2323406b%22 stroke-width=%2212%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M-4 -22 V-306%22 stroke=%22%23a8693a%22 stroke-width=%225%22/%3E%3Cpath d=%22M6 -282 C60 -200 130 -110 158 -44 L6 -44Z%22 fill=%22%23fffdf3%22 stroke=%22%2323406b%22 stroke-width=%226%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M6 -282 C20 -200 36 -120 40 -44 L6 -44Z%22 fill=%22%23ecdcb4%22/%3E%3Cpath d=%22M6 -282 C60 -200 130 -110 158 -44 L6 -44Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%226%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-4 -300 C-84 -250 -150 -150 -126 -56 L-4 -56Z%22 fill=%22%23fffdf3%22/%3E%3Cpath d=%22M-126 -56 C-150 -150 -84 -250 -4 -300 C-60 -240 -96 -150 -84 -56Z%22 fill=%22%23ecdcb4%22/%3E%3Cpath d=%22M-4 -230 C-40 -214 -80 -204 -110 -200 M-4 -140 C-44 -132 -100 -128 -138 -126%22 fill=%22none%22 stroke=%22%23e0cfa2%22 stroke-width=%224%22/%3E%3Cg transform=%22translate(-66 -168)%22%3E%3Ccircle r=%2230%22 fill=%22%23ffd43b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M-30 4 c10 -14 26 -14 32 -2 c6 12 20 12 28 -2 V22 C14 34 -14 34 -26 20Z%22 fill=%22%232b95e0%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-8 -6 c4 -8 14 -8 16 0%22 stroke=%22%23fff%22 stroke-width=%224%22 fill=%22none%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cpath d=%22M-4 -300 C-84 -250 -150 -150 -126 -56 L-4 -56Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%226%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-140 -56 H8%22 stroke=%22%2323406b%22 stroke-width=%2210%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M-138 -56 H6%22 stroke=%22%23c98a4b%22 stroke-width=%224%22/%3E%3Cpath d=%22M-8 -310 C14 -322 34 -300 62 -310 L52 -294 L62 -280 C34 -270 14 -292 -8 -282Z%22 fill=%22%23ff7b29%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22%3E%3Canimate attributeName=%22d%22 values=%22M-8 -310 C14 -322 34 -300 62 -310 L52 -294 L62 -280 C34 -270 14 -292 -8 -282Z%3BM-8 -310 C14 -316 34 -296 62 -304 L54 -294 L62 -284 C34 -276 14 -298 -8 -290Z%3BM-8 -310 C14 -322 34 -300 62 -310 L52 -294 L62 -280 C34 -270 14 -292 -8 -282Z%22 dur=%221.4s%22 repeatCount=%22indefinite%22/%3E%3C/path%3E%3Cpath d=%22M-150 -14 L170 -38 C150 24 112 58 70 62 L-100 62 C-130 50 -146 22 -150 -14Z%22 fill=%22%23c07a40%22/%3E%3Cpath d=%22M-140 26 C-60 30 80 26 152 6 C132 40 104 60 70 62 L-100 62 C-120 54 -134 42 -140 26Z%22 fill=%22%238f5228%22/%3E%3Cpath d=%22M-146 8 C-40 8 80 2 160 -16 M-128 44 C-40 46 70 40 138 26%22 fill=%22none%22 stroke=%22%236b3a1c%22 stroke-width=%224%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M-152 -16 L172 -40 L168 -24 L-149 -2Z%22 fill=%22%23f0c27a%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Ccircle cx=%22110%22 cy=%220%22 r=%229%22 fill=%22%23bfe9ff%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M-150 -14 L170 -38 C150 24 112 58 70 62 L-100 62 C-130 50 -146 22 -150 -14Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%226%22 stroke-linejoin=%22round%22/%3E%3CanimateTransform attributeName=%22transform%22 type=%22rotate%22 values=%22-3.5%3B3%3B-3.5%22 dur=%225s%22 repeatCount=%22indefinite%22/%3E%3C/g%3E%3CanimateTransform attributeName=%22transform%22 type=%22translate%22 values=%220 0%3B0 -9%3B0 0%22 dur=%223.2s%22 repeatCount=%22indefinite%22/%3E%3C/g%3E%3C/g%3E%3Cpath d=%22M3140 742 c30 -14 60 -14 90 0 c30 14 60 14 90 0 c30 -14 60 -14 90 0 c30 14 60 14 90 0 c30 -14 60 -14 90 0 V800 H3140Z%22 fill=%22%231f86d6%22/%3E%3Cpath d=%22M3140 742 c30 -14 60 -14 90 0 c30 14 60 14 90 0 c30 -14 60 -14 90 0 c30 14 60 14 90 0 c30 -14 60 -14 90 0%22 fill=%22none%22 stroke=%22%238fd8ff%22 stroke-width=%226%22 stroke-linecap=%22round%22/%3E%3C/svg%3E") calc(var(--scenery, 0) * 100%) 100% / auto 100% no-repeat, #9be07a;
+  transition: background-position .9s cubic-bezier(.45, 0, .2, 1); }
+html[data-theme="toon"] body::after { content: ""; position: fixed; left: -20vw; right: -20vw; top: 0; height: 40vh; z-index: -1;
+  pointer-events: none; background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1200 300%22%3E%3Cg transform=%22translate(40 150) scale(1.0)%22%3E%3Cpath d=%22M0 0 C-26 0 -34 -34 -8 -44 C-10 -82 36 -94 58 -70 C74 -110 140 -108 150 -66 C174 -84 214 -70 212 -38 C244 -38 248 0 220 0Z%22 fill=%22%23fff%22/%3E%3Cpath d=%22M-10 -12 C40 -2 170 -2 232 -12 C230 -4 226 0 220 0 L0 0 C-6 0 -9 -5 -10 -12Z%22 fill=%22%23d6f1fd%22/%3E%3Cpath d=%22M0 0 C-26 0 -34 -34 -8 -44 C-10 -82 36 -94 58 -70 C74 -110 140 -108 150 -66 C174 -84 214 -70 212 -38 C244 -38 248 0 220 0Z%22 fill=%22none%22 stroke=%22%239fd6f2%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M36 -34 c9 -14 30 -11 27 4 c-2 9 -14 9 -12 0 M130 -46 c9 -14 30 -11 27 4 c-2 9 -14 9 -12 0%22 fill=%22none%22 stroke=%22%237cc8ee%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(470 250) scale(0.7)%22%3E%3Cpath d=%22M0 0 C-26 0 -34 -34 -8 -44 C-10 -82 36 -94 58 -70 C74 -110 140 -108 150 -66 C174 -84 214 -70 212 -38 C244 -38 248 0 220 0Z%22 fill=%22%23fff%22/%3E%3Cpath d=%22M-10 -12 C40 -2 170 -2 232 -12 C230 -4 226 0 220 0 L0 0 C-6 0 -9 -5 -10 -12Z%22 fill=%22%23d6f1fd%22/%3E%3Cpath d=%22M0 0 C-26 0 -34 -34 -8 -44 C-10 -82 36 -94 58 -70 C74 -110 140 -108 150 -66 C174 -84 214 -70 212 -38 C244 -38 248 0 220 0Z%22 fill=%22none%22 stroke=%22%239fd6f2%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M36 -34 c9 -14 30 -11 27 4 c-2 9 -14 9 -12 0 M130 -46 c9 -14 30 -11 27 4 c-2 9 -14 9 -12 0%22 fill=%22none%22 stroke=%22%237cc8ee%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(800 120) scale(1.25)%22%3E%3Cpath d=%22M0 0 C-26 0 -34 -34 -8 -44 C-10 -82 36 -94 58 -70 C74 -110 140 -108 150 -66 C174 -84 214 -70 212 -38 C244 -38 248 0 220 0Z%22 fill=%22%23fff%22/%3E%3Cpath d=%22M-10 -12 C40 -2 170 -2 232 -12 C230 -4 226 0 220 0 L0 0 C-6 0 -9 -5 -10 -12Z%22 fill=%22%23d6f1fd%22/%3E%3Cpath d=%22M0 0 C-26 0 -34 -34 -8 -44 C-10 -82 36 -94 58 -70 C74 -110 140 -108 150 -66 C174 -84 214 -70 212 -38 C244 -38 248 0 220 0Z%22 fill=%22none%22 stroke=%22%239fd6f2%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M36 -34 c9 -14 30 -11 27 4 c-2 9 -14 9 -12 0 M130 -46 c9 -14 30 -11 27 4 c-2 9 -14 9 -12 0%22 fill=%22none%22 stroke=%22%237cc8ee%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3C/svg%3E") 0 4vh / 900px auto repeat-x;
+  transform: translateX(calc(var(--scenery, 0) * -18vw)); transition: transform 1.1s cubic-bezier(.45, 0, .2, 1);
+  animation: toon-clouds 120s linear infinite; }
+@keyframes toon-clouds { from { background-position-x: 0; } to { background-position-x: -900px; } }
+@keyframes toon-in-right { from { opacity: 0; transform: translateX(28px) rotate(.6deg); } to { opacity: 1; transform: none; } }
+@keyframes toon-in-left { from { opacity: 0; transform: translateX(-28px) rotate(-.6deg); } to { opacity: 1; transform: none; } }
+@keyframes toon-in-pop { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes toon-hop { 0% { transform: translateY(0) scale(1); } 35% { transform: translateY(-7px) scale(1.18, .9); }
+  60% { transform: translateY(0) scale(.92, 1.1); } 80% { transform: translateY(-2px); } 100% { transform: none; } }
+@keyframes toon-ring { from { box-shadow: 0 0 0 0 rgba(255, 212, 59, .9); } to { box-shadow: 0 0 0 14px rgba(255, 212, 59, 0); } }
+@keyframes toon-card { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+html[data-theme="toon"][data-nav-dir="right"] .view:not([hidden]) { animation: toon-in-right .38s cubic-bezier(.2, .9, .3, 1.2) both; }
+html[data-theme="toon"][data-nav-dir="left"] .view:not([hidden]) { animation: toon-in-left .38s cubic-bezier(.2, .9, .3, 1.2) both; }
+html[data-theme="toon"][data-nav-dir="none"] .view:not([hidden]) { animation: toon-in-pop .3s ease-out both; }
+html[data-theme="toon"] .view:not([hidden]) > .card:nth-child(-n+5) { animation: toon-card .45s cubic-bezier(.2, .9, .3, 1.2) both; }
+html[data-theme="toon"] .view:not([hidden]) > .card:nth-child(2) { animation-delay: .05s; }
+html[data-theme="toon"] .view:not([hidden]) > .card:nth-child(3) { animation-delay: .1s; }
+html[data-theme="toon"] .view:not([hidden]) > .card:nth-child(4) { animation-delay: .15s; }
+html[data-theme="toon"] .view:not([hidden]) > .card:nth-child(5) { animation-delay: .2s; }
+html[data-theme="toon"] .tabs a.on { animation: toon-ring .6s ease-out; }
+html[data-theme="toon"] .tabs a.on .ti { animation: toon-hop .55s cubic-bezier(.3, 1.6, .5, 1); }
+html[data-theme="toon"] .btn:hover { transform: translateY(-1px); }
+html[data-theme="toon"] .card { transition: transform .2s; }
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="toon"] body::before { background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 3600 900%22%3E%3Crect width=%223600%22 height=%22900%22 fill=%22%236fd0f5%22/%3E%3Crect width=%223600%22 height=%22250%22 fill=%22%234bb9ec%22/%3E%3Crect y=%22250%22 width=%223600%22 height=%2260%22 fill=%22%235cc6f2%22/%3E%3Crect y=%22440%22 width=%223600%22 height=%22120%22 fill=%22%2386dbf7%22/%3E%3Cg transform=%22translate(2980 190)%22%3E%3Cg stroke=%22%23ffe066%22 stroke-width=%2211%22 stroke-linecap=%22round%22%3E%3Cpath d=%22M0 -78v-30M0 78v30M-78 0h-30M78 0h30M-55 -55l-21 -21M55 55l21 21M55 -55l21 -21M-55 55l-21 21%22/%3E%3C/g%3E%3Ccircle r=%2254%22 fill=%22%23fff3a6%22 stroke=%22%2323406b%22 stroke-width=%226%22/%3E%3Cpath d=%22M-30 -36 A54 54 0 0 1 40 -38 A46 46 0 0 0 -30 -36Z%22 fill=%22%23fffbe0%22/%3E%3Cpath d=%22M46 26 A54 54 0 0 1 -20 50 A46 46 0 0 0 46 26Z%22 fill=%22%23ffe27a%22/%3E%3C/g%3E%3Cg transform=%22translate(780 470) scale(1.3)%22%3E%3Cpath d=%22M0 0 C-30 0 -40 -40 -10 -52 C-14 -96 40 -112 66 -84 C84 -130 160 -128 174 -80 C200 -100 250 -86 248 -46 C284 -46 290 0 256 0Z%22 fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-14 -14 C40 -2 200 -2 270 -14 C268 -4 262 0 256 0 L0 0 C-8 0 -12 -6 -14 -14Z%22 fill=%22%23cdeefc%22/%3E%3Cpath d=%22M0 0 C-30 0 -40 -40 -10 -52 C-14 -96 40 -112 66 -84 C84 -130 160 -128 174 -80 C200 -100 250 -86 248 -46 C284 -46 290 0 256 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M40 -40 c10 -16 34 -12 30 4 c-2 10 -16 10 -14 0 M150 -54 c10 -16 34 -12 30 4 c-2 10 -16 10 -14 0 M206 -26 c8 -12 26 -9 23 3 c-2 8 -12 8 -11 0%22 fill=%22none%22 stroke=%22%237cc8ee%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(1880 500) scale(1.0)%22%3E%3Cpath d=%22M0 0 C-30 0 -40 -40 -10 -52 C-14 -96 40 -112 66 -84 C84 -130 160 -128 174 -80 C200 -100 250 -86 248 -46 C284 -46 290 0 256 0Z%22 fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-14 -14 C40 -2 200 -2 270 -14 C268 -4 262 0 256 0 L0 0 C-8 0 -12 -6 -14 -14Z%22 fill=%22%23cdeefc%22/%3E%3Cpath d=%22M0 0 C-30 0 -40 -40 -10 -52 C-14 -96 40 -112 66 -84 C84 -130 160 -128 174 -80 C200 -100 250 -86 248 -46 C284 -46 290 0 256 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M40 -40 c10 -16 34 -12 30 4 c-2 10 -16 10 -14 0 M150 -54 c10 -16 34 -12 30 4 c-2 10 -16 10 -14 0 M206 -26 c8 -12 26 -9 23 3 c-2 8 -12 8 -11 0%22 fill=%22none%22 stroke=%22%237cc8ee%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(3120 520) scale(0.9)%22%3E%3Cpath d=%22M0 0 C-30 0 -40 -40 -10 -52 C-14 -96 40 -112 66 -84 C84 -130 160 -128 174 -80 C200 -100 250 -86 248 -46 C284 -46 290 0 256 0Z%22 fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-14 -14 C40 -2 200 -2 270 -14 C268 -4 262 0 256 0 L0 0 C-8 0 -12 -6 -14 -14Z%22 fill=%22%23cdeefc%22/%3E%3Cpath d=%22M0 0 C-30 0 -40 -40 -10 -52 C-14 -96 40 -112 66 -84 C84 -130 160 -128 174 -80 C200 -100 250 -86 248 -46 C284 -46 290 0 256 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M40 -40 c10 -16 34 -12 30 4 c-2 10 -16 10 -14 0 M150 -54 c10 -16 34 -12 30 4 c-2 10 -16 10 -14 0 M206 -26 c8 -12 26 -9 23 3 c-2 8 -12 8 -11 0%22 fill=%22none%22 stroke=%22%237cc8ee%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cpath d=%22M0 548 H3600 V900 H0Z%22 fill=%22%231f86d6%22/%3E%3Cpath d=%22M0 548 H3600 V584 C3300 594 2900 580 0 590Z%22 fill=%22%2346a8ea%22/%3E%3Cpath d=%22M2200 640 C2700 628 3100 650 3600 636 V700 C3100 716 2700 690 2200 704Z%22 fill=%22%232b95e0%22/%3E%3Cpath d=%22M0 548 H3600%22 stroke=%22%2323406b%22 stroke-width=%226%22/%3E%3Cpath d=%22M3380 550 C3400 520 3450 512 3480 530 C3510 518 3560 524 3580 550Z%22 fill=%22%235fb7a0%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M3452 522 c-2 -18 2 -30 8 -38 M3460 484 c-14 -6 -24 0 -28 6 M3460 484 c12 -8 24 -4 28 2%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linecap=%22round%22/%3E%3Cg%3E%3Cpath transform=%22translate(2320 570) scale(0.55)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(2560 570) scale(0.55)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(2820 570) scale(0.55)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3060 570) scale(0.55)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3300 570) scale(0.55)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2364.0 576 h22.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M2604.0 576 h22.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M2864.0 576 h22.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3104.0 576 h22.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3344.0 576 h22.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cg%3E%3Cpath transform=%22translate(2420 620) scale(0.75)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(2700 620) scale(0.75)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(2980 620) scale(0.75)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3240 620) scale(0.75)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3500 620) scale(0.75)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2480.0 626 h30.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M2760.0 626 h30.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3040.0 626 h30.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3300.0 626 h30.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3560.0 626 h30.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cg%3E%3Cpath transform=%22translate(2560 690) scale(0.95)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(2880 690) scale(0.95)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3160 690) scale(0.95)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3460 690) scale(0.95)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2636.0 696 h38.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M2956.0 696 h38.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3236.0 696 h38.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3536.0 696 h38.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cg%3E%3Cpath transform=%22translate(2780 780) scale(1.15)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3100 780) scale(1.15)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3420 780) scale(1.15)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2872.0 786 h46.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3192.0 786 h46.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3512.0 786 h46.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cg%3E%3Cpath transform=%22translate(2960 860) scale(1.35)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath transform=%22translate(3300 860) scale(1.35)%22 d=%22M0 0 c14 -20 46 -24 62 -6 c8 10 0 22 -10 18 c-8 -3 -6 -12 1 -12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M3068.0 866 h54.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M3408.0 866 h54.0%22 stroke=%22%238fd8ff%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cg stroke=%22%23fff3a6%22 stroke-width=%226%22 stroke-linecap=%22round%22%3E%3Cpath d=%22M2960 600 h50 M2990 622 h30 M2940 646 h40%22/%3E%3C/g%3E%3Cpath d=%22M-20 640 L140 330 L260 430 L520 170 L700 380 L820 300 L1020 520 L1160 400 L1420 640Z%22 fill=%22%23b3c7ea%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M520 170 L700 380 L640 640 L520 640 L560 380Z M820 300 L1020 520 L940 640 L860 420Z M140 330 L260 430 L220 640 L170 450Z%22 fill=%22%239ab2dd%22/%3E%3Cpath d=%22M520 170 L480 236 L506 226 L524 248 L550 222 L576 240 L596 228Z M820 300 L796 340 L814 332 L828 348 L846 330 L860 340Z%22 fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-20 660 L330 210 L470 380 L600 290 L900 660Z%22 fill=%22%238fa9d6%22/%3E%3Cpath d=%22M330 210 L470 380 L420 660 L300 660 L380 420Z M600 290 L900 660 L740 660 L640 450Z%22 fill=%22%236c86b8%22/%3E%3Cpath d=%22M-20 660 L330 210 L470 380 L600 290 L900 660Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%227%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M330 210 L268 300 L302 288 L326 318 L356 286 L388 306 L412 294Z M600 290 L564 342 L590 330 L606 352 L630 328 L650 340Z%22 fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M330 210 L412 294 L388 306 L372 276Z M600 290 L650 340 L630 328 L622 316Z%22 fill=%22%23dce8f7%22/%3E%3Cpath d=%22M760 660 L1080 330 L1240 520 L1320 460 L1500 660Z%22 fill=%22%237d97c7%22 stroke=%22%2323406b%22 stroke-width=%226%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M1080 330 L1240 520 L1180 660 L1060 660 L1120 470Z M1320 460 L1500 660 L1400 660 L1350 540Z%22 fill=%22%235f79ab%22/%3E%3Cpath d=%22M1080 330 L1044 382 L1068 372 L1084 392 L1106 368 L1130 382Z%22 fill=%22%23fff%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M1150 470 C1146 520 1156 580 1150 660 L1176 660 C1180 580 1170 520 1172 470Z%22 fill=%22%23bfe9ff%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M1158 490 v30 M1166 540 v30 M1158 590 v30%22 stroke=%22%23fff%22 stroke-width=%225%22 stroke-linecap=%22round%22 stroke-dasharray=%2214 18%22%3E%3C/path%3E%3Cpath d=%22M2380 626 C2600 606 2770 618 2880 666 C3000 716 3060 800 3120 900 H3020 C2960 800 2900 720 2800 680 C2700 640 2560 630 2380 640Z%22 fill=%22%23d9a85a%22/%3E%3Cpath d=%22M2380 626 C2600 606 2770 618 2880 666 C3000 716 3060 800 3120 900%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22/%3E%3Cg%3E%3Cpath d=%22M2400 634 c40 -8 60 6 100 -2 c40 -8 70 8 110 0 c40 -6 70 10 110 10 c50 2 70 24 110 40 c40 18 60 50 90 80 c30 30 40 70 70 110 c20 26 30 30 40 30%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%2213%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2400 634 c40 -8 60 6 100 -2 c40 -8 70 8 110 0 c40 -6 70 10 110 10 c50 2 70 24 110 40 c40 18 60 50 90 80 c30 30 40 70 70 110 c20 26 30 30 40 30%22 fill=%22none%22 stroke=%22%23bfe9ff%22 stroke-width=%224%22 stroke-linecap=%22round%22 transform=%22translate(10 6)%22/%3E%3C/g%3E%3Cpath d=%22M2200 900 V650 C2260 640 2320 642 2380 640 C2560 630 2700 640 2800 680 C2900 720 2960 800 3020 900Z%22 fill=%22%23f7d98b%22/%3E%3Cpath d=%22M2200 900 V780 C2400 760 2600 790 2760 760 C2860 742 2920 800 2960 820 C3000 860 3010 880 3020 900Z%22 fill=%22%23ecc36b%22/%3E%3Cpath d=%22M2560 700 c40 -10 80 -6 110 4 M2300 720 c40 -8 70 -4 90 4 M2420 840 c40 -8 80 -6 110 4%22 fill=%22none%22 stroke=%22%23e2b660%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M2200 650 C2260 640 2320 642 2380 640 C2560 630 2700 640 2800 680 C2900 720 2960 800 3020 900%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%226%22/%3E%3Cpath d=%22M2840 860 C2836 830 2860 812 2890 818 C2920 812 2944 836 2936 866Z%22 fill=%22%239aa7bd%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2890 818 C2920 812 2944 836 2936 866 H2900 C2910 846 2906 830 2890 818Z%22 fill=%22%2376839c%22/%3E%3Cpath d=%22M2640 880 C2640 862 2656 854 2672 860 C2690 856 2702 870 2698 886Z%22 fill=%22%239aa7bd%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2672 860 C2690 856 2702 870 2698 886 H2678 C2684 874 2682 866 2672 860Z%22 fill=%22%2376839c%22/%3E%3Cg transform=%22translate(2700 820)%22%3E%3Cpath d=%22M-20 10 C-22 -14 22 -14 20 10 Z%22 fill=%22%23ffb3c6%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 10 V-6 M-10 10 L-6 -4 M10 10 L6 -4%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Cg transform=%22translate(2640 800) rotate(14)%22%3E%3Cpath d=%22M0 -26 L6.4 -8.8 L24.7 -8 L10.4 3.4 L15.3 21 L0 10.9 L-15.3 21 L-10.4 3.4 L-24.7 -8 L-6.4 -8.8Z%22 fill=%22%23ff8c42%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Ccircle r=%225%22 fill=%22%23ffd43b%22/%3E%3C/g%3E%3Cg transform=%22translate(2560 730) rotate(-20)%22%3E%3Cpath d=%22M0 0 c-10 -14 6 -26 16 -16 c8 10 -4 20 -10 12%22 fill=%22%23fff0d6%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cpath d=%22M0 640 C300 590 520 650 820 610 C1100 570 1400 630 1700 600 C1950 575 2150 600 2300 615 C2400 625 2460 660 2520 720 C2556 760 2576 830 2586 900 L0 900Z%22 fill=%22%237bd04b%22/%3E%3Cpath d=%22M820 610 C1100 570 1400 630 1700 600 L1700 900 L1300 900 C1360 760 1150 660 820 610Z M1950 588 C2150 600 2300 615 2400 640 C2460 670 2500 700 2520 720 C2556 760 2576 830 2586 900 L2260 900 C2280 760 2160 640 1950 588Z%22 fill=%22%235cb83c%22/%3E%3Cpath d=%22M0 640 C300 590 520 650 820 610 C1100 570 1400 630 1700 600 C1950 575 2150 600 2300 615 C2400 625 2460 660 2520 720 C2556 760 2576 830 2586 900%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%227%22/%3E%3Cpath d=%22M0 740 C300 715 600 760 1000 725 C1400 690 1800 740 2200 715 C2320 708 2390 760 2440 900 L0 900Z%22 fill=%22%239be07a%22/%3E%3Cpath d=%22M0 740 C300 715 600 760 1000 725 C1400 690 1800 740 2200 715 C2320 708 2390 760 2440 900%22 fill=%22none%22 stroke=%22%237bd04b%22 stroke-width=%226%22/%3E%3Cpath d=%22M1500 900 C1580 820 1420 770 1560 720 C1680 676 1760 660 1840 612%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%2230%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M1500 900 C1580 820 1420 770 1560 720 C1680 676 1760 660 1840 612%22 fill=%22none%22 stroke=%22%23f6e3b0%22 stroke-width=%2220%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M1512 880 C1570 820 1450 776 1556 734%22 fill=%22none%22 stroke=%22%23e8cf8c%22 stroke-width=%226%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M64 650 L90 570 L116 650Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M90 570 L116 650 H90Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M64 650 L90 570 L116 650Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M86 650 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M134 668 L160 598 L186 668Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M160 598 L186 668 H160Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M134 668 L160 598 L186 668Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M156 668 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M214 650 L240 590 L266 650Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M240 590 L266 650 H240Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M214 650 L240 590 L266 650Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M236 650 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M954 640 L980 560 L1006 640Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M980 560 L1006 640 H980Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M954 640 L980 560 L1006 640Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M976 640 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M1024 660 L1050 590 L1076 660Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M1050 590 L1076 660 H1050Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M1024 660 L1050 590 L1076 660Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M1046 660 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M1104 636 L1130 560 L1156 636Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M1130 560 L1156 636 H1130Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M1104 636 L1130 560 L1156 636Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M1126 636 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M1224 640 L1250 578 L1276 640Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M1250 578 L1276 640 H1250Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M1224 640 L1250 578 L1276 640Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M1246 640 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M1934 618 L1960 548 L1986 618Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M1960 548 L1986 618 H1960Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M1934 618 L1960 548 L1986 618Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M1956 618 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M2014 632 L2040 552 L2066 632Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M2040 552 L2066 632 H2040Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M2014 632 L2040 552 L2066 632Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2036 632 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M2094 622 L2120 558 L2146 622Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M2120 558 L2146 622 H2120Z%22 fill=%22%232c7a3a%22/%3E%3Cpath d=%22M2094 622 L2120 558 L2146 622Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M2116 622 v12 h8 v-12%22 fill=%22%238a5a2b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cg transform=%22translate(420 760) scale(1.2)%22%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22%235cb83c%22/%3E%3Cpath d=%22M-30 -6 C-10 -2 20 -2 46 -6 C44 -2 50 0 50 0 H-40Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(760 770) scale(1.0)%22%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22%235cb83c%22/%3E%3Cpath d=%22M-30 -6 C-10 -2 20 -2 46 -6 C44 -2 50 0 50 0 H-40Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(1320 760) scale(1.3)%22%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22%235cb83c%22/%3E%3Cpath d=%22M-30 -6 C-10 -2 20 -2 46 -6 C44 -2 50 0 50 0 H-40Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(1900 760) scale(1.1)%22%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22%235cb83c%22/%3E%3Cpath d=%22M-30 -6 C-10 -2 20 -2 46 -6 C44 -2 50 0 50 0 H-40Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(2250 740) scale(0.9)%22%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22%235cb83c%22/%3E%3Cpath d=%22M-30 -6 C-10 -2 20 -2 46 -6 C44 -2 50 0 50 0 H-40Z%22 fill=%22%233e9a4a%22/%3E%3Cpath d=%22M-40 0 C-50 -24 -24 -38 -8 -28 C-2 -48 30 -48 34 -26 C52 -32 64 -12 50 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3C/g%3E%3Cg transform=%22translate(1700 700)%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M0 0 V-70%22 stroke-width=%227%22/%3E%3Cpath d=%22M-30 -96 H40 L56 -82 L40 -68 H-30Z%22 fill=%22%23e9b872%22/%3E%3Cpath d=%22M-30 -82 H56 L40 -68 H-30Z%22 fill=%22%23c9924a%22 stroke=%22none%22/%3E%3Cpath d=%22M-30 -96 H40 L56 -82 L40 -68 H-30Z%22 fill=%22none%22/%3E%3C/g%3E%3Ccircle cx=%22560%22 cy=%22800%22 r=%227%22 fill=%22%23ffd43b%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3Ccircle cx=%22600%22 cy=%22812%22 r=%227%22 fill=%22%23ffd43b%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3Ccircle cx=%221100%22 cy=%22790%22 r=%227%22 fill=%22%23ffd43b%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3Ccircle cx=%222000%22 cy=%22800%22 r=%227%22 fill=%22%23ffd43b%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3Ccircle cx=%222060%22 cy=%22790%22 r=%227%22 fill=%22%23ffd43b%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3Cellipse cx=%222640%22 cy=%22708%22 rx=%22120%22 ry=%2216%22 fill=%22%23e2b660%22/%3E%3Cg transform=%22translate(2600 700)%22%3E%3Cpath d=%22M-22 1.2 L22 -1.2 L24.3 -43.3 L-25.9 -43.6Z%22 fill=%22%23d29a58%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 L22 -1.2 L24.3 -43.3 L-0.8 -43.4Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M-22 1.2 L22 -1.2 L24.3 -43.3 L-25.9 -43.6Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-22 -37.9 L20.2 -37.7 L24.9 -79.2 L-23.4 -82.3Z%22 fill=%22%23c08447%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-0.9 -37.8 L20.2 -37.7 L24.9 -79.2 L0.8 -80.8Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M-22 -37.9 L20.2 -37.7 L24.9 -79.2 L-23.4 -82.3Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-19.8 -76.5 L20.6 -73.9 L27.7 -114.8 L-18.5 -120.6Z%22 fill=%22%23d29a58%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0.4 -75.2 L20.6 -73.9 L27.7 -114.8 L4.6 -117.7Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M-19.8 -76.5 L20.6 -73.9 L27.7 -114.8 L-18.5 -120.6Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-15.3 -114.6 L23.1 -109.8 L32.7 -150.1 L-11.4 -158.4Z%22 fill=%22%23c08447%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M3.9 -112.2 L23.1 -109.8 L32.7 -150.1 L10.6 -154.3Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M-15.3 -114.6 L23.1 -109.8 L32.7 -150.1 L-11.4 -158.4Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-8.5 -152.2 L27.7 -145.4 L39.7 -185.2 L-2 -195.6Z%22 fill=%22%23d29a58%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M9.6 -148.8 L27.7 -145.4 L39.7 -185.2 L18.9 -190.4Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M-8.5 -152.2 L27.7 -145.4 L39.7 -185.2 L-2 -195.6Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0.5 -189.2 L34.5 -180.8 L49 -220 L9.7 -232.3Z%22 fill=%22%23c08447%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M17.5 -185 L34.5 -180.8 L49 -220 L29.3 -226.1Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M0.5 -189.2 L34.5 -180.8 L49 -220 L9.7 -232.3Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M11.8 -225.8 L43.4 -215.8 L60.3 -254.5 L23.5 -268.5Z%22 fill=%22%23d29a58%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M27.6 -220.8 L43.4 -215.8 L60.3 -254.5 L41.9 -261.5Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M11.8 -225.8 L43.4 -215.8 L60.3 -254.5 L23.5 -268.5Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M25.2 -261.8 L54.6 -250.6 L73.9 -288.7 L39.6 -304.1Z%22 fill=%22%23c08447%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M39.9 -256.2 L54.6 -250.6 L73.9 -288.7 L56.8 -296.4Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M25.2 -261.8 L54.6 -250.6 L73.9 -288.7 L39.6 -304.1Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M40.9 -297.3 L67.9 -285.1 L89.7 -322.7 L57.9 -339.2Z%22 fill=%22%23d29a58%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M54.4 -291.2 L67.9 -285.1 L89.7 -322.7 L73.8 -331Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M40.9 -297.3 L67.9 -285.1 L89.7 -322.7 L57.9 -339.2Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M58.8 -332.2 L83.4 -319.4 L107.7 -356.5 L78.4 -373.7Z%22 fill=%22%23c08447%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M71.1 -325.8 L83.4 -319.4 L107.7 -356.5 L93 -365.1Z%22 fill=%22%239b6634%22/%3E%3Cpath d=%22M58.8 -332.2 L83.4 -319.4 L107.7 -356.5 L78.4 -373.7Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cg transform=%22translate(90 -360)%22%3E%3Cg%3E%3Cg transform=%22rotate(-160) scale(1.0 -1.0)%22%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 L196 2 L190 18 L166 0 L156 16 L132 -4 L118 10 C80 -10 40 -8 0 0Z%22 fill=%22%235fd14d%22/%3E%3Cpath d=%22M0 0 C40 -8 80 -10 118 10 L132 -4 L156 16 L166 0 L190 18 L196 2 L220 10 C150 24 60 22 0 0Z%22 fill=%22%232f9a3c%22/%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 C150 24 60 22 0 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 C60 -14 140 -14 220 10%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Cg transform=%22rotate(-120) scale(1.1 -1.1)%22%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 L196 2 L190 18 L166 0 L156 16 L132 -4 L118 10 C80 -10 40 -8 0 0Z%22 fill=%22%235fd14d%22/%3E%3Cpath d=%22M0 0 C40 -8 80 -10 118 10 L132 -4 L156 16 L166 0 L190 18 L196 2 L220 10 C150 24 60 22 0 0Z%22 fill=%22%232f9a3c%22/%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 C150 24 60 22 0 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 C60 -14 140 -14 220 10%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Cg transform=%22rotate(-40) scale(1.15 1.15)%22%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 L196 2 L190 18 L166 0 L156 16 L132 -4 L118 10 C80 -10 40 -8 0 0Z%22 fill=%22%235fd14d%22/%3E%3Cpath d=%22M0 0 C40 -8 80 -10 118 10 L132 -4 L156 16 L166 0 L190 18 L196 2 L220 10 C150 24 60 22 0 0Z%22 fill=%22%232f9a3c%22/%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 C150 24 60 22 0 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 C60 -14 140 -14 220 10%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Cg transform=%22rotate(-5) scale(1.0 1.0)%22%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 L196 2 L190 18 L166 0 L156 16 L132 -4 L118 10 C80 -10 40 -8 0 0Z%22 fill=%22%235fd14d%22/%3E%3Cpath d=%22M0 0 C40 -8 80 -10 118 10 L132 -4 L156 16 L166 0 L190 18 L196 2 L220 10 C150 24 60 22 0 0Z%22 fill=%22%232f9a3c%22/%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 C150 24 60 22 0 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 C60 -14 140 -14 220 10%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Cg transform=%22rotate(30) scale(0.95 0.95)%22%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 L196 2 L190 18 L166 0 L156 16 L132 -4 L118 10 C80 -10 40 -8 0 0Z%22 fill=%22%235fd14d%22/%3E%3Cpath d=%22M0 0 C40 -8 80 -10 118 10 L132 -4 L156 16 L166 0 L190 18 L196 2 L220 10 C150 24 60 22 0 0Z%22 fill=%22%232f9a3c%22/%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 C150 24 60 22 0 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 C60 -14 140 -14 220 10%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Cg transform=%22rotate(-80) scale(0.9 0.9)%22%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 L196 2 L190 18 L166 0 L156 16 L132 -4 L118 10 C80 -10 40 -8 0 0Z%22 fill=%22%235fd14d%22/%3E%3Cpath d=%22M0 0 C40 -8 80 -10 118 10 L132 -4 L156 16 L166 0 L190 18 L196 2 L220 10 C150 24 60 22 0 0Z%22 fill=%22%232f9a3c%22/%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 C150 24 60 22 0 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 C60 -14 140 -14 220 10%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Cg transform=%22rotate(-205) scale(0.85 -0.85)%22%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 L196 2 L190 18 L166 0 L156 16 L132 -4 L118 10 C80 -10 40 -8 0 0Z%22 fill=%22%235fd14d%22/%3E%3Cpath d=%22M0 0 C40 -8 80 -10 118 10 L132 -4 L156 16 L166 0 L190 18 L196 2 L220 10 C150 24 60 22 0 0Z%22 fill=%22%232f9a3c%22/%3E%3Cpath d=%22M0 0 C50 -46 150 -50 220 10 C150 24 60 22 0 0Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%225%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M0 0 C60 -14 140 -14 220 10%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%223%22/%3E%3C/g%3E%3Ccircle cx=%22-14%22 cy=%2214%22 r=%2215%22 fill=%22%237a4a24%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M-21 8 a8 8 0 0 1 8 -5%22 stroke=%22%23b57a45%22 stroke-width=%224%22 fill=%22none%22 stroke-linecap=%22round%22/%3E%3Ccircle cx=%2212%22 cy=%2218%22 r=%2215%22 fill=%22%237a4a24%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M5 12 a8 8 0 0 1 8 -5%22 stroke=%22%23b57a45%22 stroke-width=%224%22 fill=%22none%22 stroke-linecap=%22round%22/%3E%3Ccircle cx=%22-1%22 cy=%2230%22 r=%2215%22 fill=%22%237a4a24%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M-8 24 a8 8 0 0 1 8 -5%22 stroke=%22%23b57a45%22 stroke-width=%224%22 fill=%22none%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg transform=%22translate(3370 690)%22%3E%3Cg%3E%3Cg%3E%3Cpath d=%22M-190 60 c20 -14 40 -14 60 0 c20 -14 40 -14 60 0 M120 58 c20 -14 40 -14 60 0 c14 -10 30 -10 44 0%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%228%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M-4 -20 V-308%22 stroke=%22%2323406b%22 stroke-width=%2212%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M-4 -22 V-306%22 stroke=%22%23a8693a%22 stroke-width=%225%22/%3E%3Cpath d=%22M6 -282 C60 -200 130 -110 158 -44 L6 -44Z%22 fill=%22%23fffdf3%22 stroke=%22%2323406b%22 stroke-width=%226%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M6 -282 C20 -200 36 -120 40 -44 L6 -44Z%22 fill=%22%23ecdcb4%22/%3E%3Cpath d=%22M6 -282 C60 -200 130 -110 158 -44 L6 -44Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%226%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-4 -300 C-84 -250 -150 -150 -126 -56 L-4 -56Z%22 fill=%22%23fffdf3%22/%3E%3Cpath d=%22M-126 -56 C-150 -150 -84 -250 -4 -300 C-60 -240 -96 -150 -84 -56Z%22 fill=%22%23ecdcb4%22/%3E%3Cpath d=%22M-4 -230 C-40 -214 -80 -204 -110 -200 M-4 -140 C-44 -132 -100 -128 -138 -126%22 fill=%22none%22 stroke=%22%23e0cfa2%22 stroke-width=%224%22/%3E%3Cg transform=%22translate(-66 -168)%22%3E%3Ccircle r=%2230%22 fill=%22%23ffd43b%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M-30 4 c10 -14 26 -14 32 -2 c6 12 20 12 28 -2 V22 C14 34 -14 34 -26 20Z%22 fill=%22%232b95e0%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-8 -6 c4 -8 14 -8 16 0%22 stroke=%22%23fff%22 stroke-width=%224%22 fill=%22none%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cpath d=%22M-4 -300 C-84 -250 -150 -150 -126 -56 L-4 -56Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%226%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M-140 -56 H8%22 stroke=%22%2323406b%22 stroke-width=%2210%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M-138 -56 H6%22 stroke=%22%23c98a4b%22 stroke-width=%224%22/%3E%3Cpath d=%22M-8 -310 C14 -322 34 -300 62 -310 L52 -294 L62 -280 C34 -270 14 -292 -8 -282Z%22 fill=%22%23ff7b29%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22%3E%3C/path%3E%3Cpath d=%22M-150 -14 L170 -38 C150 24 112 58 70 62 L-100 62 C-130 50 -146 22 -150 -14Z%22 fill=%22%23c07a40%22/%3E%3Cpath d=%22M-140 26 C-60 30 80 26 152 6 C132 40 104 60 70 62 L-100 62 C-120 54 -134 42 -140 26Z%22 fill=%22%238f5228%22/%3E%3Cpath d=%22M-146 8 C-40 8 80 2 160 -16 M-128 44 C-40 46 70 40 138 26%22 fill=%22none%22 stroke=%22%236b3a1c%22 stroke-width=%224%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M-152 -16 L172 -40 L168 -24 L-149 -2Z%22 fill=%22%23f0c27a%22 stroke=%22%2323406b%22 stroke-width=%224%22 stroke-linejoin=%22round%22/%3E%3Ccircle cx=%22110%22 cy=%220%22 r=%229%22 fill=%22%23bfe9ff%22 stroke=%22%2323406b%22 stroke-width=%224%22/%3E%3Cpath d=%22M-150 -14 L170 -38 C150 24 112 58 70 62 L-100 62 C-130 50 -146 22 -150 -14Z%22 fill=%22none%22 stroke=%22%2323406b%22 stroke-width=%226%22 stroke-linejoin=%22round%22/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cpath d=%22M3140 742 c30 -14 60 -14 90 0 c30 14 60 14 90 0 c30 -14 60 -14 90 0 c30 14 60 14 90 0 c30 -14 60 -14 90 0 V800 H3140Z%22 fill=%22%231f86d6%22/%3E%3Cpath d=%22M3140 742 c30 -14 60 -14 90 0 c30 14 60 14 90 0 c30 -14 60 -14 90 0 c30 14 60 14 90 0 c30 -14 60 -14 90 0%22 fill=%22none%22 stroke=%22%238fd8ff%22 stroke-width=%226%22 stroke-linecap=%22round%22/%3E%3C/svg%3E"); transition: none; }
+  html[data-theme="toon"] body::after { animation: none; transition: none; }
+  html[data-theme="toon"] .view:not([hidden]), html[data-theme="toon"] .view:not([hidden]) > .card,
+  html[data-theme="toon"] .tabs a.on, html[data-theme="toon"] .tabs a.on .ti { animation: none; }
+}
+
+/* =====================================================================================
+   v0.36 : panorama 4:1 (3600×900) toujours bien plus large que l'écran : hauteur max(100vh, 62.5vw), donc
+   largeur ≥ 250vw, calé en bas ; on traverse montagne → collines → plage → mer du 1er au dernier onglet,
+   sur téléphone comme sur grand écran. Les nuages suivent à 30 % (parallaxe).
+   Mise en page tablette / bureau pour tous les thèmes : colonne plus large, cartes sur deux colonnes.
+   ===================================================================================== */
+html[data-theme="toon"] { --pano-h: max(100vh, 62.5vw); --pano-pan: calc(4 * var(--pano-h) - 100vw); }
+html[data-theme="toon"] body::before { background-size: auto var(--pano-h); background-position: calc(var(--scenery, 0) * 100%) 100%;
+  background-repeat: no-repeat; transition: background-position .9s cubic-bezier(.45, 0, .2, 1); }
+html[data-theme="toon"] body::after { left: 0; right: auto; width: calc(100vw + .3 * var(--pano-pan)); height: calc(260px + 6vh);
+  background-position: 0 4vh; background-size: 1000px auto; background-repeat: repeat-x;
+  transform: translateX(calc(var(--scenery, 0) * -.3 * var(--pano-pan))); transition: transform .9s cubic-bezier(.45, 0, .2, 1);
+  animation: toon-clouds-036 120s linear infinite; }
+@keyframes toon-clouds-036 { from { background-position-x: 0; } to { background-position-x: -1000px; } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="toon"] body::before, html[data-theme="toon"] body::after { transition: none; animation: none; }
+}
+
+/* ---------- tablette (≥ 720 px) : colonne un peu plus large, métriques sur une ligne */
+@media (min-width: 720px) {
+  main { max-width: 780px; padding-left: 24px; padding-right: 24px; }
+  .tabs { max-width: 760px; }
+  .metrics:has(> :nth-child(3):last-child) { grid-template-columns: repeat(3, 1fr); }
+  .metrics:has(> :nth-child(4)) { grid-template-columns: repeat(4, 1fr); }
+  .topbar { padding-left: max(16px, calc((100% - 780px) / 2 + 24px)); padding-right: max(16px, calc((100% - 780px) / 2 + 24px)); }
+}
+
+/* ---------- bureau / tablette paysage (≥ 900 px) : vues en cartes sur deux colonnes */
+@media (min-width: 900px) {
+  main { max-width: 1080px; padding-left: 28px; padding-right: 28px; }
+  .topbar { padding-left: max(16px, calc((100% - 1080px) / 2 + 28px)); padding-right: max(16px, calc((100% - 1080px) / 2 + 28px)); }
+  .view[data-view="aujourdhui"], .view[data-view="details"], .view[data-view="carriere"], .view[data-view="progres"] {
+    column-count: 2; column-gap: 20px; }
+  .view[data-view="aujourdhui"] > *, .view[data-view="details"] > *, .view[data-view="carriere"] > *, .view[data-view="progres"] > * {
+    break-inside: avoid; }
+  /* éléments pleine largeur : bandeaux, sélecteurs, héros de carrière, métriques du jour */
+  .view[data-view] > .banner, .view[data-view] > .seg, .view[data-view] > .career-hero,
+  .view[data-view="aujourdhui"] > .metrics { column-span: all; }
+  .view[data-view] > :not(:first-child):is(.banner, .career-hero, .metrics) { margin-top: 14px; }
+  .view[data-view] > .seg { width: min(100%, 480px); margin-left: auto; margin-right: auto; }
+  /* dans une demi-colonne, deux métriques par ligne suffisent */
+  .view[data-view="progres"] > .metrics { grid-template-columns: repeat(2, 1fr); }
+  /* État : métriques sur une ligne, puis la liste des sorties sur deux colonnes dans sa carte */
+  .view[data-view="etat"] > .card { column-count: 2; column-gap: 32px; }
+  .view[data-view="etat"] > .card > * { column-span: all; }
+  .view[data-view="etat"] > .card > .act { column-span: none; break-inside: avoid; }
+  /* conversation, semaine et accueil : une colonne confortable, centrée */
+  .view[data-view="coach"], .view[data-view="semaine"], .view[data-view="onboarding"] { max-width: 760px; margin-left: auto; margin-right: auto; }
+  .tabs { max-width: 760px; }
+  .tabs a { flex-direction: row; gap: 8px; font-size: .8rem; min-height: 50px; }
+  html[data-theme="toon"] .tabs { bottom: calc(14px + var(--safe-b)); }
+  /* BD : cartes moins inclinées en colonnes étroites */
+  html[data-theme="bd"] .view[data-view] > .card:nth-of-type(odd) { transform: rotate(-.35deg); }
+  html[data-theme="bd"] .view[data-view] > .card:nth-of-type(even) { transform: rotate(.3deg); }
+}
+/* BD : le titre incliné tourne autour de son texte (et non de toute la largeur de la barre), il ne recouvre plus la date */
+html[data-theme="bd"] .race-name { width: max-content; max-width: 100%; }
+@media (min-width: 1280px) {
+  main { max-width: 1140px; }
+  .topbar { padding-left: max(16px, calc((100% - 1140px) / 2 + 28px)); padding-right: max(16px, calc((100% - 1140px) / 2 + 28px)); }
+}
+
+/* ---------- v0.37 : mes objectifs (principal, secondaires, projets) */
+.goals h3 { margin-bottom: 10px; }
+.goal-main { padding: 12px 14px; border-radius: 12px; background: var(--accent-soft); margin-bottom: 4px; }
+.goal-main h2 { font-size: 1.2rem; margin: 2px 0 2px; }
+.goal-main .goal-est { margin: 6px 0 0; }
+.goal-main .goal-est .big { font-size: 1.5rem; }
+.goal-group { margin-top: 14px; }
+.goal-list { list-style: none; margin: 4px 0 0; padding: 0; }
+.goal-line { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 0;
+             border-top: 1px solid var(--line); }
+.goal-line:first-child { border-top: 0; }
+.goal-line .t { font-weight: 600; }
+.goal-line.done, .goal-main.done { opacity: .55; }
+.goal-line.done .t { text-decoration: line-through; text-decoration-thickness: 1px; }
+.badge.cd { background: var(--surface-2); color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.goal-hint { margin-top: 12px; }
+.goal-hint a { color: var(--accent); font-weight: 600; }
+
+/* ---------- v0.37 : glisser-déposer des séances (Semaine) */
+.drag-hint { margin: -2px 2px 10px; }
+.day .item.draggable { cursor: grab; touch-action: manipulation; -webkit-user-select: none; user-select: none;
+                       -webkit-touch-callout: none; }
+.item-end { display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+.move-btn { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; padding: 0;
+            border: 1px solid var(--line); background: var(--surface); color: var(--muted); cursor: pointer; }
+.move-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.move-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+body.dragging, body.dragging * { cursor: grabbing !important; -webkit-user-select: none; user-select: none; }
+.view .day { transition: box-shadow .12s, opacity .12s, background-color .12s; }
+.view .day.drop-ok { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 45%, transparent); }
+.view .day.drop-no { opacity: .45; }
+.view .day.drop-over.drop-ok { box-shadow: 0 0 0 3px var(--accent), var(--shadow);
+                               background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
+.view .day.drop-over.drop-no { box-shadow: 0 0 0 3px var(--bad); }
+.day .item.drag-src { opacity: .3; }
+.day .item.busy { opacity: .6; }
+.day .item.snap-back { animation: snap-back .5s ease-out 1; }
+@keyframes snap-back { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-7px); }
+                       45% { transform: translateX(6px); } 70% { transform: translateX(-3px); } }
+.drag-ghost { position: fixed; left: 0; top: 0; z-index: 60; pointer-events: none; padding: 10px 14px; border-radius: 12px;
+              background: var(--surface); color: var(--ink); border: 1px solid var(--accent);
+              box-shadow: 0 10px 28px rgba(0,0,0,.22); rotate: -1.5deg; opacity: .96; }
+.drag-ghost .it { font-weight: 700; }
+.drag-ghost .im { color: var(--muted); font-size: .82rem; }
+.day-pick { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.day-pick .btn { text-align: left; }
+.day-pick .btn.current { border-color: var(--accent); }
+.day-pick .btn:disabled { opacity: .5; cursor: not-allowed; }
+@media (prefers-reduced-motion: reduce) { .day .item.snap-back { animation: none; } .drag-ghost { rotate: 0deg; } }
+html[data-theme="bd"] .goal-main { border: 3px solid #111; background: #fff6c9; }
+html[data-theme="bd"] .drag-ghost, html[data-theme="bd"] .move-btn { border: 3px solid #111; color: #111; }
+html[data-theme="crepuscule"] .goal-main { background: rgba(255, 207, 138, .14); border: 1.5px solid #b9a6e0; }
+html[data-theme="crepuscule"] .drag-ghost { background: #352a5c; border-color: #ffcf8a; }
+html[data-theme="toon"] .goal-main { background: #fff3bf; border: 3px solid #23406b; border-radius: 16px; }
+html[data-theme="toon"] .goal-main h2 { color: #1d3557; }
+html[data-theme="toon"] .drag-ghost, html[data-theme="toon"] .move-btn { border: 2.5px solid #23406b; color: #23406b; border-radius: 14px; }
+html[data-theme="toon"] .view .day.drop-over.drop-ok { box-shadow: 0 0 0 3px #ffd43b, var(--shadow); }
+html[data-theme="toon"] .badge.cd { background: #dbeafe; color: #1d3557; }
+
+/* ===================================================================== v0.38
+   Jour à deux séances dures (contour rouge + libellé), aperçu pendant le glisser, coach qui écrit,
+   bilan nutrition (fiche de retour) et carte « Nutrition à l'effort » (État). */
+.day-badges { display: inline-flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.day-alert { display: inline-flex; align-items: center; gap: 5px; font-size: .74rem; font-weight: 700; line-height: 1.1;
+  color: var(--bad); background: var(--bad-soft); border-radius: 999px; padding: 3px 9px 3px 3px; }
+.day-alert b { display: inline-grid; place-items: center; width: 17px; height: 17px; border-radius: 50%; background: var(--bad);
+  color: #fff; font-size: .72rem; font-weight: 900; }
+.day-alert.race { color: var(--warn); background: var(--warn-soft); }
+.day-alert.race b { background: var(--warn); }
+.view .day.alert-two-hard { box-shadow: 0 0 0 2px var(--bad), var(--shadow); }
+.view .day.drop-hard:not(.drop-over) { box-shadow: 0 0 0 2px color-mix(in srgb, var(--bad) 45%, transparent); outline: 2px dashed color-mix(in srgb, var(--bad) 55%, transparent); outline-offset: 2px; }
+.view .day.drop-over.drop-hard { box-shadow: 0 0 0 3px var(--bad), var(--shadow); }
+.view .day.drop-race:not(.drop-over) { box-shadow: 0 0 0 2px color-mix(in srgb, var(--warn) 55%, transparent); }
+.view .day.drop-over.drop-race { box-shadow: 0 0 0 3px var(--warn), var(--shadow); }
+.day-pick .btn.warn { border-color: var(--bad); }
+.pick-warn { color: var(--bad); font-weight: 700; }
+
+html[data-theme="bd"] .view .day.alert-two-hard, html[data-theme="bd"] .view .day.drop-over.drop-hard {
+  border: 4px solid #e11d2a; box-shadow: 5px 5px 0 #111, 0 0 0 3px #111; }
+html[data-theme="bd"] .day-alert { background: #fff; color: #111; border: 2.5px solid #111; font-family: "Bangers", cursive;
+  letter-spacing: .5px; font-size: .95rem; font-weight: 400; transform: rotate(-2deg); box-shadow: 2px 2px 0 #111; }
+html[data-theme="bd"] .day-alert b { width: 26px; height: 26px; border-radius: 0; background: #e11d2a; color: #ffd21f; font-size: 1.05rem;
+  clip-path: polygon(50% 0, 61% 30%, 95% 18%, 72% 45%, 100% 62%, 66% 66%, 72% 100%, 50% 76%, 28% 100%, 34% 66%, 0 62%, 28% 45%, 5% 18%, 39% 30%);
+  font-family: "Bangers", cursive; }
+html[data-theme="bd"] .day-alert.race b { background: #ff7a1a; color: #111; }
+
+html[data-theme="crepuscule"] .view .day.alert-two-hard, html[data-theme="crepuscule"] .view .day.drop-over.drop-hard {
+  border-color: #ff6a3d; box-shadow: 0 0 0 1.5px #ff6a3d, 0 0 14px 3px rgba(255, 92, 40, .55), 0 0 32px 6px rgba(255, 60, 20, .25), inset 0 0 12px rgba(255, 90, 40, .25); }
+html[data-theme="crepuscule"] .day-alert { background: rgba(90, 20, 10, .7); color: #ffd2a8; border: 1px solid #ff6a3d;
+  box-shadow: 0 0 8px rgba(255, 92, 40, .6); font-family: "Cinzel", Georgia, serif; letter-spacing: .03em; }
+html[data-theme="crepuscule"] .day-alert b { background: radial-gradient(circle at 40% 35%, #ffd27a, #ff5a1f 60%, #a3200c); color: #2a0a04; }
+html[data-theme="crepuscule"] .day-alert.race { background: rgba(80, 50, 10, .7); color: #ffe2a8; border-color: #ffcf8a; }
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme="crepuscule"] .view .day.alert-two-hard { animation: ember 2.4s ease-in-out infinite; }
+  @keyframes ember { 50% { box-shadow: 0 0 0 1.5px #ff8a4d, 0 0 20px 5px rgba(255, 110, 40, .6), 0 0 40px 8px rgba(255, 60, 20, .3), inset 0 0 14px rgba(255, 90, 40, .3); } }
+}
+
+html[data-theme="toon"] .view .day.alert-two-hard, html[data-theme="toon"] .view .day.drop-over.drop-hard {
+  border: 4px solid #e63946; box-shadow: 6px 6px 0 #9b1d27; }
+html[data-theme="toon"] .day-alert { background: #e63946; color: #fff; border: 2.5px solid #23406b; box-shadow: 2px 2px 0 #23406b; font-weight: 700; }
+html[data-theme="toon"] .day-alert b { background: #fff; color: #e63946; }
+html[data-theme="toon"] .day-alert.race { background: #ffd43b; color: #23406b; }
+
+/* le coach écrit (réaction en tâche de fond) */
+.typing { display: inline-flex; align-items: center; gap: 8px; }
+.typing-dots { display: inline-flex; gap: 3px; }
+.typing-dots i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .35; }
+@media (prefers-reduced-motion: no-preference) {
+  .typing-dots i { animation: dot 1.2s infinite ease-in-out; }
+  .typing-dots i:nth-child(2) { animation-delay: .15s; } .typing-dots i:nth-child(3) { animation-delay: .3s; }
+  @keyframes dot { 0%, 60%, 100% { opacity: .3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+}
+html[data-theme="bd"] .typing { background: #fff; color: #111; border: 2.5px solid #111; border-radius: 12px; font-weight: 800; }
+html[data-theme="toon"] .typing { background: #fff; color: #23406b; border: 2.5px solid #23406b; border-radius: 14px; font-weight: 700; }
+html[data-theme="crepuscule"] .typing { color: #ffcf8a; font-family: "Cinzel", Georgia, serif; }
+
+/* bilan nutrition (fiche de retour) */
+.nutri { border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px 12px; margin: 0; display: grid; gap: 10px; min-width: 0; }
+.nutri legend { padding: 0 6px; }
+.nutri-live { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 6px; }
+.nutri-kpi { background: var(--surface-2); border-radius: 12px; padding: 7px 8px; display: grid; grid-template-columns: auto 1fr; align-items: baseline; column-gap: 4px; min-width: 0; }
+.nutri-kpi b { font-size: 1.35rem; font-variant-numeric: tabular-nums; }
+.nutri-kpi span { font-size: .78rem; color: var(--muted); }
+.nutri-kpi small { grid-column: 1 / -1; font-size: .72rem; color: var(--muted); line-height: 1.2; }
+.nutri-kpi.carbs.ok { background: var(--accent-soft); } .nutri-kpi.carbs.ok small { color: var(--accent); }
+.nutri-kpi.carbs.bas, .nutri-kpi.carbs.haut { background: var(--warn-soft); } .nutri-kpi.carbs.bas small, .nutri-kpi.carbs.haut small { color: var(--warn); }
+.nutri-meter { grid-column: 1 / -1; position: relative; height: 8px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+.nutri-meter .band { position: absolute; top: 0; bottom: 0; background: color-mix(in srgb, var(--accent) 28%, transparent); }
+.nutri-meter i { position: absolute; left: 0; top: 2px; bottom: 2px; border-radius: 99px; background: var(--accent); transition: width .2s; }
+.nutri-chosen { line-height: 1.35; }
+.nutri-fams { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.nutri-fams .chip { flex: 0 0 auto; gap: 6px; }
+.nutri-count { display: inline-grid; place-items: center; min-width: 19px; height: 19px; padding: 0 5px; border-radius: 99px; font-size: .72rem;
+  font-weight: 800; background: var(--accent); color: var(--accent-ink); }
+.chip.on .nutri-count { background: var(--accent-ink); color: var(--accent); }
+.nutri-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.nutri-item, .nutri-water { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-top: 1px solid var(--line); }
+.nutri-item:first-child { border-top: 0; }
+.nutri-item.on .ni-name { color: var(--accent); }
+.ni-txt { flex: 1 1 auto; min-width: 0; }
+.ni-name { font-weight: 600; font-size: .92rem; }
+.ni-meta { color: var(--muted); font-size: .78rem; }
+.ni-own { font-size: .78rem; display: inline-flex; gap: 4px; align-items: center; margin-top: 2px; }
+.ni-own input { width: 64px; padding: 2px 6px; min-height: 28px; }
+.ni-ml { display: inline-flex; align-items: center; gap: 4px; font-size: .8rem; color: var(--muted); }
+.ni-ml input { width: 72px; min-height: 34px; padding: 2px 6px; }
+.stepper { display: inline-flex; align-items: center; gap: 2px; flex: 0 0 auto; }
+.stepper button { width: 38px; height: 38px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink);
+  font: inherit; font-size: 1.25rem; font-weight: 700; line-height: 1; cursor: pointer; touch-action: manipulation; }
+.stepper button:disabled { opacity: .35; cursor: default; }
+.stepper output { min-width: 26px; text-align: center; font-weight: 800; font-variant-numeric: tabular-nums; }
+.nutri-dig { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+.nutri-dig button { display: grid; gap: 1px; padding: 6px 2px; min-height: 48px; }
+.nutri-dig button b { font-size: 1.05rem; } .nutri-dig button small { font-size: .66rem; line-height: 1.1; }
+.nutri-dig button.on.d4, .nutri-dig button.on.d5 { background: var(--bad-soft); color: var(--bad); }
+.nutri-syms { display: flex; flex-wrap: wrap; gap: 6px; }
+.nutri-syms .chip { min-height: 36px; }
+.nutri-comment { width: 100%; }
+@media (max-width: 360px) { .nutri-live { grid-template-columns: 1fr 1fr; } .nutri-kpi.carbs { grid-column: 1 / -1; } }
+html[data-theme="bd"] .nutri { border: 3px solid #111; background: #fffbe6; }
+html[data-theme="bd"] .nutri legend { background: #ffd21f; border: 2px solid #111; font-family: "Bangers", cursive; letter-spacing: 1px; color: #111; }
+html[data-theme="bd"] .nutri-kpi, html[data-theme="bd"] .stepper button { border: 2.5px solid #111; background: #fff; color: #111; box-shadow: 2px 2px 0 #111; }
+html[data-theme="bd"] .nutri-kpi b { font-family: "Bangers", cursive; font-size: 1.6rem; font-weight: 400; }
+html[data-theme="bd"] .nutri-meter { border: 2px solid #111; height: 12px; background: #fff; }
+html[data-theme="bd"] .nutri-meter i { background: #ff7a1a; }
+html[data-theme="crepuscule"] .nutri { border: 1.5px solid #b9a6e0; background: rgba(28, 22, 48, .45); }
+html[data-theme="crepuscule"] .nutri legend { color: #ffcf8a; font-family: "Cinzel", Georgia, serif; letter-spacing: .1em; }
+html[data-theme="crepuscule"] .nutri-kpi, html[data-theme="crepuscule"] .stepper button { background: rgba(48, 38, 82, .9); border-color: #8a7ab0; color: var(--ink); }
+html[data-theme="crepuscule"] .nutri-meter i { background: linear-gradient(90deg, #e0773c, #ffcf8a); }
+html[data-theme="toon"] .nutri { border: 3px solid #23406b; border-radius: 20px; background: #fff; }
+html[data-theme="toon"] .nutri-kpi, html[data-theme="toon"] .stepper button { border: 2.5px solid #23406b; background: #eef6ff; color: #1d3557; box-shadow: 0 3px 0 #23406b; }
+html[data-theme="toon"] .stepper button { border-radius: 14px; }
+html[data-theme="toon"] .nutri-meter { border: 2px solid #23406b; height: 12px; background: #fff; }
+html[data-theme="toon"] .nutri-meter i { background: #ffd43b; }
+
+/* carte « Nutrition à l'effort » (État) */
+.nutri-sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 6px 0 8px; }
+.nutri-sum div { background: var(--surface-2); border-radius: 12px; padding: 8px; display: grid; }
+.nutri-sum b { font-size: 1.2rem; } .nutri-sum small { color: var(--muted); font-size: .74rem; }
+.nutri-last { list-style: none; margin: 0 0 8px; padding: 0; }
+.nutri-last li { display: flex; flex-wrap: wrap; gap: 4px 10px; padding: 6px 0; border-top: 1px solid var(--line); font-size: .88rem; }
+.nutri-last li:first-child { border-top: 0; }
+.nutri-last .t { flex: 1 1 auto; } .nutri-last .g { font-weight: 800; font-variant-numeric: tabular-nums; }
+.nutri-last .dig.d4, .nutri-last .dig.d5 { color: var(--bad); font-weight: 700; } .nutri-last .dig.d1, .nutri-last .dig.d2 { color: var(--accent); }
+.nutri-last .sy { flex-basis: 100%; }
+.nutri-foods { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 6px; }
+.nutri-foods .label { flex-basis: 100%; font-size: .8rem; font-weight: 700; }
+.nutri-foods .chip { min-height: 30px; font-size: .82rem; cursor: default; }
+.nutri-foods.ko .chip { border-color: var(--bad); color: var(--bad); }
+html[data-theme="bd"] .nutri-sum div { border: 2.5px solid #111; background: #fff; }
+html[data-theme="toon"] .nutri-sum div { border: 2.5px solid #23406b; background: #eef6ff; }
+html[data-theme="crepuscule"] .nutri-sum div { background: rgba(48, 38, 82, .8); border: 1px solid #8a7ab0; }
+
+/* =====================================================================================
+   v0.38 : simulateur de course (#course) — temps de passage, « et si », profil, tronçons, plan nutrition
+   ===================================================================================== */
+.sim-link { display: inline-block; margin-top: 10px; text-decoration: none; }
+.sim-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
+.sim-grid > .card { min-width: 0; }
+.sim-headline { margin: 10px 0 8px; }
+.sim-headline .big { font-size: 2.4rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.sim-dur { font-size: 1.1rem; font-weight: 700; color: var(--muted); }
+.sim-scen button { display: grid; gap: 0; padding: 6px 4px; min-height: 58px; text-align: center; }
+.sim-scen button span { font-size: .78rem; }
+.sim-scen button b { font-size: 1.05rem; font-variant-numeric: tabular-nums; }
+.sim-scen button small { font-size: .68rem; color: var(--muted); }
+.sim-mode { margin-top: 4px; padding: 8px 10px; border-radius: 10px; background: var(--accent-soft); }
+.sim-mode.approx { background: var(--warn-soft); color: var(--ink); }
+.sim-mode a, .sim-gpx a { color: var(--accent); font-weight: 600; }
+.sim-warn { background: var(--warn-soft); color: var(--ink); border-left: 3px solid var(--warn); border-radius: 8px; padding: 6px 10px; margin: 6px 0; }
+.sim-whatif h3 { margin-bottom: 8px; }
+.sim-ctl { margin-bottom: 12px; }
+.sim-ctl .lbl, .sim-leg .lbl, .sim-nutri .lbl { font-weight: 700; font-size: .85rem; display: block; margin-bottom: 4px; }
+.sim-leg .lbl, .sim-nutri .lbl { display: inline; margin: 0; }
+.sim-ctl .seg { margin-bottom: 0; }
+.sim-ctl input[type="range"] { width: 100%; padding: 0; border: 0; background: transparent; accent-color: var(--accent); min-height: 32px; }
+.sim-range { display: flex; justify-content: space-between; }
+.sim-check { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .9rem; margin-bottom: 6px; cursor: pointer; }
+.sim-check input { width: 20px; height: 20px; accent-color: var(--accent); }
+.sim-target { display: flex; align-items: center; gap: 6px; }
+.sim-target input { width: 96px; text-align: center; font-weight: 800; font-variant-numeric: tabular-nums; padding: 8px; }
+.sim-target input[aria-invalid="true"] { border-color: var(--bad); }
+.sim-anchor { margin-top: 8px; }
+.elev { margin: 6px 0 0; }
+.elev-svg { display: block; width: 100%; height: auto; }
+/* v0.52.5 : profil redessiné : dégradé, repères discrets, point culminant annoté */
+.elev { --elev-ink: var(--accent); --elev-fill: var(--accent); --elev-dot: var(--surface); --elev-ravito: var(--elev-ink);
+  --elev-ring: var(--surface); }
+.elev-svg .grid { stroke: var(--line); stroke-width: 1; stroke-dasharray: 2 4; opacity: .8; }
+.elev-svg .tick { fill: var(--muted); font-size: 10.5px; font-variant-numeric: tabular-nums; }
+.elev-grad .s0 { stop-color: var(--elev-fill); stop-opacity: .34; }
+.elev-grad .s1 { stop-color: var(--elev-fill); stop-opacity: .03; }
+.elev-area { stroke: none; }
+.elev-line { fill: none; stroke: var(--elev-ink); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.elev-line.approx { stroke-dasharray: 6 4; }
+.elev-top text { fill: var(--ink); font-size: 10.5px; font-weight: 700; font-variant-numeric: tabular-nums;
+  paint-order: stroke; stroke: var(--surface); stroke-width: 3px; }
+.elev-mark .drop { stroke: var(--elev-ink); stroke-width: 1; stroke-dasharray: 1 3; opacity: .45; }
+.elev-mark .dot { fill: var(--elev-dot); stroke: var(--elev-ink); stroke-width: 2; transition: r .15s; }
+.elev-mark.ravito .dot { fill: var(--elev-ravito); stroke: var(--elev-ring); stroke-width: 2; }
+.elev-mark.eau .dot { stroke: var(--muted); stroke-width: 1.6; }
+.elev-svg .elev-mark circle.hit { fill: transparent; stroke: none; }
+.elev-mark .cutmark { fill: var(--warn); stroke: var(--surface); stroke-width: 1; }
+.elev-mark.cut.danger .cutmark { fill: var(--bad); }
+.elev-mark:hover .dot, .elev-mark:focus-visible .dot, .elev-mark.sel .dot { stroke-width: 2.5; }
+.elev-mark:hover .drop, .elev-mark.sel .drop { opacity: .9; }
+.elev-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 4px; }
+.elev-legend .lg { display: inline-block; width: 10px; height: 10px; margin-right: 5px; vertical-align: -1px; border-radius: 50%;
+  border: 2px solid var(--elev-ring); background: var(--elev-ravito); box-shadow: 0 0 0 1px var(--elev-ravito); }
+.elev-legend .lg.eau { border: 1.6px solid var(--muted); background: var(--surface); box-shadow: none; width: 7px; height: 7px; }
+.elev-legend .lg.cut { border: 0; box-shadow: none; border-radius: 1.5px; background: var(--warn); width: 7px; height: 7px; transform: rotate(45deg); }
+.sim-pass, .sim-secs, .sim-legs, .sim-climbs, .sim-mini, .sim-manual, .sim-terrain { list-style: none; margin: 0; padding: 0; }
+.sim-pt { padding: 8px 0; border-top: 1px solid var(--line); }
+.sim-pt:first-child { border-top: 0; }
+.sim-pt-main { display: flex; gap: 10px; align-items: baseline; }
+.sim-clock { font-weight: 800; font-variant-numeric: tabular-nums; min-width: 3.1em; }
+.sim-pt-name { font-weight: 600; }
+.sim-pt.repere .sim-pt-name { font-weight: 500; color: var(--muted); }
+.sim-pt-meta { margin-left: calc(3.1em + 10px); }
+.sim-cut { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 4px 0 0 calc(3.1em + 10px); font-size: .85rem; }
+.sim-cut.ok .badge { background: var(--accent-soft); color: var(--accent); }
+.sim-cut.juste .badge { background: var(--warn-soft); color: var(--warn); }
+.sim-cut.danger .badge { background: var(--bad-soft); color: var(--bad); }
+.sim-sec { padding: 10px 0; border-top: 1px solid var(--line); display: grid; gap: 4px; }
+.sim-sec:first-child { border-top: 0; }
+.sim-sec-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.sim-sec-title { font-weight: 700; }
+.badge.kind.montee { background: var(--warn-soft); color: var(--warn); }
+.badge.kind.descente { background: var(--accent-soft); color: var(--accent); }
+.sim-sec-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.sim-sec-kpis div { background: var(--surface-2); border-radius: 10px; padding: 6px 8px; display: grid; min-width: 0; }
+.sim-sec-kpis b { font-variant-numeric: tabular-nums; font-size: 1rem; overflow-wrap: anywhere; }
+.sim-sec-kpis small { font-size: .7rem; color: var(--muted); line-height: 1.15; }
+.sim-terrain { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: .8rem; color: var(--muted); }
+.sim-climbs li { padding: 7px 0; border-top: 1px solid var(--line); }
+.sim-climbs li:first-child { border-top: 0; }
+.sim-nutri .nutri-sum { margin-top: 8px; }
+.sim-legs { margin: 10px 0; }
+.sim-leg { padding: 9px 0; border-top: 1px solid var(--line); display: grid; gap: 3px; }
+.sim-leg:first-child { border-top: 0; }
+.sim-leg-head { display: flex; flex-wrap: wrap; gap: 2px 10px; align-items: baseline; }
+.sim-leg-kpis { display: flex; flex-wrap: wrap; gap: 2px 12px; }
+.sim-leg-kpis b { font-variant-numeric: tabular-nums; }
+.sim-print .card-head { align-items: center; }
+.sim-print-actions { margin-top: 0; }
+.sim-mini { margin-top: 8px; counter-reset: none; }
+.sim-mini li { display: flex; gap: 10px; padding: 6px 0; border-top: 1px dashed var(--line); font-size: .88rem; }
+.sim-mini li:first-child { border-top: 0; }
+.sim-mini-t { min-width: 0; }
+.sim-mini-d { display: block; color: var(--muted); font-size: .8rem; }
+.sim-manual li { display: grid; grid-template-columns: 1fr 80px auto; gap: 6px; margin: 6px 0; }
+.sim-manual input { padding: 8px 10px; }
+@media (min-width: 720px) {
+  .sim-sec { grid-template-columns: 210px minmax(0, 1fr); column-gap: 14px; }
+  .sim-sec > .sim-sec-head, .sim-sec > .sim-sec-title { grid-column: 1; }
+  .sim-sec > .sim-sec-kpis { grid-column: 2; grid-row: 1 / span 2; }
+  .sim-sec > .sim-terrain, .sim-sec > .small { grid-column: 2; }
+  .sim-legs { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; }
+  .sim-leg:nth-child(2) { border-top: 0; }
+}
+@media (min-width: 900px) {
+  .view[data-view="course"] .sim-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 20px; align-items: start; }
+  .view[data-view="course"] .sim-grid > .span2 { grid-column: 1 / -1; }
+  .sim-mini { columns: 2; column-gap: 28px; }
+  .sim-mini li { break-inside: avoid; }
+}
+/* thèmes */
+html[data-theme="bd"] .sim-headline .big, html[data-theme="bd"] .sim-clock { font-family: "Bangers", cursive; font-weight: 400; letter-spacing: 1px; }
+html[data-theme="bd"] .sim-headline .big { font-size: 2.8rem; }
+html[data-theme="bd"] .sim-sec-kpis div, html[data-theme="bd"] .sim-mode, html[data-theme="bd"] .sim-warn { border: 2.5px solid #111; background: #fff; }
+html[data-theme="bd"] .sim-mode.approx, html[data-theme="bd"] .sim-warn { background: #fff4d6; }
+html[data-theme="bd"] .elev { --elev-ink: #111; --elev-fill: #ff7a1a; --elev-dot: #fff; --elev-ravito: #ffd21f; --elev-ring: #111; }
+html[data-theme="bd"] .elev-line { stroke-width: 2.6; }
+html[data-theme="crepuscule"] .sim-headline .big { font-family: "Cinzel", Georgia, serif; text-shadow: 0 0 14px rgba(255,170,90,.45); }
+html[data-theme="crepuscule"] .sim-sec-kpis div, html[data-theme="crepuscule"] .sim-mode { background: rgba(28,22,48,.7); border: 1px solid #7d6ea6; }
+html[data-theme="crepuscule"] .sim-mode.approx, html[data-theme="crepuscule"] .sim-warn { background: rgba(255,207,138,.14); }
+html[data-theme="crepuscule"] .elev { --elev-fill: #ffb35c; }
+html[data-theme="toon"] .sim-headline .big { font-family: "Fredoka", sans-serif; color: #1d3557; }
+html[data-theme="toon"] .sim-sec-kpis div, html[data-theme="toon"] .sim-mode { border: 2.5px solid #23406b; background: #eef6ff; border-radius: 14px; }
+html[data-theme="toon"] .sim-mode.approx, html[data-theme="toon"] .sim-warn { background: #fff6cf; }
+html[data-theme="toon"] .elev { --elev-ink: #23406b; --elev-fill: #4dabf7; --elev-dot: #fff; --elev-ravito: #ffd43b; --elev-ring: #23406b; }
+html[data-theme="toon"] .elev-line { stroke-width: 2.6; }
+/* impression : seulement le plan de course */
+@media print {
+  .topbar, .tabs, .sim-print-actions { display: none !important; }
+  body, html { background: #fff !important; }
+  body::before, body::after { display: none !important; }
+  #view-course .sim-grid > :not(.sim-print) { display: none !important; }
+  #view-course .sim-print { box-shadow: none; border: 1px solid #999; transform: none !important; background: #fff; color: #000; }
+  main { padding: 0; max-width: none; }
+}
+
+/* v0.39 : réglages (ex-onglet Détails) en bas de la page Carrière */
+.career-top { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+.settings { margin-top: 28px; scroll-margin-top: 80px; }
+.settings-title { margin: 0 4px 12px; font-size: 1.15rem; }
+.settings > .card { margin-bottom: 14px; }
+html[data-theme="bd"] .settings-title { font-family: "Bangers", system-ui, sans-serif; letter-spacing: .04em; font-size: 1.6rem; }
+html[data-theme="crepuscule"] .settings-title { font-family: "Cinzel", serif; }
+html[data-theme="toon"] .settings-title { font-family: "Fredoka", system-ui, sans-serif; }
+@media (min-width: 900px) {
+  .view[data-view="carriere"] > .settings, .view[data-view="carriere"] > .career-top { column-span: all; }
+  .settings { column-count: 2; column-gap: 20px; }
+  .settings > .settings-title { column-span: all; }
+  .settings > .card { break-inside: avoid; }
+}
+
+/* v0.39 : simulateur — sections repliées, profil interactif */
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.btn.disabled { opacity: .55; pointer-events: none; }
+.linkish { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; }
+details.sim-fold > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding-right: 28px; position: relative; }
+details.sim-fold > summary::-webkit-details-marker { display: none; }
+details.sim-fold > summary h3 { margin: 0; }
+details.sim-fold > summary::after { content: ""; position: absolute; right: 4px; top: 50%; width: 9px; height: 9px; border: solid currentColor; border-width: 0 2px 2px 0; transform: translateY(-70%) rotate(45deg); transition: transform .2s; opacity: .7; }
+details.sim-fold[open] > summary::after { transform: translateY(-30%) rotate(-135deg); }
+details.sim-fold[open] > summary { margin-bottom: 10px; }
+details.sim-fold > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 6px; }
+.elev-svg.interactive { touch-action: pan-y; cursor: crosshair; -webkit-user-select: none; user-select: none; }
+.elev-cursor line { stroke: var(--ink); stroke-width: 1; opacity: .55; }
+.elev-cursor circle { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
+.elev-cursor rect { fill: var(--ink); opacity: .88; }
+.elev-cursor text { fill: var(--surface); font-size: 11px; font-variant-numeric: tabular-nums; }
+.elev-cursor text.c1 { font-weight: 700; }
+.elev-mark { cursor: pointer; }
+.elev-mark .hit { fill: transparent; stroke: none; }
+.elev-mark:focus { outline: none; }
+.elev-mark:focus-visible circle.dot, .elev-mark.sel circle.dot { r: 6; }
+.elev-readout { min-height: 1.4em; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.elev-info { margin-top: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); }
+.elev-info-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.elev-info-times { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; text-align: center; }
+.elev-info-times > div { padding: 6px 4px; border-radius: 8px; background: var(--surface-2); display: flex; flex-direction: column; }
+.elev-info-times > div.on { outline: 2px solid var(--accent); }
+.elev-info .cut-danger { color: var(--bad); } .elev-info .cut-juste { color: var(--warn); }
+html[data-theme="bd"] .elev-info { border: 3px solid #111; box-shadow: 4px 4px 0 #111; }
+html[data-theme="bd"] .elev-cursor rect { fill: #111; }
+html[data-theme="toon"] .elev-info { border: 3px solid #23406b; box-shadow: 0 4px 0 #23406b; }
+html[data-theme="crepuscule"] .elev-info { border-color: rgba(255, 179, 92, .45); }
+
+/* ---------- v0.40 : équipe d'agents (détails d'un message) et Œil du coach */
+:root { --ag-prevention: #c2255c; --ag-charge: #1971c2; --ag-nutrition: #e8590c; --ag-course: #2b8a3e; --ag-critic: #6741d9; }
+@media (prefers-color-scheme: dark) {
+  :root { --ag-prevention: #f783ac; --ag-charge: #74c0fc; --ag-nutrition: #ffa94d; --ag-course: #8ce99a; --ag-critic: #b197fc; }
+}
+html[data-theme="crepuscule"] { --ag-prevention: #ffa8c5; --ag-charge: #a5d8ff; --ag-nutrition: #ffc078; --ag-course: #b2f2bb; --ag-critic: #d0bfff; }
+.agent-av { --ag: var(--muted); display: inline-flex; align-items: center; justify-content: center; flex: none; border-radius: 50%;
+  width: 22px; height: 22px; font-size: 12px; line-height: 1; background: color-mix(in srgb, var(--ag) 18%, var(--surface));
+  border: 1.5px solid var(--ag); }
+.agent-av.md { width: 32px; height: 32px; font-size: 17px; }
+.agent-av.agent-prevention { --ag: var(--ag-prevention); } .agent-av.agent-charge { --ag: var(--ag-charge); }
+.agent-av.agent-nutrition { --ag: var(--ag-nutrition); } .agent-av.agent-course { --ag: var(--ag-course); }
+.agent-av.critic { --ag: var(--ag-critic); } .agent-av.coach { --ag: var(--accent); }
+.msg details.msg-details > summary { cursor: pointer; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; list-style: none; }
+.msg details.msg-details > summary::-webkit-details-marker { display: none; }
+.msg details.msg-details > summary .details-word { text-decoration: underline dotted; }
+.team-strip { display: inline-flex; align-items: center; gap: 0; }
+.team-strip .agent-av + .agent-av { margin-left: -5px; }
+.critic-chip { margin-left: 6px; font-size: .68rem; font-weight: 700; padding: 1px 6px; border-radius: 999px;
+  border: 1px solid var(--ag-critic); color: var(--ag-critic); background: color-mix(in srgb, var(--ag-critic) 10%, var(--surface)); }
+.critic-chip.warn { border-color: var(--warn); color: var(--warn); background: var(--warn-soft); }
+.team-trace { white-space: normal; margin-top: 8px; display: grid; gap: 8px; color: var(--ink); font-size: .8rem; }
+.team-line { font-weight: 700; }
+.team-why, .agent-why { color: var(--muted); }
+.agent-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.agent-row { display: flex; gap: 8px; align-items: flex-start; padding: 8px; border-radius: 12px; background: var(--surface-2);
+  border-left: 3px solid var(--ag, var(--line)); }
+.agent-row.agent-prevention { --ag: var(--ag-prevention); } .agent-row.agent-charge { --ag: var(--ag-charge); }
+.agent-row.agent-nutrition { --ag: var(--ag-nutrition); } .agent-row.agent-course { --ag: var(--ag-course); }
+.agent-body { min-width: 0; flex: 1; display: grid; gap: 3px; }
+.agent-head { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; }
+.risk-badge, .veto-badge { font-size: .66rem; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.risk-badge.medium { background: var(--warn-soft); color: var(--warn); }
+.risk-badge.high, .veto-badge { background: var(--bad-soft); color: var(--bad); }
+.agent-tools, .card-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.tool-chip { font: 600 .66rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; padding: 0 6px; border-radius: 6px; background: var(--surface);
+  border: 1px solid var(--line); color: var(--ink); overflow-wrap: anywhere; }
+.tool-chip i { font-style: normal; color: var(--muted); font-weight: 400; }
+.agent-foot { color: var(--muted); font-size: .72rem; }
+.critic-row { display: flex; gap: 8px; align-items: flex-start; padding: 8px; border-radius: 12px; border: 1px dashed var(--ag-critic); }
+.critic-row.warn { border-color: var(--warn); }
+.critic-reasons { margin: 4px 0 0; padding-left: 18px; color: var(--muted); }
+.team-guard { color: var(--muted); font-size: .74rem; }
+.trace-nodes { margin-top: 6px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.btn.eye-link { display: inline-block; margin-top: 8px; text-decoration: none; }
+.eye-card h3 { margin: 6px 0 8px; }
+.eye-card.locked h3 { color: var(--muted); }
+.eye-team { display: flex; gap: 6px; margin: 4px 0 10px; }
+.eye-card .xpbar { margin: 4px 0 6px; }
+.eye-card .row-actions { margin: 6px 0; }
+.eye-report { display: grid; gap: 12px; margin-top: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
+.eye-summary { margin: 0; font-size: 1rem; }
+.eye-report h4 { margin: 0 0 4px; font-size: .9rem; }
+.eye-prios ol { margin: 0; padding-left: 22px; display: grid; gap: 8px; }
+.eye-prios li::marker { font-weight: 800; color: var(--accent); }
+.eye-grid { display: grid; gap: 10px; grid-template-columns: 1fr; }
+@media (min-width: 700px) { .eye-grid { grid-template-columns: repeat(3, 1fr); } }
+.eye-sec ul { margin: 0; padding-left: 18px; font-size: .9rem; }
+.eye-sec p { margin: 0; font-size: .9rem; }
+.eye-sec { padding: 8px 10px; border-radius: 12px; background: var(--surface-2); }
+.eye-sec.good h4 { color: var(--accent); } .eye-sec.warn h4 { color: var(--warn); } .eye-sec.bad h4 { color: var(--bad); }
+.eye-reward { display: block; text-decoration: none; margin: 2px 0 4px; }
+html[data-theme="bd"] .agent-av, html[data-theme="bd"] .agent-row, html[data-theme="bd"] .eye-sec { border-color: #111; }
+html[data-theme="bd"] .agent-row { border: 2px solid #111; border-left-width: 6px; border-left-color: var(--ag); }
+html[data-theme="toon"] .agent-av { border-width: 2.5px; }
+html[data-theme="toon"] .agent-row, html[data-theme="toon"] .eye-sec { border: 2px solid var(--line); border-left: 5px solid var(--ag, var(--line)); }
+/* v0.40 : sections repliables du rapport, équipe dans Réglages › Application */
+details.eye-sec > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 6px; }
+details.eye-sec > summary::-webkit-details-marker { display: none; }
+details.eye-sec > summary::after { content: "▾"; margin-left: auto; color: var(--muted); transition: transform .15s; }
+details.eye-sec:not([open]) > summary::after { transform: rotate(-90deg); }
+details.eye-sec > summary h4 { margin: 0; }
+details.eye-sec[open] > summary { margin-bottom: 6px; }
+.eye-sec.measure h4 { color: var(--ag-charge); }
+.eye-history li { margin-bottom: 4px; }
+.agents-panel { margin-top: 6px; }
+.agents-panel > summary { cursor: pointer; list-style: none; }
+.agents-panel > summary::-webkit-details-marker { display: none; }
+.agents-panel > summary .v { text-decoration: underline dotted; }
+.agents-list { list-style: none; margin: 8px 0; padding: 0; display: grid; gap: 8px; }
+.agents-list li { display: flex; gap: 8px; align-items: flex-start; font-size: .84rem; }
+.agents-list li.off { opacity: .5; }
+.agents-who { display: grid; gap: 2px; min-width: 0; }
+.agents-role { display: block; }
+.agent-av.sm { width: 22px; height: 22px; font-size: 12px; }
+.tier-chip { font-size: .64rem; font-weight: 700; padding: 0 6px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+html[data-theme="bd"] .tier-chip { border-color: #111; color: #111; }
+.team-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.team-chip { --ag: var(--line); font-size: .68rem; font-weight: 600; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--ag);
+  background: color-mix(in srgb, var(--ag) 10%, var(--surface)); color: var(--ink); white-space: nowrap; }
+.team-chip.agent-prevention { --ag: var(--ag-prevention); } .team-chip.agent-charge { --ag: var(--ag-charge); }
+.team-chip.agent-nutrition { --ag: var(--ag-nutrition); } .team-chip.agent-course { --ag: var(--ag-course); }
+.team-chip.critic { --ag: var(--ag-critic); } .team-chip.critic.warn { --ag: var(--warn); } .team-chip.cost { color: var(--muted); }
+.agent-risks { margin: 0; padding-left: 16px; color: var(--bad); font-size: .74rem; }
+html[data-theme="bd"] .team-chip { border-width: 2px; border-color: #111; }
+html[data-theme="toon"] .team-chip { border-width: 2px; }
+
+/* v0.41 : première analyse de l'Œil du coach offerte */
+.eye-gift { margin: 8px 0 10px; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); border: 1px solid var(--accent); }
+.eye-free-done { margin: 16px 0 4px; }
+html[data-theme="bd"] .eye-gift { border: 3px solid #111; box-shadow: 3px 3px 0 #111; background: #ffd21f; color: #111; }
+html[data-theme="toon"] .eye-gift { border: 3px solid #23406b; box-shadow: 0 3px 0 #23406b; }
+
+/* v0.42 : séance validée automatiquement par la sortie synchronisée */
+.auto-valid { margin-top: 6px; padding: 6px 10px; border-radius: 10px; background: var(--accent-soft); color: var(--ink); }
+html[data-theme="bd"] .auto-valid { border: 2px solid #111; }
+html[data-theme="toon"] .auto-valid { border: 2px solid #23406b; }
+.auto-valid .type-check { margin-top: 3px; font-weight: 600; }
+.auto-valid .type-check.plus_facile, .auto-valid .type-check.plus_dur, .auto-valid .type-check.autre { color: var(--warn); }
+
+/* v0.44 : lier / délier une séance et une sortie */
+.link-panel { margin-top: 8px; }
+.link-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.link-item { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-align: left; padding: 8px 10px;
+  border-radius: var(--r-ctl, 10px); border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; font: inherit; }
+.link-item:hover:not(:disabled) { border-color: var(--accent); }
+.link-item.current { border-color: var(--accent); background: var(--accent-soft); cursor: default; }
+.link-item .li-sub { display: flex; flex-wrap: wrap; gap: 4px; }
+.link-item .chip { font-size: .78rem; }
+.link-item .chip.good { color: var(--accent); }
+.link-item .chip.warn { color: var(--warn); }
+html[data-theme="bd"] .link-item { border: 2px solid #111; box-shadow: 2px 2px 0 #111; }
+html[data-theme="toon"] .link-item { border: 2px solid #23406b; }
+
+/* =====================================================================================
+   v0.49 : la carrière se voit. Avatar du haut = vrai bouton (anneau d'XP, pastille « Niv. 7 »,
+   point qui pulse s'il y a du nouveau, bulle d'aide une seule fois) ; carte « Ma carrière » dans Aujourd'hui ;
+   « Mon volume maximum » dans Réglages.
+   ===================================================================================== */
+.topbar { position: sticky; }
+.me-btn { position: relative; flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 0;
+  text-decoration: none; color: inherit; border-radius: 14px; padding: 0 2px; -webkit-tap-highlight-color: transparent; }
+.me-btn[hidden] { display: none; }
+.me-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.me-ring { position: relative; width: 48px; height: 48px; display: block; }
+.me-ring .ring { position: absolute; inset: 0; display: block; }
+.ring-bg { fill: none; stroke: color-mix(in srgb, var(--ink) 14%, transparent); stroke-width: 3.5; }
+.ring-fg { fill: none; stroke: var(--accent); stroke-width: 3.5; stroke-linecap: round; transition: stroke-dashoffset .6s ease; }
+.me-av { position: absolute; left: 6px; top: 6px; width: 36px; height: 36px; border-radius: 50%; overflow: hidden;
+  background: var(--surface-2); display: block; }
+.me-av svg, .me-av img { display: block; width: 36px; height: 36px; border-radius: 50%; }
+.me-pill { margin-top: -9px; position: relative; z-index: 1; font-size: .66rem; font-weight: 800; line-height: 1;
+  padding: 3px 6px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); border: 2px solid var(--bg);
+  white-space: nowrap; }
+.me-dot { position: absolute; top: 0; right: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--bad);
+  border: 2px solid var(--bg); }
+.me-dot::after { content: ""; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid var(--bad);
+  animation: me-pulse 1.6s ease-out infinite; }
+@keyframes me-pulse { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(2.4); opacity: 0; } }
+@media (hover: hover) { .me-btn:hover .me-ring { transform: scale(1.05); } }
+.me-ring { transition: transform .15s ease; }
+.me-btn:active .me-ring { transform: scale(.95); }
+.me-hint { position: absolute; left: 10px; top: calc(100% + 8px); z-index: 7; max-width: min(300px, calc(100vw - 32px));
+  display: flex; align-items: flex-start; gap: 8px; padding: 10px 10px 10px 12px; border-radius: 12px; font-size: .88rem;
+  font-weight: 600; background: var(--ink); color: var(--bg); box-shadow: 0 6px 20px rgba(0,0,0,.18);
+  animation: me-hint-in .3s ease-out 1; }
+.me-hint::before { content: ""; position: absolute; left: 22px; top: -6px; width: 12px; height: 12px; background: inherit;
+  transform: rotate(45deg); border-radius: 2px; }
+.me-hint-x { font: inherit; font-size: 1.1rem; line-height: 1; background: none; border: 0; color: inherit; cursor: pointer;
+  padding: 0 2px; opacity: .8; min-width: 24px; min-height: 24px; }
+@keyframes me-hint-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .me-dot::after, .me-hint { animation: none; }
+  .ring-fg, .me-ring { transition: none; }
+}
+
+/* carte « Ma carrière » (Aujourd'hui) */
+a.card.career-card, .career-card { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; text-decoration: none;
+  color: inherit; padding-top: 12px; padding-bottom: 12px; }
+.career-card .cc-av { display: block; width: 52px; height: 52px; border-radius: 50%; overflow: hidden;
+  box-shadow: 0 0 0 3px var(--accent); }
+.career-card .cc-av svg, .career-card .cc-av img { display: block; width: 52px; height: 52px; border-radius: 50%; }
+.cc-main { display: grid; gap: 4px; min-width: 0; }
+.cc-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+.cc-head .eyebrow { margin: 0; }
+.cc-lvl { font-weight: 800; }
+.career-card .xpbar { height: 8px; display: block; }
+.cc-tro { display: grid; grid-template-columns: auto auto 1fr auto; align-items: center; gap: 6px; font-size: .88rem; min-width: 0; }
+.cc-tro .medal { width: 18px; height: 18px; }
+.cc-t { font-weight: 600; white-space: nowrap; }
+.cc-p { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cc-ev { display: block; color: var(--muted); }
+.cc-go { font-size: 1.6rem; color: var(--muted); line-height: 1; }
+
+/* « Mon volume maximum » (Réglages) */
+.week-max .wm-now { margin: 4px 0; }
+.wm-form { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 10px 0 6px; align-items: end; }
+.wm-form .btn { grid-column: 1 / -1; }
+.wm-f { display: grid; gap: 3px; min-width: 0; }
+.wm-f input { padding: 10px; }
+@media (min-width: 560px) { .wm-form { grid-template-columns: repeat(3, minmax(0, 1fr)) auto; } .wm-form .btn { grid-column: auto; } }
+
+/* thèmes */
+html[data-theme="bd"] .ring-bg { stroke: #111; stroke-width: 6; }
+html[data-theme="bd"] .ring-fg { stroke: #ffd21f; stroke-width: 4; stroke-linecap: butt; }
+html[data-theme="bd"] .me-av { box-shadow: 0 0 0 2px #111; }
+html[data-theme="bd"] .me-pill { background: #ffd21f; color: #111; border: 2px solid #111; font-family: "Bangers", cursive;
+  font-weight: 400; font-size: .85rem; letter-spacing: .5px; transform: rotate(-4deg); box-shadow: 2px 2px 0 #111; }
+html[data-theme="bd"] .me-dot { border-color: #111; }
+html[data-theme="bd"] .me-hint { background: #fff; color: #111; border: 3px solid #111; box-shadow: 4px 4px 0 #111; font-weight: 800; }
+html[data-theme="bd"] .me-hint::before { border-left: 3px solid #111; border-top: 3px solid #111; top: -8px; }
+html[data-theme="bd"] .career-card .cc-av { box-shadow: 0 0 0 3px #111, 0 0 0 6px #ffd21f; }
+html[data-theme="bd"] .cc-lvl { font-family: "Bangers", cursive; font-weight: 400; font-size: 1.25rem; letter-spacing: .5px; }
+html[data-theme="crepuscule"] .ring-bg { stroke: rgba(20,14,36,.6); }
+html[data-theme="crepuscule"] .ring-fg { stroke: #ffcf8a; filter: drop-shadow(0 0 3px rgba(255,170,90,.8)); }
+html[data-theme="crepuscule"] .me-pill { background: linear-gradient(#e0773c, #a3401c); color: #fff; border: 1.5px solid #ffe0a0;
+  font-family: "Cinzel", Georgia, serif; font-weight: 900; }
+html[data-theme="crepuscule"] .me-hint { background: #fff5e0; color: #2e2648; }
+html[data-theme="crepuscule"] .career-card .cc-av { box-shadow: 0 0 0 2px #ffcf8a, 0 0 14px rgba(255,170,90,.55); }
+html[data-theme="crepuscule"] .cc-lvl { font-family: "Cinzel", Georgia, serif; font-weight: 900; color: #fff5e0; }
+html[data-theme="toon"] .ring-bg { stroke: #23406b; stroke-width: 6; }
+html[data-theme="toon"] .ring-fg { stroke: #ffd43b; stroke-width: 3.5; }
+html[data-theme="toon"] .me-pill { background: #ff9f1c; color: #1d3557; border: 2.5px solid #23406b; box-shadow: 0 2px 0 #23406b; font-weight: 700; }
+html[data-theme="toon"] .me-hint { background: #fff; color: #1d3557; border: 3px solid #23406b; box-shadow: 0 4px 0 #23406b; }
+html[data-theme="toon"] .me-hint::before { border-left: 3px solid #23406b; border-top: 3px solid #23406b; top: -8px; }
+html[data-theme="toon"] .career-card .cc-av { box-shadow: 0 0 0 3px #23406b, 0 0 0 6px #ffd43b; }
+
+/* v0.50 : FC cible sur les séances, « Mes zones », « Ma semaine », récap de la semaine */
+.session-target { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: .9rem; margin: -2px 0 8px;
+                  font-variant-numeric: tabular-nums; }
+.session-target .tgt-note { flex-basis: 100%; }
+.tgt-zone { display: inline-block; min-width: 2.4em; text-align: center; padding: 1px 6px; border-radius: 999px;
+            background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: .78rem; }
+.zones-vals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 8px 0; }
+.zone-val { display: grid; gap: 2px; min-width: 0; }
+.zv b { font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+.src { display: inline-block; font-size: .72rem; font-weight: 700; padding: 1px 6px; border-radius: 999px;
+       background: var(--surface-2); color: var(--muted); white-space: nowrap; }
+.src-saisie { background: var(--accent-soft); color: var(--accent); }
+.src-strava { background: var(--warn-soft); color: var(--warn); }
+.zones-table { width: 100%; border-collapse: collapse; margin: 6px 0 8px; }
+.zones-table caption { text-align: left; padding-bottom: 4px; }
+.zones-table th, .zones-table td { padding: 6px 4px; border-top: 1px solid var(--line); text-align: left; }
+.zones-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.zones-paces { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+.pace-chip { border: 1px solid var(--line); border-radius: 10px; padding: 4px 8px; background: var(--surface-2); }
+.zones-targets summary { cursor: pointer; color: var(--accent); font-weight: 600; min-height: 32px; display: flex; align-items: center; }
+.zones-targets ul { margin: 4px 0 8px; padding-left: 18px; }
+.week-start .ws-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 8px 0 6px; }
+.week-start select { font: inherit; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line);
+                     background: var(--surface); color: var(--ink); }
+.recap-btn { margin-top: 8px; }
+.recap h2 { margin: 0 0 4px; }
+.recap-sec h3 { font-size: .98rem; margin: 12px 0 4px; }
+.recap-sec ul { margin: 0; padding-left: 18px; }
+.recap-sec li { margin: 3px 0; }
+.recap-alert { color: var(--warn); font-weight: 600; }
+
+/* v0.51 : ressenti de fin de semaine (récap) */
+.week-feeling { display: grid; gap: 8px; }
+.week-feeling .feel-row { display: grid; grid-template-columns: 6.5em 1fr; align-items: center; gap: 2px 8px; }
+.week-feeling .feel-scale { display: flex; gap: 6px; flex-wrap: wrap; }
+.week-feeling .feel-hint { grid-column: 2; }
+.week-feeling .feel-dot { font: inherit; font-weight: 600; width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.week-feeling .feel-dot.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.week-feeling .feel-note { width: 100%; box-sizing: border-box; }
+.week-feeling .btn { justify-self: start; }

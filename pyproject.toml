@@ -1,0 +1,50 @@
+# Outils de qualité (v0.31). L'application s'installe avec requirements.txt ; ce fichier ne sert qu'aux outils.
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+extend-exclude = ["experiments", "eval"]
+
+[tool.ruff.lint]
+# erreurs (F, E9), imports triés (I), bugs probables (B), modernisation (UP), simplifications (SIM, C4)
+select = ["F", "E9", "I", "B", "UP", "SIM", "C4"]
+ignore = [
+  "B008",   # valeurs par défaut construites (dataclasses figées) : voulu
+  "B023",   # fermetures appelées dans la boucle même : vérifié, faux positifs
+  "SIM105", # try/except/pass explicite plus lisible pour des débutants que contextlib.suppress
+  "SIM108", # ternaires imposés : pas toujours plus clairs
+  "B905",   # zip(x, x[1:]) : la longueur différente est voulue
+  "UP042",  # str + Enum : StrEnum change str(), les messages en dépendent
+  "C408",   # dict(a=1) accepté dans les tests
+  "SIM117", # with imbriqués asynchrones plus lisibles
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["coach", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+# Couverture de code (pytest-cov). Lancer : python -m pytest --cov  (voir docs/tests.md)
+[tool.coverage.run]
+source = ["coach"]
+branch = true
+omit = [
+  # points d'entrée en ligne de commande : de la plomberie argparse/print, testée à la main
+  "coach/*/__main__.py",
+  "coach/demo.py",
+  "coach/pacer/cli.py",
+  # OAuth de bureau Google (ouvre un navigateur) : non exécutable en test
+  "coach/adapters/google_auth.py",
+  "coach/web/static/*",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+precision = 1
+exclude_also = [
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "raise NotImplementedError",
+  "\\.\\.\\.$",
+]

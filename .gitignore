@@ -1,0 +1,31 @@
+# secrets et données personnelles : jamais dans git
+deploy/app.env
+*.env
+data/athletes/
+experiments/strava_perso/*.json
+*.db
+*.db-*
+backups/
+avatars/
+# artefacts
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.coverage
+*.zip
+node_modules/
+frontend/dist/
+.venv/
+.DS_Store
+data/races/*.gpx
+# interface React construite (npm run build dans frontend/, fait par Docker et la CI)
+coach/web/static/app/
+deploy/autodeploy.log*
+deploy/.autodeploy.lock
+deploy/invite.env
+coverage.xml
+htmlcov/
+frontend/coverage/
+e2e/test-results/
+e2e/playwright-report/

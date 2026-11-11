@@ -1,0 +1,3 @@
+# v0.21 : dictée transcrite sur le serveur (Whisper, CPU, sans service externe). Optionnel.
+faster-whisper>=1.1,<2
+av>=11,<16          # PyAV 16+ casse le décodage de faster-whisper 1.2 (argument metadata_errors retiré)

@@ -1,0 +1,91 @@
+# Intégration continue (v0.31) : à chaque push, lint + tests. Rien n'est déployé tant que c'est rouge.
+# v0.50 : couverture de code mesurée (backend et frontend, seuils minimaux) et tests d'interface Playwright (e2e/).
+name: CI
+on:
+  push:
+  pull_request:
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check coach tests e2e
+      # couverture (lignes + branches) : échoue sous 93 % (niveau atteint en v0.50 : 94 %)
+      - run: python -m pytest -q --cov --cov-report=term --cov-report=xml --cov-fail-under=93
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-coverage
+          path: coverage.xml
+          if-no-files-found: ignore
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npx tsc --noEmit
+      # tests unitaires et de composants, avec seuils de couverture (vite.config.ts › test.coverage.thresholds)
+      - run: npx vitest run --coverage
+      - run: npm run build
+  # v0.50 : parcours principaux dans Chromium (téléphone et ordinateur), contre un serveur de test déterministe
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: |
+            frontend/package-lock.json
+            e2e/package-lock.json
+      - run: pip install -r requirements.txt
+      - name: Construire l'interface
+        working-directory: frontend
+        run: npm ci && npm run build
+      - name: Installer Playwright et Chromium
+        working-directory: e2e
+        run: npm ci && npx tsc --noEmit -p . && npx playwright install --with-deps chromium
+      - name: Tests d'interface
+        working-directory: e2e
+        env:
+          PYTHON: python
+        run: npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            e2e/playwright-report
+            e2e/test-results
+          if-no-files-found: ignore
+  # v0.35 : si tout est vert sur main, la branche « deploy » avance d'elle-même ; le serveur la surveille
+  # (deploy/autodeploy.sh, toutes les 5 min) et ne s'installe donc jamais une version qui casse les tests.
+  promote:
+    needs: [backend, frontend, e2e]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git push --force origin HEAD:refs/heads/deploy

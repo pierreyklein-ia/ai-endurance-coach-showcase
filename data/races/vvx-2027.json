@@ -1,0 +1,67 @@
+{
+ "race": "Volvic Volcanic Experience (VVX) — Expérience Terres Volcaniques by Kiprun 85 km",
+ "aliases": ["vvx", "volvic", "volcanic", "experience", "terres", "volcaniques", "terra", "volcana", "kiprun", "85"],
+ "year": 2027,
+ "date": "2027-05-07",
+ "official_km": 85,
+ "official_dplus": 2750,
+ "official_dminus": 2750,
+ "start_local": "2027-05-07T06:00:00+02:00",
+ "start_place": "Volvic, site du Goulet",
+ "lat": 45.872,
+ "lon": 3.04,
+ "time_limit_h": 17.5,
+ "time_limit_note": "17 h 30 : barrière horaire de l'édition 2025 (ITRA), à confirmer pour 2027",
+ "gpx_file": "vvx-2027.gpx",
+ "relay_split": [{"km": 42.5, "dplus": 1550}, {"km": 43.5, "dplus": 1190}],
+ "terrain": {"paths": 0.76, "tracks": 0.17, "road": 0.07, "source": "ITRA 2025 (83,85 km, +2711/−2711, 6 ravitaillements)"},
+ "track_url": "https://tracedetrail.fr/fr/trace/266732",
+ "track_note": "Trace 2025 sur Trace de Trail : usage personnel uniquement (CGU), et le règlement de la course interdit de diffuser les traces. Le GPX n'est jamais versionné ni partagé : l'athlète le télécharge pour lui et le dépose dans l'application.",
+ "sources": [
+  {"what": "page officielle 2027 (85 km annoncés, 86 km dans le texte, 2750 m D+, départ vendredi 7 mai 6 h au Goulet, 7 ravitaillements avec km et GPS, relais 42,5 km / 1550 m D+ puis 43,5 km / 1190 m D+)",
+   "url": "https://www.volvic-vvx.com/evenements/experience-terra-volcana-trail-80km", "edition": 2027, "checked": "2026-11-02"},
+  {"what": "règlement 2026 (84 km) : barrières horaires, ravitaillements, matériel obligatoire", "edition": 2026, "checked": "2026-11-02"},
+  {"what": "fiche ITRA 2025 : 83,85 km, +2711/−2711, barrière 17 h 30, 6 ravitaillements, 76 % sentiers / 17 % pistes / 7 % route", "edition": 2025, "checked": "2026-11-02"},
+  {"what": "résultats VVX 2026 × cotes ITRA (pronostic du 23/10/2026) : temps × score / 1000 ≈ 5,617 h", "edition": 2026, "checked": "2026-10-23"}
+ ],
+ "altitude_note": "Altitudes des points approximatives (cartes), sauf le sommet du Puy de Dôme (1465 m) : à remplacer par celles du GPX.",
+ "points": [
+  {"name": "Départ — Volvic, site du Goulet", "km": 0, "alt": 510, "alt_approx": true, "services": []},
+  {"name": "Chut", "km": 14, "alt": 950, "alt_approx": true, "services": ["ravito"], "lat": 45.843920, "lon": 2.939688, "stop_min": 1.5},
+  {"name": "Col Gouttes / Chaumont", "km": 24, "alt": 1140, "alt_approx": true, "services": ["ravito"], "lat": 45.824557, "lon": 2.963109, "stop_min": 1.5},
+  {"name": "Pied du Puy de Dôme (estimé)", "km": 34.5, "alt": 1080, "alt_approx": true, "estimate": true, "services": [],
+   "note": "point estimé pour le profil approximatif : début de la montée finale du Puy de Dôme (par le Puy des Gouttes et le Puy de la Coquille)"},
+  {"name": "Puy de Dôme (sommet)", "km": 37, "alt": 1465, "services": ["ravito"], "lat": 45.770892, "lon": 2.963181, "stop_min": 3,
+   "note": "sommet à 1465 m"},
+  {"name": "Barrière de péage Puy-de-Dôme", "km": 43, "alt": 880, "alt_approx": true, "services": ["ravito"], "lat": 45.770089, "lon": 2.979789, "stop_min": 1.5,
+   "cutoff": {"clock": "14:00", "edition": 2026, "approx": true, "label": "14 h 00 (2026 : km 41, route d'accès au Puy de Dôme)"}},
+  {"name": "Col Gouttes / Chaumont (point d'eau)", "km": 53, "alt": 1100, "alt_approx": true, "services": ["eau"], "stop_min": 0.5},
+  {"name": "Tenuzet", "km": 60, "alt": 800, "alt_approx": true, "services": ["ravito"], "stop_min": 1.5, "note": "sans public",
+   "cutoff": {"clock": "19:25", "edition": 2026, "approx": true, "label": "19 h 25 (2026 : km 58)"}},
+  {"name": "Manoir de Veygoux", "km": 74, "alt": 700, "alt_approx": true, "services": ["ravito"], "lat": 45.903796, "lon": 2.985421, "stop_min": 3,
+   "cutoff": {"clock": "22:00", "edition": 2026, "approx": true, "label": "22 h 00 (2026 : km 71,5, Manoir de Veygoux)"}},
+  {"name": "Château de Tournoël (repère 2026)", "km": 81.5, "alt": 620, "alt_approx": true, "estimate": true, "services": [],
+   "cutoff": {"clock": "23:30", "edition": 2026, "approx": true, "label": "23 h 30 (2026 : km 80,5, Château de Tournoël)"}},
+  {"name": "Arrivée — Volvic", "km": 85, "alt": 510, "alt_approx": true, "services": []}
+ ],
+ "cutoff_note": "Barrières horaires de l'édition 2026 (84 km), à confirmer pour 2027, rapportées au lieu 2027 le plus proche (km approximatif). Le même règlement mentionne aussi 12 h 45 au sommet du Puy de Dôme (km 35,5) : information contradictoire, non retenue.",
+ "aid_food": {
+  "edition": 2026,
+  "solid": ["fromage", "charcuterie", "pate_fruits", "pain_epices", "fruits", "quatre_quarts", "fruits_secs", "biscuits_sales"],
+  "liquid": ["boisson_sucree", "eau", "eau_gazeuse"],
+  "sometimes": ["cafe", "soupe", "eau_chaude"],
+  "label": "fromage, charcuterie, pâte de fruits, pain d'épices, fruits, quatre-quarts, fruits secs, biscuits salés ; boisson sucrée, eau plate et gazeuse ; parfois café, soupe, eau chaude"
+ },
+ "mandatory": ["réserve d'eau de 0,5 L minimum", "un produit énergétique", "gobelet réutilisable (pas de gobelets aux ravitos)"],
+ "itra_calibration": {"k_h": 5.617, "edition": 2026, "note": "temps (h) × score ITRA / 1000 ≈ 5,617 sur la VVX 2026 (20 coureurs vérifiés)"},
+ "benchmarks_2026": [
+  {"rank": 1, "time": "6:40:41"}, {"rank": 10, "time": "7:47:10"}, {"rank": 25, "time": "8:17:46"},
+  {"rank": 40, "time": "8:43:41"}, {"rank": 50, "time": "9:00:48"}, {"rank": 60, "time": "9:11:10"}, {"rank": 65, "time": "9:21:35"}
+ ],
+ "forecast_default": {
+  "median_h": 9.25, "lo_h": 8.8333, "hi_h": 9.8333,
+  "itra_effective": 605, "itra_range": [585, 640],
+  "source": "pronostic retenu (v5, 23/10/2026) : médiane ~9 h 15, fourchette à 80 % 8 h 50 – 9 h 50, score ITRA effectif ~605 (585-640)",
+  "road_check": "85 km roulants ≈ 3,0 à 3,2 × le temps marathon"
+ }
+}

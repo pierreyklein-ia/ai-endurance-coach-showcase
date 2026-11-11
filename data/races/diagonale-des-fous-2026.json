@@ -1,0 +1,282 @@
+{
+ "race": "Diagonale des Fous",
+ "year": 2026,
+ "official_km": 180.81,
+ "official_dplus": 10191,
+ "official_dminus": 10153,
+ "start_local": "2026-10-15T22:00:00+04:00",
+ "time_limit_h": 66,
+ "gpx_file": "diagonale-des-fous-2026.gpx",
+ "source": "tracedetrail.fr/fr/trace/322259 (GPX fourni par l'athlète ; points relevés sur la page) — usage personnel",
+ "points": [
+  {
+   "name": "Saint-Pierre - Ravine Blanche",
+   "km": 0,
+   "alt": 7,
+   "services": []
+  },
+  {
+   "name": "Bassin Plat",
+   "km": 6.6,
+   "alt": 131,
+   "services": []
+  },
+  {
+   "name": "Domaine Vidot",
+   "km": 14.1,
+   "alt": 649,
+   "services": [
+    "assistance"
+   ]
+  },
+  {
+   "name": "Notre Dame de la Paix",
+   "km": 33.4,
+   "alt": 1686,
+   "services": [
+    "ravito_chaud",
+    "secours"
+   ]
+  },
+  {
+   "name": "Nez de Boeuf",
+   "km": 45.4,
+   "alt": 2023,
+   "services": [
+    "ravito_chaud",
+    "secours"
+   ]
+  },
+  {
+   "name": "Chalet des Pâtres",
+   "km": 51.1,
+   "alt": 1685,
+   "services": []
+  },
+  {
+   "name": "Mare à Boue",
+   "km": 55.7,
+   "alt": 1604,
+   "services": [
+    "ravito",
+    "medical",
+    "secours"
+   ]
+  },
+  {
+   "name": "Coteau Kerveguen",
+   "km": 65.2,
+   "alt": 2187,
+   "services": [
+    "controle",
+    "eau"
+   ]
+  },
+  {
+   "name": "Croisée Coteau Kerveguen",
+   "km": 67.7,
+   "alt": 2475,
+   "services": [
+    "controle",
+    "secours"
+   ]
+  },
+  {
+   "name": "Int. Cap Anglais",
+   "km": 70.6,
+   "alt": 2154,
+   "services": []
+  },
+  {
+   "name": "Gîte de Bélouve",
+   "km": 76.5,
+   "alt": 1502,
+   "services": [
+    "controle",
+    "eau"
+   ]
+  },
+  {
+   "name": "Hell-Bourg",
+   "km": 80.7,
+   "alt": 995,
+   "services": [
+    "base_vie",
+    "medical",
+    "ravito_chaud"
+   ]
+  },
+  {
+   "name": "Parking Bras Marrons",
+   "km": 84.4,
+   "alt": 745,
+   "services": []
+  },
+  {
+   "name": "Ilet Mare d'Affouche",
+   "km": 86.1,
+   "alt": 896,
+   "services": []
+  },
+  {
+   "name": "Grand Sable / Plaine des Merles",
+   "km": 87.4,
+   "alt": 1051,
+   "services": []
+  },
+  {
+   "name": "Int. Bélier / Col de Fourche",
+   "km": 93.3,
+   "alt": 1775,
+   "services": []
+  },
+  {
+   "name": "Plaine des Merles",
+   "km": 93.9,
+   "alt": 1801,
+   "services": [
+    "ravito",
+    "medical",
+    "secours"
+   ]
+  },
+  {
+   "name": "Départ Sentier Scout",
+   "km": 96.1,
+   "alt": 1642,
+   "services": [
+    "assistance"
+   ]
+  },
+  {
+   "name": "La Plaque",
+   "km": 102.4,
+   "alt": 907,
+   "services": []
+  },
+  {
+   "name": "Ilet à Bourse",
+   "km": 104.5,
+   "alt": 897,
+   "services": []
+  },
+  {
+   "name": "Grand Place Les Bas",
+   "km": 107.8,
+   "alt": 666,
+   "services": [
+    "ravito",
+    "medical",
+    "secours"
+   ]
+  },
+  {
+   "name": "Roche Ancrée",
+   "km": 111.4,
+   "alt": 566,
+   "services": []
+  },
+  {
+   "name": "Roche Plate",
+   "km": 116.3,
+   "alt": 1256,
+   "services": [
+    "controle",
+    "ravito"
+   ]
+  },
+  {
+   "name": "La Brèche",
+   "km": 118.9,
+   "alt": 1252,
+   "services": []
+  },
+  {
+   "name": "Ti Col Maïdo",
+   "km": 122.3,
+   "alt": 2006,
+   "services": []
+  },
+  {
+   "name": "Maïdo - Tête Dure",
+   "km": 123.9,
+   "alt": 1915,
+   "services": [
+    "ravito_chaud",
+    "medical",
+    "secours"
+   ]
+  },
+  {
+   "name": "Ilet Savannah",
+   "km": 140.5,
+   "alt": 133,
+   "services": [
+    "base_vie",
+    "medical",
+    "ravito_chaud"
+   ]
+  },
+  {
+   "name": "Chemin Ratinaud",
+   "km": 147.9,
+   "alt": 437,
+   "services": [
+    "ravito"
+   ]
+  },
+  {
+   "name": "La Résidence Grande Montagne",
+   "km": 154.0,
+   "alt": 47,
+   "services": []
+  },
+  {
+   "name": "La Possession",
+   "km": 155.2,
+   "alt": 23,
+   "services": [
+    "assistance",
+    "medical",
+    "ravito_chaud"
+   ]
+  },
+  {
+   "name": "Grande Chaloupe",
+   "km": 164.5,
+   "alt": 9,
+   "services": [
+    "assistance",
+    "ravito_chaud"
+   ]
+  },
+  {
+   "name": "Saint-Bernard",
+   "km": 169.0,
+   "alt": 455,
+   "services": []
+  },
+  {
+   "name": "Colorado",
+   "km": 173.8,
+   "alt": 687,
+   "services": [
+    "assistance",
+    "ravito_chaud",
+    "secours"
+   ]
+  },
+  {
+   "name": "Belvédère de La Vigie",
+   "km": 177.8,
+   "alt": 337,
+   "services": []
+  },
+  {
+   "name": "Arrivée Saint-Denis",
+   "km": 180.8,
+   "alt": 45,
+   "services": []
+  }
+ ]
+}

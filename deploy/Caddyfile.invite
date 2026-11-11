@@ -1,0 +1,16 @@
+# v0.46 : utilisé à la place de Caddyfile quand l'espace invité est actif (docker-compose.invite.yml).
+{$DOMAIN} {
+	encode gzip
+	reverse_proxy app:8000
+	header {
+		Strict-Transport-Security "max-age=31536000"
+	}
+}
+
+invite.{$DOMAIN} {
+	encode gzip
+	reverse_proxy invite:8000
+	header {
+		Strict-Transport-Security "max-age=31536000"
+	}
+}

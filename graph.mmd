@@ -1,0 +1,50 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	triage(triage)
+	ack(ack)
+	emergency(emergency)
+	distress(distress)
+	extract(extract)
+	evidence(evidence)
+	coach(coach)
+	guard(guard)
+	fallback(fallback)
+	confirm(confirm)
+	calendar(calendar)
+	route(route)
+	specialist(specialist)
+	team(team)
+	critic(critic)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> triage;
+	coach -.-> critic;
+	coach -.-> guard;
+	confirm --> calendar;
+	critic -.-> coach;
+	critic -.-> guard;
+	emergency --> calendar;
+	evidence --> route;
+	extract --> evidence;
+	fallback --> calendar;
+	guard -.-> coach;
+	guard -.-> confirm;
+	guard -.-> fallback;
+	route -.-> specialist;
+	route -.-> team;
+	specialist --> team;
+	team --> coach;
+	triage -.-> ack;
+	triage -.-> distress;
+	triage -.-> emergency;
+	triage -.-> extract;
+	ack --> __end__;
+	calendar --> __end__;
+	distress --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

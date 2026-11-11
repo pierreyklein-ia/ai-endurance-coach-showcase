@@ -1,0 +1,4 @@
+# Outils de développement et de test (v0.50). L'application s'installe avec requirements.txt.
+-r requirements.txt
+ruff
+pytest-cov>=5

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#12805c" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c1210" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Coach">
+  <title>AI Endurance Coach</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/static/icon-180.png">
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <!-- Connexion -->
+  <section id="login" class="login" hidden>
+    <img src="/static/icon.svg" alt="" class="login-logo">
+    <h1>AI Endurance Coach</h1>
+    <p class="muted">Entre ton code d'accès.</p>
+    <form id="login-form" class="login-form">
+      <input id="passcode" type="password" autocomplete="current-password" placeholder="Code d'accès" required>
+      <button type="submit" class="btn primary">Entrer</button>
+      <p id="login-error" class="error" role="alert"></p>
+    </form>
+  </section>
+
+  <!-- Application -->
+  <div id="app" class="app" hidden>
+    <header class="topbar">
+      <a id="me-avatar" class="me-avatar" href="#carriere" aria-label="Ma carrière" hidden></a>
+      <div class="topbar-main">
+        <div id="race-name" class="race-name"></div>
+        <div id="race-sub" class="race-sub"></div>
+      </div>
+      <div id="race-countdown" class="countdown"></div>
+    </header>
+
+    <main id="main">
+      <section id="view-onboarding" class="view" data-view="onboarding" hidden></section>
+      <section id="view-aujourdhui" class="view" data-view="aujourdhui"></section>
+      <section id="view-semaine" class="view" data-view="semaine" hidden></section>
+      <section id="view-coach" class="view view-chat" data-view="coach" hidden>
+        <div id="chat-list" class="chat-list" aria-live="polite"></div>
+        <div id="chat-quick" class="chat-quick" hidden>
+          <button class="chip" data-quick="oui">Oui</button>
+          <button class="chip" data-quick="non">Non</button>
+        </div>
+        <form id="chat-form" class="chat-form">
+          <div id="dict-bar" class="dict-bar" hidden>
+            <span class="rec-dot" aria-hidden="true"></span>
+            <span id="dict-label">Je t'écoute…</span>
+            <span id="dict-level" class="dict-level" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+            <span id="dict-time" class="dict-time">0:00</span>
+            <button id="dict-cancel" type="button" class="link-btn">Annuler</button>
+          </div>
+          <label class="icon-btn" title="Importer un fichier FIT">
+            <input id="fit-input" type="file" accept=".fit,.gpx,.gz" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="i-plus"><path d="M12 5v14M5 12h14"/></svg><span class="sr">Importer un fichier FIT</span>
+          </label>
+          <textarea id="chat-text" rows="1" placeholder="Écris à ton coach…" maxlength="4000"></textarea>
+          <button id="chat-mic" type="button" class="icon-btn mic" aria-label="Dicter un message" title="Dicter">
+            <svg class="i-mic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg>
+            <svg class="i-stop" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>
+          </button>
+          <button id="chat-send" type="submit" class="send" aria-label="Envoyer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12.5 6l6 6-6 6"/></svg></button>
+        </form>
+      </section>
+      <section id="view-progres" class="view" data-view="progres" hidden></section>
+      <section id="view-etat" class="view" data-view="etat" hidden></section>
+      <section id="view-details" class="view" data-view="details" hidden></section>
+      <section id="view-carriere" class="view" data-view="carriere" hidden></section>
+    </main>
+
+    <nav class="tabs" aria-label="Navigation">
+      <a href="#aujourdhui" data-tab="aujourdhui"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg><span>Aujourd'hui</span></a>
+      <a href="#semaine" data-tab="semaine"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>Semaine</span></a>
+      <a href="#coach" data-tab="coach"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-4.5 3.5V17.5H5a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z"/></svg><span>Coach</span></a>
+      <a href="#progres" data-tab="progres"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5V5M4 19.5h16M8 15l3.5-4 3 2.5L19 7.5"/></svg><span>Progrès</span></a>
+      <a href="#etat" data-tab="etat"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.5-6 4 12 2.5-6H21"/></svg><span>État</span></a>
+      <a href="#details" data-tab="details"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.2"/></svg><span>Détails</span></a>
+    </nav>
+  </div>
+
+  <!-- Feuille de validation de séance -->
+  <dialog id="avatar-sheet" class="sheet avatar-sheet">
+    <form method="dialog" id="avatar-form">
+      <h2>Ton avatar</h2>
+      <div id="avatar-preview" class="avatar-preview"></div>
+      <div id="avatar-options"></div>
+      <div class="sheet-actions">
+        <button type="button" id="avatar-cancel" class="btn">Annuler</button>
+        <button type="submit" id="avatar-save" class="btn primary">Enregistrer</button>
+      </div>
+    </form>
+  </dialog>
+  <dialog id="fb-sheet" class="sheet">
+    <form id="fb-form" method="dialog">
+      <h2 id="fb-title"></h2>
+      <p id="fb-sub" class="muted"></p>
+      <div class="field">
+        <span class="label">Statut</span>
+        <div class="seg" id="fb-status">
+          <button type="button" data-v="done">Faite</button>
+          <button type="button" data-v="modified">Modifiée</button>
+          <button type="button" data-v="skipped">Sautée</button>
+        </div>
+      </div>
+      <div class="field">
+        <span class="label">Effort ressenti <span id="fb-rpe-val" class="muted"></span></span>
+        <div class="rpe" id="fb-rpe"></div>
+      </div>
+      <div class="field">
+        <label class="label" for="fb-note">Note pour le coach</label>
+        <textarea id="fb-note" rows="3" maxlength="2000" placeholder="Sensations, douleur, sommeil, contraintes…"></textarea>
+      </div>
+      <label class="check"><input id="fb-notify" type="checkbox"> Prévenir le coach (il peut adapter la suite)</label>
+      <div class="sheet-actions">
+        <button type="button" class="btn" id="fb-cancel">Annuler</button>
+        <button type="submit" class="btn primary" id="fb-save">Valider</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

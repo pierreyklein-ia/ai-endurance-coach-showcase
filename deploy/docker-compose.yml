@@ -1,0 +1,30 @@
+# Application + HTTPS automatique (Caddy / Let's Encrypt). Données dans le volume coach_data.
+services:
+  app:
+    build: ..
+    restart: unless-stopped
+    env_file: app.env
+    volumes:
+      - coach_data:/data
+      - coach_models:/models          # modèle de dictée (v0.21), hors sauvegardes
+    expose:
+      - "8000"
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=${DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+volumes:
+  coach_data:
+  coach_models:
+  caddy_data:
+  caddy_config:

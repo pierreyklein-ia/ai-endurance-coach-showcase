@@ -1,0 +1,20 @@
+# Python 3.11+ requis (le python3 de macOS est en 3.9 : utiliser install.sh)
+# Testé sous Python 3.11, 3.12 et 3.13.
+langgraph>=1.2,<2
+langgraph-checkpoint-sqlite>=3.0,<4   # pilote : conversations persistantes
+pydantic>=2.7,<3
+numpy>=2.0
+fitdecode>=0.10
+gpxpy>=1.6
+pytest>=8
+# Vrais appels Claude (--claude)
+anthropic>=1.9
+# Pilote : Google Agenda (OAuth appli de bureau) et connecteur Strava officiel (MCP)
+google-api-python-client>=2.100
+google-auth-oauthlib>=1.2
+mcp>=1.20,<2
+# v0.9 : application web installable (PWA) avec chat intégré
+fastapi>=0.115,<1
+uvicorn>=0.30
+httpx>=0.27                            # tests de l'API (TestClient)
+pywebpush>=2.0                         # notifications Web Push (VAPID)

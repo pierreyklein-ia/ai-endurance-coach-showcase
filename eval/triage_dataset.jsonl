@@ -1,0 +1,45 @@
+{"text": "ok", "label": "noise", "origin": "synthetique_v0"}
+{"text": "merci coach 🙏", "label": "noise", "origin": "synthetique_v0"}
+{"text": "👍👍", "label": "noise", "origin": "synthetique_v0"}
+{"text": "top merci", "label": "noise", "origin": "synthetique_v0"}
+{"text": "vu !", "label": "noise", "origin": "synthetique_v0"}
+{"text": "ça marche", "label": "noise", "origin": "synthetique_v0"}
+{"text": "super", "label": "noise", "origin": "synthetique_v0"}
+{"text": "parfait merci", "label": "noise", "origin": "synthetique_v0"}
+{"text": "d'accord", "label": "noise", "origin": "synthetique_v0"}
+{"text": "yes", "label": "noise", "origin": "synthetique_v0"}
+{"text": "ok 👌", "label": "noise", "origin": "synthetique_v0"}
+{"text": "merci à toi", "label": "noise", "origin": "synthetique_v0"}
+{"text": "ok mais j'ai les jambes en bois", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "merci, par contre je bosse tard jeudi", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "👍 fait, RPE 8 quand même", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "vu. genou qui tire un peu", "label": "red_flag", "origin": "synthetique_v0"}
+{"text": "oui mais pas avant 20h", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "super, je suis cuit", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "merci. j'ai pas dormi", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "Séance faite, RPE 6, bonnes sensations", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "je peux décaler la sortie longue à dimanche ?", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "déplacement pro mardi-mercredi à Lyon", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "j'ai mal dormi, 5h", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "grosse semaine au boulot, je suis cuit", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "combien de D+ samedi ?", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "Ma fille a été malade toute la nuit, je suis épuisé", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "fractionné raté, j'ai coupé au 4e", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "je me sens en forme, je peux en faire plus ?", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "c'est quoi l'allure pour le seuil ?", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "pluie toute la journée, je fais du tapis ?", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "je suis crevé depuis 3 jours sans raison", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "journée de 12h debout au taf", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "j'ai fait 1200 D+ au lieu de 800, trop bien", "label": "coaching", "origin": "synthetique_v0"}
+{"text": "j'ai mal au tendon d'Achille depuis hier", "label": "red_flag", "origin": "synthetique_v0"}
+{"text": "genou qui gonfle après la descente", "label": "red_flag", "origin": "synthetique_v0"}
+{"text": "je crois que j'ai la grippe, 38,5", "label": "red_flag", "origin": "synthetique_v0"}
+{"text": "douleur sous le pied le matin", "label": "red_flag", "origin": "synthetique_v0"}
+{"text": "crampe au mollet qui ne passe pas", "label": "red_flag", "origin": "synthetique_v0"}
+{"text": "mal de gorge et nez qui coule", "label": "red_flag", "origin": "synthetique_v0"}
+{"text": "je me suis tordu la cheville", "label": "red_flag", "origin": "synthetique_v0"}
+{"text": "courbatures énormes et urine foncée", "label": "red_flag", "origin": "synthetique_v0"}
+{"text": "palpitations pendant la côte", "label": "red_flag", "origin": "synthetique_v0"}
+{"text": "vertiges en fin de sortie", "label": "red_flag", "origin": "synthetique_v0"}
+{"text": "hanche qui coince depuis la sortie longue", "label": "red_flag", "origin": "synthetique_v0"}
+{"text": "point au mollet, j'ai arrêté", "label": "red_flag", "origin": "synthetique_v0"}

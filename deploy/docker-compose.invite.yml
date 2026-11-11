@@ -1,0 +1,21 @@
+# v0.46 : espace invité (une 2e personne teste l'application avec SES données : plan, coach, Strava).
+# Même image que l'application principale, réglages dans invite.env, données dans un volume à part.
+# Utilisé automatiquement par deploy.sh dès que deploy/invite.env existe (créé par add-invite.sh).
+services:
+  invite:
+    build: ..
+    restart: unless-stopped
+    env_file: invite.env
+    volumes:
+      - invite_data:/data
+      - coach_models:/models          # modèle de dictée partagé (lecture)
+    expose:
+      - "8000"
+  caddy:
+    volumes:
+      - ./Caddyfile.invite:/etc/caddy/Caddyfile:ro   # remplace le Caddyfile (même cible) : 2 adresses
+    depends_on:
+      - app
+      - invite
+volumes:
+  invite_data:
