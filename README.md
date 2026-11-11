@@ -111,8 +111,6 @@ These offline runs measure routing, safety layers and non-regression, not the qu
 
 ## Decisions and lessons learned
 
-*Draft written with Claude from our working sessions — to be reread and owned by me before publishing.*
-
 **The code has the last word, not the model.** From day one I wanted a coach that talks like a human but can't hurt anyone. So Claude proposes, and a registry of plain rules decides: load spikes, pain, no catch-up, my own weekly maximum. Early on I also made one rule the other way around: the athlete always has the last word on his own days. When I move a session myself, nothing is blocked; the coach comments and suggests. Safety and respect for the user are not the same thing, and you need both.
 
 **Most failures were not the model being "dumb", but the plumbing around it.** Using the app every day showed me bugs no test had caught. A threshold session had been quietly turned into an easy run, while its title still said "Threshold". A fallback rewrote my whole week into recovery after I simply said I had done my session. And when I audited the chat history, I found the coach inventing a "double threshold" that was only a preference in my profile, and answering "your 'no' is a bit short" to its own question. The root causes were the context and the flow, not the model: no conversation history, preferences mixed with the plan, a yes/no question bypassed by another feature. Each fix shipped with a regression test.
